@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mouse"
+            android:icon="@mipmap/mouse"
+            android:title="Mouse" />
+        <item
+            android:id="@+id/nav_keyboard"
+            android:icon="@mipmap/keyboard"
+            android:title="Keyboard" />
+        <item
+            android:id="@+id/nav_connect"
+            android:icon="@mipmap/connect"
+            android:title="Connect" />
+        </group>
+
+    <item android:title="App info">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/information"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>
