@@ -4,15 +4,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_mouse"
-            android:icon="@mipmap/mouse"
+            android:icon="@drawable/ic_mouse_black_24dp"
             android:title="Mouse" />
         <item
             android:id="@+id/nav_keyboard"
-            android:icon="@mipmap/keyboard"
+            android:icon="@drawable/ic_keyboard_black_24dp"
             android:title="Keyboard" />
         <item
             android:id="@+id/nav_connect"
-            android:icon="@mipmap/connect"
+            android:icon="@drawable/ic_wifi_tethering_black_24dp"
             android:title="Connect" />
         </group>
 
@@ -20,7 +20,7 @@
         <menu>
             <item
                 android:id="@+id/nav_about"
-                android:icon="@mipmap/information"
+                android:icon="@drawable/ic_announcement_black_24dp"
                 android:title="About" />
         </menu>
     </item>
