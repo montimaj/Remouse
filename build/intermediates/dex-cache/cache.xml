@@ -2,6 +2,20 @@
 <items version="2" >
 
     <item
+        jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="24.0.1"
+        sha1="ca60126e8b404e2ef30b629236f463b81c910004">
+        <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_648496f5735c57401da20fc2e688e4782bac08b8/classes.dex" />
+    </item>
+    <item
+        jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.1.1/jars/classes.jar"
+        jumboMode="true"
+        revision="24.0.1"
+        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
+        <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.1.1_bfc65540841768b3039824fa1f0b9c0044cf1f18/classes.dex" />
+    </item>
+    <item
         jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.1.1/jars/classes.jar"
         jumboMode="true"
         revision="24.0.1"
@@ -16,17 +30,10 @@
         <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.1.1_dbbda286a302ec62b4c1905c200432159a3aa6ae/classes.dex" />
     </item>
     <item
-        jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        revision="24.0.1"
-        sha1="e2fc91023c38b8f034410255c76577c9e3acc9f3">
-        <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_648496f5735c57401da20fc2e688e4782bac08b8/classes.dex" />
-    </item>
-    <item
         jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="2e6f1bee9b85531237625930ebf94f13faa25ba8">
+        sha1="edf679181a931e6cb4466869ec2343e23972b3df">
         <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_f3d97d36b437a577f248258d0caf93fa0364f5ea/classes.dex" />
     </item>
     <item
@@ -35,13 +42,6 @@
         revision="24.0.1"
         sha1="6d7d803871e3203465f71a163e7af104f807b446">
         <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-24.1.1_9f1ddf497ee4aaee891bef29a3b0503b16ef0e52/classes.dex" />
-    </item>
-    <item
-        jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.1.1/jars/classes.jar"
-        jumboMode="true"
-        revision="24.0.1"
-        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
-        <dex dex="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.1.1_bfc65540841768b3039824fa1f0b9c0044cf1f18/classes.dex" />
     </item>
     <item
         jar="/home/monti/Documents/PROJECTS/ANDROID/Remouse/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.1.1/jars/classes.jar"
