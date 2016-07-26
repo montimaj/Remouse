@@ -25,6 +25,7 @@ public class ConnectionFragment extends Fragment implements View.OnClickListener
     private ConnectionManager mConnectionManager;
     private static final String TAG = "NsdConnect";
     private static final int REQUEST_INTERNET_ACCESS = 1001;
+    private static boolean sActiveDiscoveryListener = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,17 +40,18 @@ public class ConnectionFragment extends Fragment implements View.OnClickListener
         mConnect.setOnClickListener(this);
 
         mConnectionManager=new ConnectionManager();
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getInternetPermission();
-        } else {
-            initializeNsd();
-        }
         return view;
     }
 
     @Override
     public void onClick(View view) {
+        if(mNsdHelper == null) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getInternetPermission();
+            } else {
+                initializeNsd();
+            }
+        }
         if(view.getId() == R.id.reg_button) {
             if(mConnectionManager.getLocalPort() > -1) {
                 mNsdHelper.registerService(mConnectionManager.getLocalPort());
@@ -58,7 +60,10 @@ public class ConnectionFragment extends Fragment implements View.OnClickListener
             }
 
         } else if(view.getId() == R.id.discover_button) {
-            mNsdHelper.discoverServices();
+            if(!sActiveDiscoveryListener) {
+                mNsdHelper.discoverServices();
+                sActiveDiscoveryListener = true;
+            }
 
         } else if(view.getId() == R.id.connect_button) {
             NsdServiceInfo service = mNsdHelper.getChosenServiceInfo();
