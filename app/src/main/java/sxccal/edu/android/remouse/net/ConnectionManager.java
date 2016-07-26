@@ -12,7 +12,7 @@ public class ConnectionManager {
     private int mPort = -1;
 
     public void connectToServer(InetAddress inetAddress, int port) {
-
+        //TODO Add connection module
     }
 
     public int getLocalPort() {

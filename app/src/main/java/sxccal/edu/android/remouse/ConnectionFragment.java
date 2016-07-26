@@ -44,7 +44,7 @@ public class ConnectionFragment extends Fragment implements View.OnClickListener
             getInternetPermission();
         } else {
             initializeNsd();
-        }        ;
+        }
         return view;
     }
 
