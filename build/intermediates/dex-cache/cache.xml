@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/home/sudipto/code/projects/Remouse/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="24.0.1"
+        sha1="37ef313caa5873f18b25111c4f6ba03c1a77033c">
+        <dex dex="/home/sudipto/code/projects/Remouse/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_15381ba3cdcf53241a3088a51333cf55884c966e/classes.dex" />
+    </item>
+
+</items>

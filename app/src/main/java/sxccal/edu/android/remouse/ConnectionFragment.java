@@ -74,7 +74,7 @@ public class ConnectionFragment extends Fragment implements View.OnClickListener
     }
 
     private void connect() {
-        Thread clientConnectionThread = new Thread(new ClientConnectionThread());
+        Thread clientConnectionThread = new Thread(new ClientConnectionThread(this.getContext()));
         clientConnectionThread.start();
     }
 }

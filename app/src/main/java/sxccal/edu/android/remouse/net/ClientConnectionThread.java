@@ -1,5 +1,8 @@
 package sxccal.edu.android.remouse.net;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import java.io.IOException;
@@ -14,15 +17,27 @@ import sxccal.edu.android.remouse.ConnectionFragment;
  * @author Sudipto <ttsudipto@gmail.com>, Sayantan <monti.majumdar@gmail.com>
  */
 public class ClientConnectionThread implements Runnable {
+    private Context context;
+
+    public ClientConnectionThread(Context c) {
+        context = c;
+    }
 
     @Override
     public void run() {
         try {
+            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
+            lock.acquire();
+
             DatagramSocket datagramSocket = new DatagramSocket(1235);
             Log.d("ClientConnection: ", "Connecting...");
             datagramSocket.setBroadcast(true);
             DatagramPacket datagramPacket = new DatagramPacket(new byte[32],32);
             datagramSocket.receive(datagramPacket);
+
+            lock.release();
+
             Log.d("ClientConnection: ", new String(datagramPacket.getData()));
             Log.d("ClientConnection: ", ""+datagramSocket.getInetAddress());
             InetAddress inetAddress = datagramPacket.getAddress();
