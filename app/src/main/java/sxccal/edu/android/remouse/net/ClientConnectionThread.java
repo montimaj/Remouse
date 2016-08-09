@@ -17,16 +17,16 @@ import sxccal.edu.android.remouse.ConnectionFragment;
  * @author Sudipto <ttsudipto@gmail.com>, Sayantan <monti.majumdar@gmail.com>
  */
 public class ClientConnectionThread implements Runnable {
-    private Context context;
+    private Context mContext;
 
     public ClientConnectionThread(Context c) {
-        context = c;
+        mContext = c;
     }
 
     @Override
     public void run() {
         try {
-            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
             WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
             lock.acquire();
 
