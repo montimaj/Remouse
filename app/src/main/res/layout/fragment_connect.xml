@@ -12,21 +12,11 @@
         android:layout_gravity="center"
         android:src="@mipmap/connection" />
 
-    <Button
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Discover"
-        android:id="@+id/discover_button"
-        android:layout_gravity="left|top"
-        android:background="@color/accent_material_dark" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect"
-        android:id="@+id/connect_button"
-        android:layout_gravity="right|top"
-        android:background="@color/accent_material_dark" />
+        android:id="@android:id/list"
+        android:layout_gravity="center_horizontal|top" />
 
 
 </FrameLayout>
