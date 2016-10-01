@@ -11,39 +11,38 @@ import java.net.Socket;
 
 /**
  * Client module
- * @author Sudipto <ttsudipto@gmail.com>, Sayantan <monti.majumdar@gmail.com>
+ * @author Sudipto Bhattacharjee
+ * @author Sayantan Majumdar
  */
-public class Client {
+class Client {
 
     private int mPort;
     private Socket mSocket;
-    private PrintWriter mPrintWriter;
-    private BufferedReader mBufferedReader;
 
-    public Client(String address, int port) throws IOException {
+    Client(String address, int port) throws IOException {
         mPort = port;
         mSocket = new Socket(address, mPort);
     }
     
-    public Client(InetAddress inetAddress, int port) throws IOException {
+    Client(InetAddress inetAddress, int port) throws IOException {
         mPort = port;
         mSocket = new Socket(inetAddress, mPort);
     }
 
-    public boolean getConfirmation() throws IOException {
-        mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
-        String s = mBufferedReader.readLine();
+    boolean getConfirmation() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+        String s = bufferedReader.readLine();
         return s.equals("1");
     }
     
-    public void send(int k, int x, int y) throws IOException {
-        mPrintWriter = new PrintWriter(mSocket.getOutputStream(), true);
+    void send(int k, int x, int y) throws IOException {
+        PrintWriter printWriter = new PrintWriter(mSocket.getOutputStream(), true);
         String s = k + " " + x + " " + y ;
         Log.d("Client Sent String: ", s);
-        mPrintWriter.println(s);
+        printWriter.println(s);
     }
     
-    public void close() throws IOException {
+    void close() throws IOException {
         mSocket.close();
     }
 }

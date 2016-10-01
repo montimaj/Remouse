@@ -20,13 +20,22 @@ import java.util.HashSet;
 
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
 import sxccal.edu.android.remouse.net.ClientIOThread;
+import sxccal.edu.android.remouse.net.server.NetworkManager;
+import sxccal.edu.android.remouse.net.server.NetworkThread;
+
+/**
+ * @author Sayantan Majumdar
+ */
 
 public class ConnectionFragment extends ListFragment {
 
     private static ArrayList<String> mNetWorkList = new ArrayList<>();
     private static ArrayAdapter<String> mAdapter;
+    private NetworkManager mNetworkManager;
 
+    private static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +49,7 @@ public class ConnectionFragment extends ListFragment {
         mAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_selectable_list_item, mNetWorkList);
         setListAdapter(mAdapter);
         discoverLocalDevices();
+        sListItemClicked = false;
         return view;
     }
 
@@ -59,8 +69,11 @@ public class ConnectionFragment extends ListFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         String address = mAdapter.getItem(position);
         Log.d("ListItem: ",address);
-        ClientIOThread clientIOThread = new ClientIOThread(getActivity(), address);
-        new Thread(clientIOThread).start();
+        if (!sListItemClicked) {
+            ClientIOThread clientIOThread = new ClientIOThread(getActivity(), mNetworkManager, address);
+            new Thread(clientIOThread).start();
+            sListItemClicked = true;
+        }
     }
 
     private void getInternetPermission() {
@@ -74,8 +87,13 @@ public class ConnectionFragment extends ListFragment {
     }
 
     private void discoverLocalDevices() {
+        mNetworkManager = new NetworkManager();
+
         ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getContext(), getActivity());
+        NetworkThread networkThread = new NetworkThread(mNetworkManager);
+
         new Thread(clientConnectionThread).start();
+        new Thread(networkThread).start();
     }
 
     public static void addItems(HashSet<String> address) {

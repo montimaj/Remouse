@@ -18,18 +18,21 @@ import java.util.HashSet;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
 
+import static sxccal.edu.android.remouse.net.server.NetworkManager.sPublicKey;
+
 /**
  * Client to Server connection
- * @author Sudipto <ttsudipto@gmail.com>, Sayantan <monti.majumdar@gmail.com>
+ * @author Sayantan Majumdar
+ * @author Sudipto Bhattacharjee
  */
 public class ClientConnectionThread implements Runnable {
 
     private Context mContext;
     private Activity mActivity;
-    private DatagramSocket mDatagramSocket;
     private HashSet<String> mLocalDevices = new HashSet<>();
 
     private static final int SOCKET_TIMEOUT = 5000;
+    private static final int UDP_PORT = 1235;
     private static ProgressDialog sProgressDialog;
 
     public ClientConnectionThread(Context context, Activity activity) {
@@ -62,30 +65,27 @@ public class ClientConnectionThread implements Runnable {
 
             do {
                 lock.acquire();
-                mDatagramSocket = new DatagramSocket(1235);
+                DatagramSocket datagramSocket = new DatagramSocket(UDP_PORT);
                 Log.d("ClientConnection: ", "Connecting...");
-                mDatagramSocket.setBroadcast(true);
-                DatagramPacket datagramPacket = new DatagramPacket(new byte[32],32);
+                datagramSocket.setBroadcast(true);
+                DatagramPacket datagramPacket = new DatagramPacket(new byte[sPublicKey.length], sPublicKey.length);
                 try {
-                    mDatagramSocket.setSoTimeout(SOCKET_TIMEOUT);
-                    mDatagramSocket.receive(datagramPacket);
+                    datagramSocket.setSoTimeout(SOCKET_TIMEOUT);
+                    datagramSocket.receive(datagramPacket);
                 } catch(SocketTimeoutException e) {
                     lock.release();
-                    mDatagramSocket.close();
+                    datagramSocket.close();
                     break;
                 }
-
                 lock.release();
 
-                Log.d("ClientConnection: ", new String(datagramPacket.getData()));
-                Log.d("ClientConnection: ", ""+mDatagramSocket.getInetAddress());
+                Log.d("Server public key: ", new String(datagramPacket.getData()));
 
                 InetAddress inetAddress = datagramPacket.getAddress();
                 mLocalDevices.add(inetAddress.toString().substring(1));
 
-                Log.d("ClientConnection: ", inetAddress.toString());
                 currentTime = System.currentTimeMillis();
-                mDatagramSocket.close();
+                datagramSocket.close();
              } while((currentTime - startTime) < SOCKET_TIMEOUT);
             handler.sendEmptyMessage(0);
 
