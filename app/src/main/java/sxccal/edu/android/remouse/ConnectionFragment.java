@@ -1,17 +1,22 @@
 package sxccal.edu.android.remouse;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,8 +75,7 @@ public class ConnectionFragment extends ListFragment {
         String address = mAdapter.getItem(position);
         Log.d("ListItem: ",address);
         if (!sListItemClicked) {
-            ClientIOThread clientIOThread = new ClientIOThread(getActivity(), mNetworkManager, address);
-            new Thread(clientIOThread).start();
+            startCommunication(address);
             sListItemClicked = true;
         }
     }
@@ -84,6 +88,33 @@ public class ConnectionFragment extends ListFragment {
                     new String[]{Manifest.permission.INTERNET},
                     REQUEST_INTERNET_ACCESS);
         }
+    }
+
+    private void startCommunication (final String address) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage("Enter pairing key as shown in PC");
+        final EditText editText = new EditText(getActivity());
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        editText.setSelection(editText.getText().length());
+        editText.setHint("Password");
+        editText.setSingleLine();
+        editText.setTextSize(14);
+        alert.setView(editText);
+
+        alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int button) {
+                String pairingKey = editText.getText().toString();
+                ClientIOThread clientIOThread = new ClientIOThread(getActivity(), mNetworkManager, pairingKey, address);
+                new Thread(clientIOThread).start();
+            }
+        });
+
+        alert.setTitle("Connect to PC");
+        alert.setCancelable(false);
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
     }
 
     private void discoverLocalDevices() {

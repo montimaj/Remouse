@@ -2,6 +2,7 @@ package sxccal.edu.android.remouse.net.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -53,7 +54,7 @@ class Server {
                     confirm(clientSocket, false);
                     clientSocket.close();
                 }
-            } catch (SocketTimeoutException e) {}
+            } catch (SocketTimeoutException | SocketException e) {}
         }
     }
 

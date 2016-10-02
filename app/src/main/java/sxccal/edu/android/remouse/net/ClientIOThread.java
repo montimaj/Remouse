@@ -16,11 +16,14 @@ public class ClientIOThread implements Runnable {
     private static Client sClient;
     private Activity mActivity;
     private String mAddress;
+    private String mPairingKey;
     private NetworkManager mNetworkManager;
 
-    public ClientIOThread(Activity activity, NetworkManager networkManager, String address) {
+    public ClientIOThread(Activity activity, NetworkManager networkManager, String pairingKey,
+                          String address) {
         mActivity = activity;
         mNetworkManager = networkManager;
+        mPairingKey = pairingKey;
         mAddress = address;
     }
 
@@ -28,12 +31,17 @@ public class ClientIOThread implements Runnable {
     public void run() {
         try {
             sClient = new Client(mAddress, NetworkManager.TCP_PORT);
-
+            sClient.sendPairingKey(mPairingKey);
+            System.out.println("Pairing key: " + mPairingKey);
             if (!sClient.getConfirmation()) {
                 Log.d("ClientConnection: ", "Declined by server. Aborting !!!");
+                sClient.close();
+                try {
+                    if (mNetworkManager != null)    mNetworkManager.stopServer();
+                } catch(IOException e) { e.printStackTrace(); }
             } else {
                 try {
-                    mNetworkManager.stopServer();
+                    if (mNetworkManager != null)    mNetworkManager.stopServer();
                 } catch(IOException e) { e.printStackTrace(); }
 
                 mActivity.runOnUiThread(new Runnable() {
@@ -52,6 +60,7 @@ public class ClientIOThread implements Runnable {
                 }
                 sClient.close();
             }
+
         } catch (IOException | InterruptedException e) { e.printStackTrace(); }
     }
 }

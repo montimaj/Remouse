@@ -14,23 +14,30 @@ import java.net.Socket;
  * @author Sudipto Bhattacharjee
  * @author Sayantan Majumdar
  */
-class Client {
+public class Client {
 
     private int mPort;
     private Socket mSocket;
 
-    Client(String address, int port) throws IOException {
+    public Client(String address, int port) throws IOException {
         mPort = port;
         mSocket = new Socket(address, mPort);
+        //sendPairingKey(pairingKey);
     }
     
-    Client(InetAddress inetAddress, int port) throws IOException {
+    public Client(InetAddress inetAddress, int port) throws IOException {
         mPort = port;
         mSocket = new Socket(inetAddress, mPort);
     }
 
+    void sendPairingKey(String pairingKey) throws IOException {
+        PrintWriter printWriter = new PrintWriter(mSocket.getOutputStream(), true);
+        printWriter.println(pairingKey);
+    }
+
     boolean getConfirmation() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                mSocket.getInputStream()));
         String s = bufferedReader.readLine();
         return s.equals("1");
     }
