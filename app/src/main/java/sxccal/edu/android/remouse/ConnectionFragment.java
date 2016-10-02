@@ -94,11 +94,10 @@ public class ConnectionFragment extends ListFragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setMessage("Enter pairing key as shown in PC");
         final EditText editText = new EditText(getActivity());
-        editText.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         editText.setSelection(editText.getText().length());
         editText.setHint("Password");
-        editText.setSingleLine();
         editText.setTextSize(14);
         alert.setView(editText);
 

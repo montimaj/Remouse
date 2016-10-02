@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -14,21 +13,18 @@ import java.net.Socket;
  * @author Sudipto Bhattacharjee
  * @author Sayantan Majumdar
  */
-public class Client {
+class Client {
 
-    private int mPort;
     private Socket mSocket;
 
-    public Client(String address, int port) throws IOException {
-        mPort = port;
-        mSocket = new Socket(address, mPort);
-        //sendPairingKey(pairingKey);
+    Client(String address, int port) throws IOException {
+        mSocket = new Socket(address, port);
     }
     
-    public Client(InetAddress inetAddress, int port) throws IOException {
+    /*public lient(InetAddress inetAddress, int port) throws IOException {
         mPort = port;
         mSocket = new Socket(inetAddress, mPort);
-    }
+    }*/
 
     void sendPairingKey(String pairingKey) throws IOException {
         PrintWriter printWriter = new PrintWriter(mSocket.getOutputStream(), true);
