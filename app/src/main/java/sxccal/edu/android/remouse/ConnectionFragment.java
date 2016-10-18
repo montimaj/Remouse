@@ -40,34 +40,34 @@ import static sxccal.edu.android.remouse.MouseFragment.sConnectionAlive;
 
 public class ConnectionFragment extends ListFragment {
 
-    private static ArrayList<String> mNetWorkList = new ArrayList<>();
-    private static ArrayAdapter<String> mAdapter;
     private NetworkManager mNetworkManager;
     private SwitchCompat mSwitch;
 
-    public static boolean sListItemClicked;
-    public static Client sClient;
-    private static boolean sMouseStopped;
+    private static ArrayList<String> sNetWorkList = new ArrayList<>();
+    private static ArrayAdapter<String> sAdapter;
+    static Client sClient;
+
+    private static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
+    private static final int PAIRING_KEY_LENGTH = 6;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_connect, container, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getInternetPermission();
+        }
         mSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     mSwitch.setChecked(true);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        getInternetPermission();
-                    }
-                    if(!sListItemClicked && (mAdapter == null || mAdapter.isEmpty())) {
-                        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_selectable_list_item, mNetWorkList);
-                        setListAdapter(mAdapter);
+                    if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
+                        sAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_selectable_list_item, sNetWorkList);
+                        setListAdapter(sAdapter);
                         discoverLocalDevices();
                     }
 
@@ -80,7 +80,7 @@ public class ConnectionFragment extends ListFragment {
                         }
                     }).start();
 
-                    mAdapter.clear();
+                    sAdapter.clear();
                     sListItemClicked = false;
                     try {
                         if(mNetworkManager != null) mNetworkManager.stopServer();
@@ -94,13 +94,22 @@ public class ConnectionFragment extends ListFragment {
 
     private void closeActiveConnections() {
         sConnectionAlive = false;
+        boolean mouseStopped;
         try {
             sClient.sendMouseData(-1, -1, -1);
-            sMouseStopped = sClient.getStopSignal();
-        } catch (IOException e) { sMouseStopped = false; }
+            mouseStopped = sClient.getStopSignal();
+        } catch (IOException e) { mouseStopped = false; }
         try {
-            if(sClient != null && sMouseStopped)    sClient.close();
+            if(sClient != null && mouseStopped)    sClient.close();
         } catch (IOException e) {}
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), "Disconnected Successfully",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -117,7 +126,7 @@ public class ConnectionFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        String address = mAdapter.getItem(position);
+        String address = sAdapter.getItem(position);
         Log.d("ListItem: ",address);
         if (!sListItemClicked) {
             startCommunication(address);
@@ -136,6 +145,15 @@ public class ConnectionFragment extends ListFragment {
     }
 
     private void startCommunication (final String address) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sClient = new Client(address, NetworkManager.TCP_PORT);
+                } catch (IOException e) {}
+            }
+        }).start();
+
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setMessage("Enter pairing key as shown in PC");
         final EditText editText = new EditText(getActivity());
@@ -143,7 +161,7 @@ public class ConnectionFragment extends ListFragment {
         editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         editText.setSelection(editText.getText().length());
         editText.setHint("Password");
-        editText.setTextSize(14);
+        editText.setTextSize(18);
         alert.setView(editText);
 
         alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
@@ -151,12 +169,12 @@ public class ConnectionFragment extends ListFragment {
             public void onClick(DialogInterface dialogInterface, int button) {
                 final String pairingKey = editText.getText().toString();
                 new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        makeConnection(address, pairingKey);
-                    }
-                }).start();
-            }
+                        @Override
+                        public void run() {
+                            makeConnection(address, pairingKey);
+                        }
+                    }).start();
+                }
         });
 
         alert.setTitle("Connect to PC");
@@ -167,20 +185,11 @@ public class ConnectionFragment extends ListFragment {
 
     private void makeConnection(final String address, String pairingKey) {
         try {
-            sClient = new Client(address, NetworkManager.TCP_PORT);
             sClient.sendPairingKey(pairingKey);
             System.out.println("Pairing key: " + pairingKey);
             final Activity activity = getActivity();
             if (!sClient.getConfirmation()) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, "Incorrect Pin! Try connecting again",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                sListItemClicked = false;
-                sClient.close();
+                displayError(activity);
             } else {
                 try {
                     if (mNetworkManager != null)    mNetworkManager.stopServer();
@@ -189,13 +198,25 @@ public class ConnectionFragment extends ListFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "Connected to " + address +
+                        Toast.makeText(activity, "Connected to " + address +
                                         "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
             }
         } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    private void displayError(final Activity activity) throws IOException {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, "Incorrect Pin! Try connecting again",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        sListItemClicked = false;
+        sClient.close();
     }
 
     private void discoverLocalDevices() {
@@ -209,7 +230,7 @@ public class ConnectionFragment extends ListFragment {
     }
 
     public static void addItems(HashSet<String> address) {
-        for(String addr: address)   mNetWorkList.add(addr);
-        mAdapter.notifyDataSetChanged();
+        for(String addr: address)   sNetWorkList.add(addr);
+        sAdapter.notifyDataSetChanged();
     }
 }
