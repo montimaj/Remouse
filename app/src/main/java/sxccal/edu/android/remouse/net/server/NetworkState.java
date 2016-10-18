@@ -5,7 +5,8 @@ import java.net.Socket;
 import java.util.HashMap;
 
 /**
- * @author Sudipto Bhattacharjee, Sayantan Majumdar
+ * @author Sudipto Bhattacharjee
+ * @author Sayantan Majumdar
  */
 
 class NetworkState {
@@ -17,7 +18,7 @@ class NetworkState {
 
     HashMap<Socket, ServerThread> getConnectionMap() { return sConnectionMap; }
 
-    ServerThread getServerThread(InetAddress ia) { return sConnectionMap.get(sAddressMap.get(ia)); }
+    //ServerThread getServerThread(InetAddress ia) { return sConnectionMap.get(sAddressMap.get(ia)); }
 
     public void add(Socket skt, ServerThread serverThread) {
         sConnectionMap.put(skt, serverThread);

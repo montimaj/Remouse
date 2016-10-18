@@ -36,10 +36,11 @@ public class NetworkManager {
     }
 
     public void stopServer() throws IOException {
-        mBroadcastThread.stopBroadcast();
+        if(mBroadcastThread != null )   mBroadcastThread.stopBroadcast();
         mThread = null;
-
-        mServer.setStopFlag();
-        mServer.close();
+        if(mServer != null) {
+            mServer.setStopFlag();
+            mServer.close();
+        }
     }
 }
