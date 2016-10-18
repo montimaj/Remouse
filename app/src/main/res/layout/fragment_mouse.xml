@@ -5,11 +5,13 @@
     android:background="#ffffffff"
     tools:context="sxccal.edu.android.remouse.MouseFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.SwitchCompat
+        android:text="@string/mouseswitch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="mouse" />
+        android:id="@+id/switch2"
+        android:layout_height="46dp"
+        android:background="#566573"
+        android:theme="@style/CustomSwitch"/>
 
     <ImageView
         android:layout_width="wrap_content"

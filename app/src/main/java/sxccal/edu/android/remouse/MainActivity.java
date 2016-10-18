@@ -3,6 +3,7 @@ package sxccal.edu.android.remouse;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,12 +13,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * @author Sayantan Majumdar
  */
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,11 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        sFragmentList.add(new MouseFragment());
+        sFragmentList.add(new KeyboardFragment());
+        sFragmentList.add(new ConnectionFragment());
+        sFragmentList.add(new AboutFragment());
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -76,33 +87,32 @@ public class MainActivity extends AppCompatActivity
         String title = getString(R.string.app_name);
         if (id == R.id.nav_mouse) {
             // Handle the mouse action
-            fragment=new MouseFragment();
+            fragment = sFragmentList.get(0);
             title="Remote Mouse";
 
         } else if (id == R.id.nav_keyboard) {
             // Handle the keyboard action
-            fragment=new KeyboardFragment();
+            fragment = sFragmentList.get(1);
             title="Remote Keyboard";
 
         } else if (id == R.id.nav_connect) {
             // connection module
-            fragment=new ConnectionFragment();
+            fragment = sFragmentList.get(2);
             title="Connect to PC";
 
         } else if (id == R.id.nav_about) {
             // App info
-            fragment=new AboutFragment();
+            fragment = sFragmentList.get(3);
             title="About app";
         }
         if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+            getSupportFragmentManager().beginTransaction()
+                                       .replace(R.id.content_frame, fragment)
+                                       .commit();
         }
         // set the toolbar title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
+        if (getSupportActionBar() != null)  getSupportActionBar().setTitle(title);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

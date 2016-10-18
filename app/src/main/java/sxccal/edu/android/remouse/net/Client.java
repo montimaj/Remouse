@@ -13,39 +13,41 @@ import java.net.Socket;
  * @author Sudipto Bhattacharjee
  * @author Sayantan Majumdar
  */
-class Client {
+public class Client {
 
     private Socket mSocket;
 
-    Client(String address, int port) throws IOException {
+    public Client(String address, int port) throws IOException {
         mSocket = new Socket(address, port);
     }
-    
-    /*public lient(InetAddress inetAddress, int port) throws IOException {
-        mPort = port;
-        mSocket = new Socket(inetAddress, mPort);
-    }*/
 
-    void sendPairingKey(String pairingKey) throws IOException {
+    public void sendPairingKey(String pairingKey) throws IOException {
         PrintWriter printWriter = new PrintWriter(mSocket.getOutputStream(), true);
         printWriter.println(pairingKey);
     }
 
-    boolean getConfirmation() throws IOException {
+    private String readSocketData() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
                 mSocket.getInputStream()));
-        String s = bufferedReader.readLine();
-        return s.equals("1");
+        return bufferedReader.readLine();
+    }
+
+    public boolean getConfirmation() throws IOException {
+        return readSocketData().equals("1");
     }
     
-    void send(int k, int x, int y) throws IOException {
+    public void sendMouseData(int k, int x, int y) throws IOException {
         PrintWriter printWriter = new PrintWriter(mSocket.getOutputStream(), true);
         String s = k + " " + x + " " + y ;
         Log.d("Client Sent String: ", s);
         printWriter.println(s);
     }
+
+    public boolean getStopSignal() throws IOException {
+        return readSocketData().equals("-1");
+    }
     
-    void close() throws IOException {
+    public void close() throws IOException {
         mSocket.close();
     }
 }

@@ -1,6 +1,7 @@
 package sxccal.edu.android.remouse;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -16,17 +18,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import sxccal.edu.android.remouse.net.Client;
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
-import sxccal.edu.android.remouse.net.ClientIOThread;
 import sxccal.edu.android.remouse.net.server.NetworkManager;
 import sxccal.edu.android.remouse.net.server.NetworkThread;
+
+import static sxccal.edu.android.remouse.MouseFragment.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -37,25 +43,64 @@ public class ConnectionFragment extends ListFragment {
     private static ArrayList<String> mNetWorkList = new ArrayList<>();
     private static ArrayAdapter<String> mAdapter;
     private NetworkManager mNetworkManager;
+    private SwitchCompat mSwitch;
 
-    private static boolean sListItemClicked;
+    public static boolean sListItemClicked;
+    public static Client sClient;
+    private static boolean sMouseStopped;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_connect, container, false);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getInternetPermission();
-        }
-        if(mAdapter != null) mAdapter.clear();
-        mAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_selectable_list_item, mNetWorkList);
-        setListAdapter(mAdapter);
-        discoverLocalDevices();
-        sListItemClicked = false;
+        mSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mSwitch.setChecked(true);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        getInternetPermission();
+                    }
+                    if(!sListItemClicked && (mAdapter == null || mAdapter.isEmpty())) {
+                        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_selectable_list_item, mNetWorkList);
+                        setListAdapter(mAdapter);
+                        discoverLocalDevices();
+                    }
+
+                } else {
+                    mSwitch.setChecked(false);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeActiveConnections();
+                        }
+                    }).start();
+
+                    mAdapter.clear();
+                    sListItemClicked = false;
+                    try {
+                        if(mNetworkManager != null) mNetworkManager.stopServer();
+                    } catch(IOException e) {}
+                }
+            }
+        });
+
         return view;
+    }
+
+    private void closeActiveConnections() {
+        sConnectionAlive = false;
+        try {
+            sClient.sendMouseData(-1, -1, -1);
+            sMouseStopped = sClient.getStopSignal();
+        } catch (IOException e) { sMouseStopped = false; }
+        try {
+            if(sClient != null && sMouseStopped)    sClient.close();
+        } catch (IOException e) {}
     }
 
     @Override
@@ -104,9 +149,13 @@ public class ConnectionFragment extends ListFragment {
         alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int button) {
-                String pairingKey = editText.getText().toString();
-                ClientIOThread clientIOThread = new ClientIOThread(getActivity(), mNetworkManager, pairingKey, address);
-                new Thread(clientIOThread).start();
+                final String pairingKey = editText.getText().toString();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        makeConnection(address, pairingKey);
+                    }
+                }).start();
             }
         });
 
@@ -114,6 +163,39 @@ public class ConnectionFragment extends ListFragment {
         alert.setCancelable(false);
         AlertDialog alertDialog = alert.create();
         alertDialog.show();
+    }
+
+    private void makeConnection(final String address, String pairingKey) {
+        try {
+            sClient = new Client(address, NetworkManager.TCP_PORT);
+            sClient.sendPairingKey(pairingKey);
+            System.out.println("Pairing key: " + pairingKey);
+            final Activity activity = getActivity();
+            if (!sClient.getConfirmation()) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity, "Incorrect Pin! Try connecting again",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                sListItemClicked = false;
+                sClient.close();
+            } else {
+                try {
+                    if (mNetworkManager != null)    mNetworkManager.stopServer();
+                } catch(IOException e) { e.printStackTrace(); }
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "Connected to " + address +
+                                        "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     private void discoverLocalDevices() {
