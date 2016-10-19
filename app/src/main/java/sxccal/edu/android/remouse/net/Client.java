@@ -51,7 +51,8 @@ public class Client {
     }
 
     public boolean getStopSignal() throws IOException {
-        return mBufferedReader.readLine().equals("-1");
+        String s = mBufferedReader.readLine();
+        return s != null && s.equals("-1");
     }
     
     public void close() throws IOException {

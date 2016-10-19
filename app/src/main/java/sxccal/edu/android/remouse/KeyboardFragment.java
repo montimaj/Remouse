@@ -88,8 +88,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
                 case KeyEvent.KEYCODE_SPACE:
                     sClient.sendKeyboardData("space");
             }
-
-        } catch (IOException e) {}
+       } catch (IOException e) {}
         return false;
     }
 }

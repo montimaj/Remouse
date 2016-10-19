@@ -73,7 +73,7 @@ public class ConnectionFragment extends ListFragment {
 
                 } else {
                     mSwitch.setChecked(false);
-                    if(sClient != null) closeActiveConnections();
+                    closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
                     try {
