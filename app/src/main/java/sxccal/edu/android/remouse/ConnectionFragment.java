@@ -32,7 +32,8 @@ import sxccal.edu.android.remouse.net.ClientConnectionThread;
 import sxccal.edu.android.remouse.net.server.NetworkManager;
 import sxccal.edu.android.remouse.net.server.NetworkThread;
 
-import static sxccal.edu.android.remouse.MouseFragment.sConnectionAlive;
+import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
+import static sxccal.edu.android.remouse.net.Client.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -49,7 +50,6 @@ public class ConnectionFragment extends ListFragment {
 
     private static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
-    private static final int PAIRING_KEY_LENGTH = 6;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,13 +73,7 @@ public class ConnectionFragment extends ListFragment {
 
                 } else {
                     mSwitch.setChecked(false);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            closeActiveConnections();
-                        }
-                    }).start();
-
+                    if(sClient != null) closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
                     try {
@@ -92,24 +86,36 @@ public class ConnectionFragment extends ListFragment {
         return view;
     }
 
-    private void closeActiveConnections() {
-        sConnectionAlive = false;
-        boolean mouseStopped;
-        try {
-            sClient.sendMouseData(-1, -1, -1);
-            mouseStopped = sClient.getStopSignal();
-        } catch (IOException e) { mouseStopped = false; }
-        try {
-            if(sClient != null && mouseStopped)    sClient.close();
-        } catch (IOException e) {}
+    /*@Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(sClient != null) closeActiveConnections();
+    }*/
 
-        getActivity().runOnUiThread(new Runnable() {
+    void closeActiveConnections() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), "Disconnected Successfully",
-                        Toast.LENGTH_LONG).show();
+                sConnectionAlive = false;
+                boolean serverStopped;
+                try {
+                    sClient.sendStopSignal();
+                    serverStopped = sClient.getStopSignal();
+                    sMouseAlive = false;
+                } catch (IOException e) { serverStopped = false; }
+                try {
+                    if(sClient != null && serverStopped)    sClient.close();
+                } catch (IOException e) {}
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "Disconnected Successfully",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     @Override
@@ -188,7 +194,8 @@ public class ConnectionFragment extends ListFragment {
             sClient.sendPairingKey(pairingKey);
             System.out.println("Pairing key: " + pairingKey);
             final Activity activity = getActivity();
-            if (!sClient.getConfirmation()) {
+            sConnectionAlive = sClient.getConfirmation();
+            if (!sConnectionAlive) {
                 displayError(activity);
             } else {
                 try {

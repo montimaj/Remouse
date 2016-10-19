@@ -5,17 +5,19 @@
     android:background="#ffffffff"
     tools:context="sxccal.edu.android.remouse.KeyboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="keyboard" />
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imageView4"
         android:layout_gravity="center"
         android:src="@mipmap/keyboard" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/keyboard"
+        style="@style/Widget.AppCompat.EditText" />
 
 </FrameLayout>
