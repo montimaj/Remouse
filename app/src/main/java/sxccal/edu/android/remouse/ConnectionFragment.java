@@ -73,7 +73,7 @@ public class ConnectionFragment extends ListFragment {
 
                 } else {
                     mSwitch.setChecked(false);
-                    closeActiveConnections();
+                    if(sClient != null) closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
                     try {
@@ -177,7 +177,7 @@ public class ConnectionFragment extends ListFragment {
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            makeConnection(address, pairingKey);
+                            if(sClient != null) makeConnection(address, pairingKey);
                         }
                     }).start();
                 }

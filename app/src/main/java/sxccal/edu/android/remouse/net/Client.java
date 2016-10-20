@@ -33,7 +33,8 @@ public class Client {
     }
 
     public boolean getConfirmation() throws IOException {
-        return mBufferedReader.readLine().equals("1");
+        String s = mBufferedReader.readLine();
+        return s != null && s.equals("1");
     }
     
     public void sendMouseData(int x, int y) throws IOException {
@@ -45,8 +46,8 @@ public class Client {
     public void sendStopSignal() { mPrintWriter.println("Stop"); }
 
     public void sendKeyboardData(String s) throws IOException {
-        Log.d("Client Sent String: ", s);
-        String data = "Keyboard " + s;
+        String data = "Key " + s;
+        Log.d("Client Sent String: ", data);
         mPrintWriter.println(data);
     }
 

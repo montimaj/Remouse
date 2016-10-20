@@ -1,5 +1,6 @@
 package sxccal.edu.android.remouse;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 
@@ -28,14 +31,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View view) {
+                super.onDrawerOpened(view);
+                view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        };
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         sFragmentList.add(new MouseFragment());
-        sFragmentList.add(new KeyboardFragment());
         sFragmentList.add(new ConnectionFragment());
         sFragmentList.add(new AboutFragment());
 
@@ -89,17 +101,17 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_keyboard) {
             // Handle the keyboard action
-            fragment = sFragmentList.get(1);
+            fragment = new KeyboardFragment();
             title="Remote Keyboard";
 
         } else if (id == R.id.nav_connect) {
             // connection module
-            fragment = sFragmentList.get(2);
+            fragment = sFragmentList.get(1);
             title="Connect to PC";
 
         } else if (id == R.id.nav_about) {
             // App info
-            fragment = sFragmentList.get(3);
+            fragment = sFragmentList.get(2);
             title="About app";
         }
         if (fragment != null) {

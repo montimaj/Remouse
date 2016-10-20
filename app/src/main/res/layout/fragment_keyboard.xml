@@ -15,7 +15,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine"
         android:ems="10"
         android:id="@+id/keyboard"
         style="@style/Widget.AppCompat.EditText" />
