@@ -46,35 +46,45 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(s.length() !=0 ) {
+        if(s.length() != 0 ) {
             int currentInputLength = s.length();
             int lastInputLength = mLastInput.length();
             int diff = currentInputLength - lastInputLength;
+            System.out.println("curlen= " + currentInputLength);
+            System.out.println("curStr= " + s);
+            System.out.println("Laststr= " + mLastInput);
+            System.out.println("lenlast= " + lastInputLength);
+            System.out.println("diff= " + diff);
             if(diff > 0) {
                 String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
-                int len = string.length();
-                for(int i=0;i<len;++i) {
-                    try {
-                        sClient.sendKeyboardData("" + string.charAt(i));
-                    } catch (IOException e) {}
-                }
-            } else if(diff < 0) {
+                try {
+                    sClient.sendKeyboardData(string);
+                } catch (IOException e) {}
+            }else if(diff < 0) {
                 try {
                     sClient.sendKeyboardData("backspace");
                 } catch (IOException e) {}
             }
-        }
+        } else mLastInput = null;
     }
 
     @Override
     public void afterTextChanged(Editable s) {
         Log.d("KeyboardFrag After: ", s.toString());
+        if(mLastInput == null) {
+            try {
+                sClient.sendKeyboardData("backspace");
+            } catch (IOException e) {}
+        }
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         try {
-            if(keyCode == KeyEvent.KEYCODE_DEL) sClient.sendKeyboardData("backspace");
+            if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                sClient.sendKeyboardData("backspace");
+                return true;
+            }
         } catch (IOException e) {}
         return false;
     }
