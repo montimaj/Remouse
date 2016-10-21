@@ -47,6 +47,7 @@ public class ConnectionFragment extends ListFragment {
     private static ArrayList<String> sNetWorkList = new ArrayList<>();
     private static ArrayAdapter<String> sAdapter;
     static Client sClient;
+    static Client sSecuredClient;
 
     private static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
@@ -73,7 +74,7 @@ public class ConnectionFragment extends ListFragment {
 
                 } else {
                     mSwitch.setChecked(false);
-                    if(sClient != null) closeActiveConnections();
+                    if(sSecuredClient != null) closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
                     try {
@@ -99,12 +100,12 @@ public class ConnectionFragment extends ListFragment {
                 sConnectionAlive = false;
                 boolean serverStopped;
                 try {
-                    sClient.sendStopSignal();
-                    serverStopped = sClient.getStopSignal();
+                    sSecuredClient.sendStopSignal();
+                    serverStopped = sSecuredClient.getStopSignal();
                     sMouseAlive = false;
                 } catch (IOException e) { serverStopped = false; }
                 try {
-                    if(sClient != null && serverStopped)    sClient.close();
+                    if(sSecuredClient != null && serverStopped)    sSecuredClient.close();
                 } catch (IOException e) {}
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -201,7 +202,7 @@ public class ConnectionFragment extends ListFragment {
                 try {
                     if (mNetworkManager != null)    mNetworkManager.stopServer();
                 } catch(IOException e) { e.printStackTrace(); }
-
+                sSecuredClient = new Client(pairingKey);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

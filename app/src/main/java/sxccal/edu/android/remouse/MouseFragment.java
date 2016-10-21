@@ -1,6 +1,5 @@
 package sxccal.edu.android.remouse;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
@@ -8,12 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 
 import java.io.IOException;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.sClient;
+import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 import static sxccal.edu.android.remouse.net.Client.sConnectionAlive;
 
 /**
@@ -57,7 +55,7 @@ public class MouseFragment extends Fragment {
         try {
             int x = (int) (Math.random() * 10), y = (int) (Math.random() * 10);
             while (sConnectionAlive && sMouseAlive) {
-                sClient.sendMouseData(x, y);
+                sSecuredClient.sendMouseData(x, y);
                 x += 50;
                 y += 50;
                 Log.d("ClientConnection: ", "" + x + " " + y);

@@ -9,6 +9,8 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -33,6 +35,7 @@ public class ClientConnectionThread implements Runnable {
 
     private static final int SOCKET_TIMEOUT = 5000;
     private static final int UDP_PORT = 1235;
+    public static byte[] sServerPublicKey;
     private static ProgressDialog sProgressDialog;
 
     public ClientConnectionThread(Context context, Activity activity) {
@@ -79,7 +82,7 @@ public class ClientConnectionThread implements Runnable {
                 }
                 lock.release();
 
-                Log.d("Server public key: ", new String(datagramPacket.getData()));
+                sServerPublicKey = datagramPacket.getData();
 
                 InetAddress inetAddress = datagramPacket.getAddress();
                 mLocalDevices.add(inetAddress.toString().substring(1));

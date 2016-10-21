@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import java.io.IOException;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.sClient;
+import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 
 /**
  * @author Sayantan Majumdar
@@ -22,18 +22,17 @@ import static sxccal.edu.android.remouse.ConnectionFragment.sClient;
 public class KeyboardFragment extends Fragment implements View.OnKeyListener, TextWatcher {
 
     private String mLastInput;
-    private EditText mKeyboardInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
-        if(sClient != null) {
-            mKeyboardInput = (EditText) view.findViewById(R.id.keyboard);
-            mKeyboardInput.setText("");
-            mKeyboardInput.setTextSize(18);
-            mKeyboardInput.setOnKeyListener(this);
-            mKeyboardInput.addTextChangedListener(this);
+        if(sSecuredClient != null) {
+            EditText keyboardInput = (EditText) view.findViewById(R.id.keyboard);
+            keyboardInput.setText("");
+            keyboardInput.setTextSize(18);
+            keyboardInput.setOnKeyListener(this);
+            keyboardInput.addTextChangedListener(this);
         }
         return view;
     }
@@ -58,11 +57,11 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             if(diff > 0) {
                 String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
                 try {
-                    sClient.sendKeyboardData(string);
+                    sSecuredClient.sendKeyboardData(string);
                 } catch (IOException e) {}
             }else if(diff < 0) {
                 try {
-                    sClient.sendKeyboardData("backspace");
+                    sSecuredClient.sendKeyboardData("backspace");
                 } catch (IOException e) {}
             }
         } else mLastInput = null;
@@ -73,7 +72,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         Log.d("KeyboardFrag After: ", s.toString());
         if(mLastInput == null) {
             try {
-                sClient.sendKeyboardData("backspace");
+                sSecuredClient.sendKeyboardData("backspace");
             } catch (IOException e) {}
         }
     }
@@ -82,7 +81,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         try {
             if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-                sClient.sendKeyboardData("backspace");
+                sSecuredClient.sendKeyboardData("backspace");
                 return true;
             }
         } catch (IOException e) {}
