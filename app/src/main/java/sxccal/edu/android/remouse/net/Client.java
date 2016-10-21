@@ -38,11 +38,11 @@ public class Client {
     }
 
     public void sendPairingKey(String pairingKey) throws IOException {
-        sOut.println(pairingKey);
+        sOut.println(mEKEProvider.encryptString(pairingKey));
     }
 
     public boolean getConfirmation() throws IOException {
-        String s = sIn.readLine();
+        String s = mEKEProvider.decryptString(sIn.readLine());
         return s != null && s.equals("1");
     }
     
@@ -52,7 +52,8 @@ public class Client {
         sOut.println(mEKEProvider.encryptString(data));
     }
 
-    public void sendStopSignal() {sOut.println(mEKEProvider.encryptString("Stop"));
+    public void sendStopSignal() {
+        sOut.println(mEKEProvider.encryptString("Stop"));
     }
 
     public void sendKeyboardData(String s) throws IOException {

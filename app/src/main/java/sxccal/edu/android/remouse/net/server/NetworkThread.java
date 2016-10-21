@@ -12,7 +12,7 @@ public class NetworkThread implements Runnable {
     @Override
     public void run() {
         try {
-            manager.startServer();
+            manager.startBroadcast();
         } catch (Exception e) { e.printStackTrace(); }
     }
 }

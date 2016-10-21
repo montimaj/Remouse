@@ -20,6 +20,7 @@ import java.util.HashSet;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
 
+import static sxccal.edu.android.remouse.ConnectionFragment.handler;
 import static sxccal.edu.android.remouse.net.server.NetworkManager.sPublicKey;
 
 /**
@@ -36,19 +37,11 @@ public class ClientConnectionThread implements Runnable {
     private static final int SOCKET_TIMEOUT = 5000;
     private static final int UDP_PORT = 1235;
     public static byte[] sServerPublicKey;
-    private static ProgressDialog sProgressDialog;
 
     public ClientConnectionThread(Context context, Activity activity) {
         mContext = context;
         mActivity = activity;
     }
-
-    private static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message message) {
-            sProgressDialog.dismiss();
-        }
-    };
 
     @Override
     public void run() {
@@ -58,18 +51,9 @@ public class ClientConnectionThread implements Runnable {
 
             long startTime = System.currentTimeMillis(), currentTime;
 
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    sProgressDialog = ProgressDialog.show(mContext, "Scanning for Local Devices",
-                            "Please wait!", false, false);
-                }
-            });
-
             do {
                 lock.acquire();
                 DatagramSocket datagramSocket = new DatagramSocket(UDP_PORT);
-                Log.d("ClientConnection: ", "Connecting...");
                 datagramSocket.setBroadcast(true);
                 DatagramPacket datagramPacket = new DatagramPacket(new byte[sPublicKey.length], sPublicKey.length);
                 try {

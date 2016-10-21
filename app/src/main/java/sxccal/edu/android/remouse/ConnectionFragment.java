@@ -2,10 +2,13 @@ package sxccal.edu.android.remouse;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
@@ -43,14 +46,22 @@ public class ConnectionFragment extends ListFragment {
 
     private NetworkManager mNetworkManager;
     private SwitchCompat mSwitch;
+    private static ProgressDialog sProgressDialog;
 
     private static ArrayList<String> sNetWorkList = new ArrayList<>();
     private static ArrayAdapter<String> sAdapter;
-    static Client sClient;
+
     static Client sSecuredClient;
 
     private static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
+
+    public static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            sProgressDialog.dismiss();
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,18 +78,25 @@ public class ConnectionFragment extends ListFragment {
                 if(isChecked) {
                     mSwitch.setChecked(true);
                     if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
-                        sAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_selectable_list_item, sNetWorkList);
+                        sAdapter = new ArrayAdapter<>(getActivity(), android.R.layout
+                                .simple_selectable_list_item, sNetWorkList);
                         setListAdapter(sAdapter);
-                        discoverLocalDevices();
                     }
-
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
+                                discoverLocalDevices();
+                            }
+                        }
+                    }).start();
                 } else {
                     mSwitch.setChecked(false);
                     if(sSecuredClient != null) closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
                     try {
-                        if(mNetworkManager != null) mNetworkManager.stopServer();
+                        if(mNetworkManager != null) mNetworkManager.stopBroadcast();
                     } catch(IOException e) {}
                 }
             }
@@ -90,7 +108,7 @@ public class ConnectionFragment extends ListFragment {
     /*@Override
     public void onDestroy() {
         super.onDestroy();
-        if(sClient != null) closeActiveConnections();
+        if(sSecuredClient != null) closeActiveConnections();
     }*/
 
     void closeActiveConnections() {
@@ -156,7 +174,7 @@ public class ConnectionFragment extends ListFragment {
             @Override
             public void run() {
                 try {
-                    sClient = new Client(address, NetworkManager.TCP_PORT);
+                    sSecuredClient = new Client(address, NetworkManager.TCP_PORT);
                 } catch (IOException e) {}
             }
         }).start();
@@ -178,7 +196,7 @@ public class ConnectionFragment extends ListFragment {
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if(sClient != null) makeConnection(address, pairingKey);
+                            if(sSecuredClient != null) makeConnection(address, pairingKey);
                         }
                     }).start();
                 }
@@ -192,17 +210,18 @@ public class ConnectionFragment extends ListFragment {
 
     private void makeConnection(final String address, String pairingKey) {
         try {
-            sClient.sendPairingKey(pairingKey);
+            sSecuredClient = new Client(pairingKey);
+            sSecuredClient.sendPairingKey(pairingKey);
             System.out.println("Pairing key: " + pairingKey);
             final Activity activity = getActivity();
-            sConnectionAlive = sClient.getConfirmation();
+            sConnectionAlive = sSecuredClient.getConfirmation();
             if (!sConnectionAlive) {
                 displayError(activity);
             } else {
                 try {
-                    if (mNetworkManager != null)    mNetworkManager.stopServer();
+                    if (mNetworkManager != null)    mNetworkManager.stopBroadcast();
                 } catch(IOException e) { e.printStackTrace(); }
-                sSecuredClient = new Client(pairingKey);
+
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -224,10 +243,18 @@ public class ConnectionFragment extends ListFragment {
             }
         });
         sListItemClicked = false;
-        sClient.close();
+        sSecuredClient.close();
     }
 
     private void discoverLocalDevices() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sProgressDialog = ProgressDialog.show(getContext(), "Scanning for Local Devices",
+                        "Please wait!", false, false);
+            }
+        });
+
         mNetworkManager = new NetworkManager();
 
         ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getContext(), getActivity());
