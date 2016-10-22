@@ -1,7 +1,6 @@
 package sxccal.edu.android.remouse;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -32,11 +31,10 @@ import java.util.HashSet;
 
 import sxccal.edu.android.remouse.net.Client;
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
-import sxccal.edu.android.remouse.net.server.NetworkManager;
-import sxccal.edu.android.remouse.net.server.NetworkThread;
+import sxccal.edu.android.remouse.net.ClientIOThread;
 
 import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
-import static sxccal.edu.android.remouse.net.Client.sConnectionAlive;
+import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -44,16 +42,15 @@ import static sxccal.edu.android.remouse.net.Client.sConnectionAlive;
 
 public class ConnectionFragment extends ListFragment {
 
-    private NetworkManager mNetworkManager;
     private SwitchCompat mSwitch;
     private static ProgressDialog sProgressDialog;
 
     private static ArrayList<String> sNetWorkList = new ArrayList<>();
-    private static ArrayAdapter<String> sAdapter;
+    public static ArrayAdapter<String> sAdapter;
 
-    static Client sSecuredClient;
+    public static Client sSecuredClient;
 
-    private static boolean sListItemClicked;
+    public static boolean sListItemClicked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
 
     public static Handler handler = new Handler() {
@@ -92,12 +89,9 @@ public class ConnectionFragment extends ListFragment {
                     }).start();
                 } else {
                     mSwitch.setChecked(false);
-                    if(sSecuredClient != null) closeActiveConnections();
+                    if(sSecuredClient != null && sConnectionAlive) closeActiveConnections();
                     sAdapter.clear();
                     sListItemClicked = false;
-                    try {
-                        if(mNetworkManager != null) mNetworkManager.stopBroadcast();
-                    } catch(IOException e) {}
                 }
             }
         });
@@ -115,15 +109,11 @@ public class ConnectionFragment extends ListFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sConnectionAlive = false;
-                boolean serverStopped;
+                sSecuredClient.sendStopSignal(true);
+                sMouseAlive = false;
                 try {
-                    sSecuredClient.sendStopSignal();
-                    serverStopped = sSecuredClient.getStopSignal();
-                    sMouseAlive = false;
-                } catch (IOException e) { serverStopped = false; }
-                try {
-                    if(sSecuredClient != null && serverStopped)    sSecuredClient.close();
+                    sSecuredClient.close();
+                    sConnectionAlive = false;
                 } catch (IOException e) {}
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -174,7 +164,7 @@ public class ConnectionFragment extends ListFragment {
             @Override
             public void run() {
                 try {
-                    sSecuredClient = new Client(address, NetworkManager.TCP_PORT);
+                    sSecuredClient = new Client(address);
                 } catch (IOException e) {}
             }
         }).start();
@@ -193,57 +183,32 @@ public class ConnectionFragment extends ListFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int button) {
                 final String pairingKey = editText.getText().toString();
-                new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(sSecuredClient != null) makeConnection(address, pairingKey);
-                        }
-                    }).start();
+                if(sSecuredClient != null) {
+                    try {
+                        new Thread(new ClientIOThread(getActivity(), pairingKey, address)).start();
+                    } catch (IOException e) {}
                 }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(sSecuredClient != null)  {
+                    try {
+                        sSecuredClient.sendStopSignal(false);
+                        sSecuredClient.close();
+                    } catch (IOException e) {}
+                    sListItemClicked = false;
+                    dialog.dismiss();
+                }
+            }
         });
 
         alert.setTitle("Connect to PC");
         alert.setCancelable(false);
         AlertDialog alertDialog = alert.create();
         alertDialog.show();
-    }
-
-    private void makeConnection(final String address, String pairingKey) {
-        try {
-            sSecuredClient = new Client(pairingKey);
-            sSecuredClient.sendPairingKey(pairingKey);
-            System.out.println("Pairing key: " + pairingKey);
-            final Activity activity = getActivity();
-            sConnectionAlive = sSecuredClient.getConfirmation();
-            if (!sConnectionAlive) {
-                displayError(activity);
-            } else {
-                try {
-                    if (mNetworkManager != null)    mNetworkManager.stopBroadcast();
-                } catch(IOException e) { e.printStackTrace(); }
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, "Connected to " + address +
-                                        "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    private void displayError(final Activity activity) throws IOException {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(activity, "Incorrect Pin! Try connecting again",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-        sListItemClicked = false;
-        sSecuredClient.close();
     }
 
     private void discoverLocalDevices() {
@@ -255,13 +220,8 @@ public class ConnectionFragment extends ListFragment {
             }
         });
 
-        mNetworkManager = new NetworkManager();
-
         ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getContext(), getActivity());
-        NetworkThread networkThread = new NetworkThread(mNetworkManager);
-
         new Thread(clientConnectionThread).start();
-        new Thread(networkThread).start();
     }
 
     public static void addItems(HashSet<String> address) {

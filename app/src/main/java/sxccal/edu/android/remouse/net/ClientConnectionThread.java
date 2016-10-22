@@ -1,15 +1,9 @@
 package sxccal.edu.android.remouse.net;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
-
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -21,7 +15,6 @@ import java.util.HashSet;
 import sxccal.edu.android.remouse.ConnectionFragment;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.handler;
-import static sxccal.edu.android.remouse.net.server.NetworkManager.sPublicKey;
 
 /**
  * Client to Server connection
@@ -36,7 +29,7 @@ public class ClientConnectionThread implements Runnable {
 
     private static final int SOCKET_TIMEOUT = 5000;
     private static final int UDP_PORT = 1235;
-    public static byte[] sServerPublicKey;
+    static byte[] sServerPublicKey;
 
     public ClientConnectionThread(Context context, Activity activity) {
         mContext = context;
@@ -55,7 +48,8 @@ public class ClientConnectionThread implements Runnable {
                 lock.acquire();
                 DatagramSocket datagramSocket = new DatagramSocket(UDP_PORT);
                 datagramSocket.setBroadcast(true);
-                DatagramPacket datagramPacket = new DatagramPacket(new byte[sPublicKey.length], sPublicKey.length);
+                DatagramPacket datagramPacket = new DatagramPacket(new byte[Client.PUBLIC_KEY.length],
+                        Client.PUBLIC_KEY.length);
                 try {
                     datagramSocket.setSoTimeout(SOCKET_TIMEOUT);
                     datagramSocket.receive(datagramPacket);

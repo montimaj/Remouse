@@ -12,7 +12,7 @@ import android.widget.CompoundButton;
 import java.io.IOException;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
-import static sxccal.edu.android.remouse.net.Client.sConnectionAlive;
+import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar

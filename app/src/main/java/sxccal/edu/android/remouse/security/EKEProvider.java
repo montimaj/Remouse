@@ -93,11 +93,11 @@ public class EKEProvider {
         }
     }
 
-    public EKEProvider(String pairingKey, byte[] serverPublicKey) {
+    public EKEProvider(byte[] pairingKey, byte[] serverPublicKey) {
         MessageDigest msgDigest;
         try {
             msgDigest = MessageDigest.getInstance(MESSAGE_DIGEST, SECURITY_PROVIDER);
-            mIV = msgDigest.digest(pairingKey.getBytes());
+            mIV = msgDigest.digest(pairingKey);
             KeyPair keyPair = KeyStoreManager.getKSKeyPair();
             if (keyPair != null) {
                 X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(Base64.decodeBase64(serverPublicKey));

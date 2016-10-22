@@ -14,36 +14,41 @@ import static sxccal.edu.android.remouse.net.ClientConnectionThread.sServerPubli
 
 /**
  * Client module
- * @author Sudipto Bhattacharjee
  * @author Sayantan Majumdar
+ * @author Sudipto Bhattacharjee
  */
 public class Client {
 
     private static Socket sSocket;
     private static PrintWriter sOut;
-    private static BufferedReader sIn;
+    private static final int TCP_PORT = 1234;
+
+    static final byte[] PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
+    static BufferedReader sIn;
 
     private EKEProvider mEKEProvider;
 
-    public static boolean sConnectionAlive;
-
-    public Client(String address, int port) throws IOException {
-        sSocket = new Socket(address, port);
+    public Client(String address) throws IOException {
+        sSocket = new Socket(address, TCP_PORT);
         sOut = new PrintWriter(sSocket.getOutputStream(), true);
+        sOut.println(new String(PUBLIC_KEY));
         sIn = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
     }
 
-    public Client(String pairingKey) {
+    Client(byte[] pairingKey) {
         mEKEProvider = new EKEProvider(pairingKey, sServerPublicKey);
     }
 
-    public void sendPairingKey(String pairingKey) throws IOException {
+    void sendPairingKey(String pairingKey) throws IOException {
         sOut.println(mEKEProvider.encryptString(pairingKey));
     }
 
-    public boolean getConfirmation() throws IOException {
-        String s = mEKEProvider.decryptString(sIn.readLine());
-        return s != null && s.equals("1");
+    BufferedReader getSocketReader() throws IOException {
+        return new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
+    }
+
+    EKEProvider getEKEProvider() {
+        return mEKEProvider;
     }
     
     public void sendMouseData(int x, int y) throws IOException {
@@ -52,8 +57,10 @@ public class Client {
         sOut.println(mEKEProvider.encryptString(data));
     }
 
-    public void sendStopSignal() {
-        sOut.println(mEKEProvider.encryptString("Stop"));
+    public void sendStopSignal(boolean makeSecured) {
+        if(makeSecured && mEKEProvider != null) {
+            sOut.println(mEKEProvider.encryptString("Stop"));
+        } else  sOut.println("Stop");
     }
 
     public void sendKeyboardData(String s) throws IOException {
@@ -62,12 +69,7 @@ public class Client {
         sOut.println(mEKEProvider.encryptString(data));
     }
 
-    public boolean getStopSignal() throws IOException {
-        String s = mEKEProvider.decryptString(sIn.readLine());
-        return s != null && s.equals("-1");
-    }
-
     public void close() throws IOException {
-        sSocket.close();
+        if(sSocket != null) sSocket.close();
     }
 }
