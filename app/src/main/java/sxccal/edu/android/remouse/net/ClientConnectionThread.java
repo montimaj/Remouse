@@ -25,7 +25,7 @@ public class ClientConnectionThread implements Runnable {
 
     private Context mContext;
     private Activity mActivity;
-    private static HashSet<String> mLocalDevices = new HashSet<>();
+    private HashSet<String> mLocalDevices = new HashSet<>();
 
     private static final int UDP_PORT = 1235;
     static byte[] sServerPublicKey;

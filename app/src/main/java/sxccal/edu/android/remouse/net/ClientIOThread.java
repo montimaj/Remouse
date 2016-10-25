@@ -1,11 +1,13 @@
 package sxccal.edu.android.remouse.net;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import sxccal.edu.android.remouse.NetworkService;
 import sxccal.edu.android.remouse.security.EKEProvider;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sListItemClicked;
@@ -70,15 +72,10 @@ public class ClientIOThread implements Runnable {
         if (!sConnectionAlive) {
             displayError(mActivity);
         } else {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    sListItemClicked = true;
-                    Toast.makeText(mActivity, "Connected to " + mAddress +
-                            "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
-                                    Toast.LENGTH_LONG).show();
-                }
-            });
+            sListItemClicked = true;
+            Intent intent = new Intent(mActivity, NetworkService.class);
+            intent.putExtra("Server", mAddress);
+            mActivity.startService(intent);
         }
     }
 

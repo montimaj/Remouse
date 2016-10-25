@@ -2,6 +2,7 @@ package sxccal.edu.android.remouse;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.stopService(new Intent(this, NetworkService.class));
     }
 
     private void getRWPermission() {

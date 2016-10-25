@@ -2,6 +2,7 @@ package sxccal.edu.android.remouse;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,9 +30,6 @@ import java.util.HashSet;
 import sxccal.edu.android.remouse.net.Client;
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
 import sxccal.edu.android.remouse.net.ClientIOThread;
-
-import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -81,41 +79,13 @@ public class ConnectionFragment extends ListFragment {
                 } else {
                     sSwitchChecked = false;
                     mSwitch.setChecked(false);
-                    if(sSecuredClient != null && sConnectionAlive) closeActiveConnections();
+                    getActivity().stopService(new Intent(getContext(), NetworkService.class));
                     sListItemClicked = false;
                 }
             }
         });
 
         return view;
-    }
-
-    /*@Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(sSecuredClient != null) closeActiveConnections();
-    }*/
-
-    void closeActiveConnections() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sSecuredClient.sendStopSignal(true);
-                sMouseAlive = false;
-                try {
-                    sSecuredClient.close();
-                    sConnectionAlive = false;
-                } catch (IOException e) {}
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "Disconnected Successfully",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }).start();
     }
 
     @Override
