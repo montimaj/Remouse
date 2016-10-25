@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import sxccal.edu.android.remouse.security.EKEProvider;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.sAdapter;
 import static sxccal.edu.android.remouse.ConnectionFragment.sListItemClicked;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 
@@ -49,9 +48,8 @@ public class ClientIOThread implements Runnable {
                 @Override
                 public void run() {
                     sListItemClicked = false;
-                    sAdapter.clear();
-                    Toast.makeText(mActivity, "Server closed! " +
-                            "Please search for available servers", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, "Server " + mAddress + " disconnected! " +
+                            "You may reconnect", Toast.LENGTH_LONG).show();
                 }
             });
             sSecuredClient.close();
@@ -75,6 +73,7 @@ public class ClientIOThread implements Runnable {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    sListItemClicked = true;
                     Toast.makeText(mActivity, "Connected to " + mAddress +
                             "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
                                     Toast.LENGTH_LONG).show();

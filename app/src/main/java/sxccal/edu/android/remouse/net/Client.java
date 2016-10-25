@@ -21,10 +21,10 @@ public class Client {
 
     private static Socket sSocket;
     private static PrintWriter sOut;
+    private static BufferedReader sIn;
     private static final int TCP_PORT = 1234;
 
     static final byte[] PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
-    static BufferedReader sIn;
 
     private EKEProvider mEKEProvider;
 

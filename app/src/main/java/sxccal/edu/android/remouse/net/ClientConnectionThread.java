@@ -8,13 +8,13 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
 import java.util.HashSet;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.handler;
+import static sxccal.edu.android.remouse.ConnectionFragment.sListItemClicked;
+import static sxccal.edu.android.remouse.ConnectionFragment.sSwitchChecked;
+import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * Client to Server connection
@@ -25,9 +25,8 @@ public class ClientConnectionThread implements Runnable {
 
     private Context mContext;
     private Activity mActivity;
-    private HashSet<String> mLocalDevices = new HashSet<>();
+    private static HashSet<String> mLocalDevices = new HashSet<>();
 
-    private static final int SOCKET_TIMEOUT = 5000;
     private static final int UDP_PORT = 1235;
     static byte[] sServerPublicKey;
 
@@ -42,44 +41,49 @@ public class ClientConnectionThread implements Runnable {
             WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
             WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
 
-            long startTime = System.currentTimeMillis(), currentTime;
-
-            do {
+            while (sSwitchChecked) {
                 lock.acquire();
                 DatagramSocket datagramSocket = new DatagramSocket(UDP_PORT);
                 datagramSocket.setBroadcast(true);
-                DatagramPacket datagramPacket = new DatagramPacket(new byte[Client.PUBLIC_KEY.length],
+                final DatagramPacket datagramPacket = new DatagramPacket(new byte[Client.PUBLIC_KEY.length],
                         Client.PUBLIC_KEY.length);
-                try {
-                    datagramSocket.setSoTimeout(SOCKET_TIMEOUT);
-                    datagramSocket.receive(datagramPacket);
-                } catch(SocketTimeoutException e) {
-                    lock.release();
-                    datagramSocket.close();
-                    break;
-                }
+                datagramSocket.receive(datagramPacket);
                 lock.release();
 
-                sServerPublicKey = datagramPacket.getData();
+                byte[] receivedData = datagramPacket.getData();
+                final String serverAddress = datagramPacket.getAddress().toString().substring(1);
+                if (new String(receivedData).contains("Stop")) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mActivity, "Server " + serverAddress + " stopped!",
+                                    Toast.LENGTH_LONG).show();
+                            ConnectionFragment.removeItem(serverAddress);
+                            ConnectionFragment.dismissAlertDialog();
+                            sListItemClicked = false;
+                            sConnectionAlive = false;
+                        }
+                    });
+                } else {
+                    sServerPublicKey = receivedData;
+                    mLocalDevices.add(serverAddress);
 
-                InetAddress inetAddress = datagramPacket.getAddress();
-                mLocalDevices.add(inetAddress.toString().substring(1));
-
-                currentTime = System.currentTimeMillis();
-                datagramSocket.close();
-             } while((currentTime - startTime) < SOCKET_TIMEOUT);
-            handler.sendEmptyMessage(0);
-
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(mLocalDevices.isEmpty()) {
-                        Toast.makeText(mActivity, "No local devices found!", Toast.LENGTH_LONG).show();
-                    } else {
-                        ConnectionFragment.addItems(mLocalDevices);
-                    }
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mLocalDevices.isEmpty()) {
+                                Toast.makeText(mActivity, "No local devices found!", Toast.LENGTH_LONG).show();
+                            } else {
+                                ConnectionFragment.addItems(mLocalDevices);
+                            }
+                        }
+                    });
                 }
-            });
-        }catch(IOException e) { e.printStackTrace(); }
+                datagramSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
+

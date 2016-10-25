@@ -1,13 +1,10 @@
 package sxccal.edu.android.remouse;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
@@ -43,22 +40,15 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 public class ConnectionFragment extends ListFragment {
 
     private SwitchCompat mSwitch;
-    private static ProgressDialog sProgressDialog;
-
+    private static AlertDialog sAlertDialog;
     private static ArrayList<String> sNetWorkList = new ArrayList<>();
-    public static ArrayAdapter<String> sAdapter;
+    private static ArrayAdapter<String> sAdapter;
 
     public static Client sSecuredClient;
 
     public static boolean sListItemClicked;
+    public static boolean sSwitchChecked;
     private static final int REQUEST_INTERNET_ACCESS = 1001;
-
-    public static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message message) {
-            sProgressDialog.dismiss();
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +63,7 @@ public class ConnectionFragment extends ListFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
+                    sSwitchChecked = true;
                     mSwitch.setChecked(true);
                     if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
                         sAdapter = new ArrayAdapter<>(getActivity(), android.R.layout
@@ -88,9 +79,9 @@ public class ConnectionFragment extends ListFragment {
                         }
                     }).start();
                 } else {
+                    sSwitchChecked = false;
                     mSwitch.setChecked(false);
                     if(sSecuredClient != null && sConnectionAlive) closeActiveConnections();
-                    sAdapter.clear();
                     sListItemClicked = false;
                 }
             }
@@ -143,10 +134,7 @@ public class ConnectionFragment extends ListFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         String address = sAdapter.getItem(position);
         Log.d("ListItem: ",address);
-        if (!sListItemClicked) {
-            startCommunication(address);
-            sListItemClicked = true;
-        }
+        if (!sListItemClicked)  startCommunication(address);
     }
 
     private void getInternetPermission() {
@@ -207,25 +195,32 @@ public class ConnectionFragment extends ListFragment {
 
         alert.setTitle("Connect to PC");
         alert.setCancelable(false);
-        AlertDialog alertDialog = alert.create();
-        alertDialog.show();
+        sAlertDialog = alert.create();
+        sAlertDialog.show();
     }
 
     private void discoverLocalDevices() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                sProgressDialog = ProgressDialog.show(getContext(), "Scanning for Local Devices",
-                        "Please wait!", false, false);
-            }
-        });
-
         ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getContext(), getActivity());
         new Thread(clientConnectionThread).start();
     }
 
-    public static void addItems(HashSet<String> address) {
-        for(String addr: address)   sNetWorkList.add(addr);
+    public static void addItems(HashSet<String> addressSet) {
+        if(!sSwitchChecked) {
+            sNetWorkList.clear();
+        } else {
+            for (String address : addressSet) {
+                if (!sNetWorkList.contains(address)) sNetWorkList.add(address);
+            }
+        }
         sAdapter.notifyDataSetChanged();
+    }
+
+    public static void removeItem(String address) {
+        sNetWorkList.remove(address);
+        if(sAdapter != null)    sAdapter.notifyDataSetChanged();
+    }
+
+    public static void dismissAlertDialog() {
+        if(sAlertDialog != null)    sAlertDialog.dismiss();
     }
 }
