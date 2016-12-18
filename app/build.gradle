@@ -22,9 +22,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:support-v4:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
     compile files('libs/spongycastle/core-1.54.0.0.jar')
     compile files('libs/spongycastle/prov-1.54.0.0.jar')
     compile files('libs/spongycastle/pkix-1.54.0.0.jar')
