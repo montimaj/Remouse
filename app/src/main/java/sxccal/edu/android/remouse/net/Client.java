@@ -21,7 +21,6 @@ public class Client {
 
     private static Socket sSocket;
     private static PrintWriter sOut;
-    private static BufferedReader sIn;
     private static final int TCP_PORT = 1234;
 
     static final byte[] PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
@@ -32,7 +31,6 @@ public class Client {
         sSocket = new Socket(address, TCP_PORT);
         sOut = new PrintWriter(sSocket.getOutputStream(), true);
         sOut.println(new String(PUBLIC_KEY));
-        sIn = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
     }
 
     Client(byte[] pairingKey) {
@@ -52,7 +50,13 @@ public class Client {
     }
     
     public void sendMouseData(int x, int y) throws IOException {
-        String data = "Mouse " + x + " " + y ;
+        String data = "Mouse_Move " + x + " " + y ;
+        Log.d("Client Sent String: ", data);
+        sOut.println(mEKEProvider.encryptString(data));
+    }
+
+    public void sendMouseData(String data) {
+        data = "Mouse_Other " + data;
         Log.d("Client Sent String: ", data);
         sOut.println(mEKEProvider.encryptString(data));
     }

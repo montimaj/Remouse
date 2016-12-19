@@ -18,27 +18,27 @@
         android:text="Left"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/left"
+        android:id="@+id/button_left"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/middle" />
+        android:layout_below="@+id/button_middle" />
 
     <Button
         android:text="Right"
         android:layout_height="wrap_content"
-        android:id="@+id/right"
+        android:id="@+id/button_right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/middle"
+        android:layout_below="@+id/button_middle"
         android:layout_width="150dp" />
 
     <Button
         android:text="Middle"
         android:layout_width="100dp"
         android:layout_marginTop="14dp"
-        android:id="@+id/middle"
+        android:id="@+id/button_middle"
         android:layout_height="130dp"
         android:layout_below="@+id/switch2"
         android:layout_alignParentLeft="true"

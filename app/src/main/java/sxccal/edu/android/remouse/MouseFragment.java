@@ -1,13 +1,17 @@
 package sxccal.edu.android.remouse;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 
@@ -18,9 +22,17 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
  * @author Sayantan Majumdar
  */
 
-public class MouseFragment extends Fragment {
+public class MouseFragment extends Fragment implements View.OnClickListener {
 
     private SwitchCompat mSwitch;
+    private Button mLeft;
+    private Button mRight;
+    private Button mMiddle;
+    private ImageButton mUpScroll;
+    private ImageButton mDownScroll;
+
+    private static boolean sFirstTouch = false;
+    private static long sTouchTime;
     static boolean sMouseAlive;
 
     @Override
@@ -28,6 +40,12 @@ public class MouseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mouse, container, false);
         mSwitch = (SwitchCompat) view.findViewById(R.id.switch2);
+        mLeft = (Button) view.findViewById(R.id.button_left);
+        mRight = (Button) view.findViewById(R.id.button_right);
+        mMiddle = (Button) view.findViewById(R.id.button_middle);
+        mUpScroll = (ImageButton) view.findViewById(R.id.upscroll);
+        mDownScroll = (ImageButton) view.findViewById(R.id.downscroll);
+
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -48,7 +66,53 @@ public class MouseFragment extends Fragment {
                 }
             }
         });
+
+        mLeft.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    if(sFirstTouch && (System.currentTimeMillis() - sTouchTime) <= 300 ) {
+                        sFirstTouch = false;
+                        sSecuredClient.sendMouseData("left");
+                    } else {
+                        sFirstTouch = true;
+                        sTouchTime = System.currentTimeMillis();
+                        sSecuredClient.sendMouseData("left");
+                    }
+                }
+                return true;
+            }
+        });
+
+        mRight.setOnClickListener(this);
+        mMiddle.setOnClickListener(this);
+        mUpScroll.setOnClickListener(this);
+        mDownScroll.setOnClickListener(this);
+
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        String data = "";
+        switch(view.getId()) {
+
+            case R.id.button_right:
+                data = "right";
+                break;
+
+            case R.id.button_middle:
+                data = "middle";
+                break;
+
+            case R.id.upscroll:
+                data = "upscroll";
+                break;
+
+            case R.id.downscroll:
+                data = "downscroll";
+        }
+        sSecuredClient.sendMouseData(data);
     }
 
     private void sendMouseMovementData() {
@@ -63,4 +127,6 @@ public class MouseFragment extends Fragment {
             }
         } catch (IOException | InterruptedException e) { e.printStackTrace(); }
     }
+
+
 }
