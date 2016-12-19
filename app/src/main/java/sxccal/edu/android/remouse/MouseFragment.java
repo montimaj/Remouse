@@ -25,11 +25,6 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 public class MouseFragment extends Fragment implements View.OnClickListener {
 
     private SwitchCompat mSwitch;
-    private Button mLeft;
-    private Button mRight;
-    private Button mMiddle;
-    private ImageButton mUpScroll;
-    private ImageButton mDownScroll;
 
     private static boolean sFirstTouch = false;
     private static long sTouchTime;
@@ -40,11 +35,11 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mouse, container, false);
         mSwitch = (SwitchCompat) view.findViewById(R.id.switch2);
-        mLeft = (Button) view.findViewById(R.id.button_left);
-        mRight = (Button) view.findViewById(R.id.button_right);
-        mMiddle = (Button) view.findViewById(R.id.button_middle);
-        mUpScroll = (ImageButton) view.findViewById(R.id.upscroll);
-        mDownScroll = (ImageButton) view.findViewById(R.id.downscroll);
+        Button left = (Button) view.findViewById(R.id.button_left);
+        Button right = (Button) view.findViewById(R.id.button_right);
+        Button middle = (Button) view.findViewById(R.id.button_middle);
+        ImageButton upScroll = (ImageButton) view.findViewById(R.id.upscroll);
+        ImageButton downScroll = (ImageButton) view.findViewById(R.id.downscroll);
 
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -67,7 +62,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mLeft.setOnTouchListener(new View.OnTouchListener() {
+        left.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
@@ -84,10 +79,10 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mRight.setOnClickListener(this);
-        mMiddle.setOnClickListener(this);
-        mUpScroll.setOnClickListener(this);
-        mDownScroll.setOnClickListener(this);
+        right.setOnClickListener(this);
+        middle.setOnClickListener(this);
+        upScroll.setOnClickListener(this);
+        downScroll.setOnClickListener(this);
 
         return view;
     }
