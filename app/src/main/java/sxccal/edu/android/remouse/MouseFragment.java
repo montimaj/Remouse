@@ -65,7 +65,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
         left.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                if(sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     if(sFirstTouch && (System.currentTimeMillis() - sTouchTime) <= 300 ) {
                         sFirstTouch = false;
                         sSecuredClient.sendMouseData("left");
@@ -107,7 +107,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             case R.id.downscroll:
                 data = "downscroll";
         }
-        sSecuredClient.sendMouseData(data);
+        if(sConnectionAlive)    sSecuredClient.sendMouseData(data);
     }
 
     private void sendMouseMovementData() {
