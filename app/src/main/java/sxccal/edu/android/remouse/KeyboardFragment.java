@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.io.IOException;
-
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 
 /**
@@ -56,13 +54,9 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             System.out.println("diff= " + diff);
             if(diff > 0) {
                 String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
-                try {
-                    sSecuredClient.sendKeyboardData(string);
-                } catch (IOException e) {}
-            }else if(diff < 0) {
-                try {
-                    sSecuredClient.sendKeyboardData("backspace");
-                } catch (IOException e) {}
+                sSecuredClient.sendData("Key", string);
+            } else if(diff < 0) {
+                sSecuredClient.sendData("Key", "backspace");
             }
         } else mLastInput = null;
     }
@@ -71,20 +65,16 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     public void afterTextChanged(Editable s) {
         Log.d("KeyboardFrag After: ", s.toString());
         if(mLastInput == null) {
-            try {
-                sSecuredClient.sendKeyboardData("backspace");
-            } catch (IOException e) {}
+            sSecuredClient.sendData("Key", "backspace");
         }
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        try {
-            if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-                sSecuredClient.sendKeyboardData("backspace");
-                return true;
-            }
-        } catch (IOException e) {}
+        if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
+            sSecuredClient.sendData("Key ", "backspace");
+            return true;
+        }
         return false;
     }
 }

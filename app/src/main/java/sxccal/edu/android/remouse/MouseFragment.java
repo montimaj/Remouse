@@ -1,10 +1,8 @@
 package sxccal.edu.android.remouse;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +11,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
-import java.io.IOException;
+import sxccal.edu.android.remouse.sensor.SensorActivity;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
@@ -27,8 +25,9 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
     private SwitchCompat mSwitch;
 
     private static boolean sFirstTouch = false;
+
     private static long sTouchTime;
-    static boolean sMouseAlive;
+    public static boolean sMouseAlive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,11 +67,11 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
                 if(sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     if(sFirstTouch && (System.currentTimeMillis() - sTouchTime) <= 300 ) {
                         sFirstTouch = false;
-                        sSecuredClient.sendMouseData("left");
+                        sSecuredClient.sendData("Mouse_Button", "left");
                     } else {
                         sFirstTouch = true;
                         sTouchTime = System.currentTimeMillis();
-                        sSecuredClient.sendMouseData("left");
+                        sSecuredClient.sendData("Mouse_Button", "left");
                     }
                 }
                 return true;
@@ -107,21 +106,16 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             case R.id.downscroll:
                 data = "downscroll";
         }
-        if(sConnectionAlive)    sSecuredClient.sendMouseData(data);
+        if(sConnectionAlive)    sSecuredClient.sendData("Mouse_Button", data);
     }
 
     private void sendMouseMovementData() {
-        try {
-            int x = (int) (Math.random() * 10), y = (int) (Math.random() * 10);
-            while (sConnectionAlive && sMouseAlive) {
-                sSecuredClient.sendMouseData(x, y);
-                x += 50;
-                y += 50;
-                Log.d("ClientConnection: ", "" + x + " " + y);
-                Thread.sleep(2000);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SensorActivity sensorActivity = new SensorActivity(getActivity());
+                if(!sMouseAlive || !sConnectionAlive)   sensorActivity.stopSensor();
             }
-        } catch (IOException | InterruptedException e) { e.printStackTrace(); }
+        }).start();
     }
-
-
 }

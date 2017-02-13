@@ -2,6 +2,8 @@ package sxccal.edu.android.remouse.net;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import sxccal.edu.android.remouse.security.EKEProvider;
+import sxccal.edu.android.remouse.sensor.representation.Quaternion;
 
 import static sxccal.edu.android.remouse.net.ClientConnectionThread.sServerPublicKey;
 
@@ -18,6 +21,8 @@ import static sxccal.edu.android.remouse.net.ClientConnectionThread.sServerPubli
  * @author Sudipto Bhattacharjee
  */
 public class Client {
+
+    private ClientDataWrapper clientDataWrapper;
 
     private static Socket sSocket;
     private static PrintWriter sOut;
@@ -45,32 +50,27 @@ public class Client {
         return new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
     }
 
-    EKEProvider getEKEProvider() {
-        return mEKEProvider;
-    }
+    EKEProvider getEKEProvider() { return mEKEProvider; }
     
-    public void sendMouseData(int x, int y) throws IOException {
-        String data = "Mouse_Move " + x + " " + y ;
-        Log.d("Client Sent String: ", data);
-        sOut.println(mEKEProvider.encryptString(data));
+
+    public void sendData(String operationType, String data) {
+        clientDataWrapper = new ClientDataWrapper(operationType, data);
+        data = ClientDataWrapper.getGsonString(clientDataWrapper);
+        data = mEKEProvider.encryptString(data);
+        sOut.println(data);
     }
 
-    public void sendMouseData(String data) {
-        data = "Mouse_Other " + data;
-        Log.d("Client Sent String: ", data);
+    public void sendData(Quaternion quaternion) {
+        clientDataWrapper = new ClientDataWrapper(quaternion);
+        String data = new Gson().toJson(clientDataWrapper);
+        Log.d("JSON Data: ", data);
         sOut.println(mEKEProvider.encryptString(data));
     }
 
     public void sendStopSignal(boolean makeSecured) {
         if(makeSecured && mEKEProvider != null) {
-            sOut.println(mEKEProvider.encryptString("Stop"));
+            sendData("Stop","");
         } else  sOut.println("Stop");
-    }
-
-    public void sendKeyboardData(String s) throws IOException {
-        String data = "Key " + s;
-        Log.d("Client Sent String: ", data);
-        sOut.println(mEKEProvider.encryptString(data));
     }
 
     public void close() throws IOException {
