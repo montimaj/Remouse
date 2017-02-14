@@ -84,6 +84,7 @@ public class KalmanFilterProvider extends OrientationProvider {
 							correctedQuaternion.array());
 				}
                 if(sConnectionAlive && sMouseAlive) sSecuredClient.sendData(correctedQuaternion);
+				else sensorStop();
 			}
 			timestamp = event.timestamp;
 		}
