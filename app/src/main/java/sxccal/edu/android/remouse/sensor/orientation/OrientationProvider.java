@@ -64,7 +64,7 @@ public abstract class OrientationProvider implements SensorEventListener {
 
 	public void getEulerAngles(float angles[]) {
 		synchronized (synchronizationToken) {
-			SensorManager.getOrientation(currentOrientationRotationMatrix.matrix, angles);
+			SensorManager.getOrientation(currentOrientationRotationMatrix.mMatrix, angles);
 		}
 	}
 }

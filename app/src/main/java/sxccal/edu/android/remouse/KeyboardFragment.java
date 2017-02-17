@@ -47,11 +47,6 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             int currentInputLength = s.length();
             int lastInputLength = mLastInput.length();
             int diff = currentInputLength - lastInputLength;
-            System.out.println("curlen= " + currentInputLength);
-            System.out.println("curStr= " + s);
-            System.out.println("Laststr= " + mLastInput);
-            System.out.println("lenlast= " + lastInputLength);
-            System.out.println("diff= " + diff);
             if(diff > 0) {
                 String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
                 sSecuredClient.sendData("Key", string);
@@ -72,7 +67,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-            sSecuredClient.sendData("Key ", "backspace");
+            sSecuredClient.sendData("Key", "backspace");
             return true;
         }
         return false;

@@ -80,7 +80,7 @@ public class KalmanFilterProvider extends OrientationProvider {
 
 				synchronized (synchronizationToken) {
 					// Set the rotation matrix as well to have both representations
-					SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.matrix,
+					SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.mMatrix,
 							correctedQuaternion.array());
 				}
                 if(sConnectionAlive && sMouseAlive) sSecuredClient.sendData(correctedQuaternion);

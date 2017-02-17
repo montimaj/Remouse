@@ -9,14 +9,14 @@ public class Quaternion extends Vector4f {
 	/**
 	 * For better performance update it only when it is accessed, not on every change
 	 */
-	private MatrixF4x4 matrix;
-	private boolean dirty = false;
-	private Vector4f tmpVector = new Vector4f();
-	private Quaternion tmpQuaternion;
+	private MatrixF4x4 mMatrix;
+	private boolean mDirty = false;
+	private Vector4f mTmpVector = new Vector4f();
+	private Quaternion mTmpQuaternion;
 
 	public Quaternion() {
 		super();
-		matrix = new MatrixF4x4();
+		mMatrix = new MatrixF4x4();
 		loadIdentityQuat();
 	}
 
@@ -24,54 +24,54 @@ public class Quaternion extends Vector4f {
 	 * Normalize this Quaternion
 	 */
 	public void normalize() {
-		this.dirty = true;
-		float mag = (float) Math.sqrt(points[3] * points[3] + points[0] * points[0] + points[1] * points[1] + points[2] * points[2]);
-		points[3] = points[3] / mag;
-		points[0] = points[0] / mag;
-		points[1] = points[1] / mag;
-		points[2] = points[2] / mag;
+		this.mDirty = true;
+		float mag = (float) Math.sqrt(mPoints[3] * mPoints[3] + mPoints[0] * mPoints[0] + mPoints[1] * mPoints[1] + mPoints[2] * mPoints[2]);
+		mPoints[3] = mPoints[3] / mag;
+		mPoints[0] = mPoints[0] / mag;
+		mPoints[1] = mPoints[1] / mag;
+		mPoints[2] = mPoints[2] / mag;
 	}
 
 	public void set(Quaternion quat) {
-		this.dirty = true;
+		this.mDirty = true;
 		copyVec4(quat);
 	}
 
 	public void multiplyByQuat(Quaternion input, Quaternion output) {
 
 		if (input != output) {
-			output.points[3] = (points[3] * input.points[3] - points[0] * input.points[0] - points[1] * input.points[1] - points[2] * input.points[2]);
-			output.points[0] = (points[3] * input.points[0] + points[0] * input.points[3] + points[1] * input.points[2] - points[2]	* input.points[1]);
-			output.points[1] = (points[3] * input.points[1] + points[1] * input.points[3] + points[2] * input.points[0] - points[0]	* input.points[2]);
-			output.points[2] = (points[3] * input.points[2] + points[2] * input.points[3] + points[0] * input.points[1] - points[1]	* input.points[0]);
+			output.mPoints[3] = (mPoints[3] * input.mPoints[3] - mPoints[0] * input.mPoints[0] - mPoints[1] * input.mPoints[1] - mPoints[2] * input.mPoints[2]);
+			output.mPoints[0] = (mPoints[3] * input.mPoints[0] + mPoints[0] * input.mPoints[3] + mPoints[1] * input.mPoints[2] - mPoints[2]	* input.mPoints[1]);
+			output.mPoints[1] = (mPoints[3] * input.mPoints[1] + mPoints[1] * input.mPoints[3] + mPoints[2] * input.mPoints[0] - mPoints[0]	* input.mPoints[2]);
+			output.mPoints[2] = (mPoints[3] * input.mPoints[2] + mPoints[2] * input.mPoints[3] + mPoints[0] * input.mPoints[1] - mPoints[1]	* input.mPoints[0]);
 		} else {
-			tmpVector.points[0] = input.points[0];
-			tmpVector.points[1] = input.points[1];
-			tmpVector.points[2] = input.points[2];
-			tmpVector.points[3] = input.points[3];
+			mTmpVector.mPoints[0] = input.mPoints[0];
+			mTmpVector.mPoints[1] = input.mPoints[1];
+			mTmpVector.mPoints[2] = input.mPoints[2];
+			mTmpVector.mPoints[3] = input.mPoints[3];
 
-			output.points[3] = (points[3] * tmpVector.points[3] - points[0] * tmpVector.points[0] - points[1] * tmpVector.points[1] - points[2] * tmpVector.points[2]);
-			output.points[0] = (points[3] * tmpVector.points[0] + points[0] * tmpVector.points[3] + points[1] * tmpVector.points[2] - points[2] * tmpVector.points[1]);
-			output.points[1] = (points[3] * tmpVector.points[1] + points[1] * tmpVector.points[3] + points[2] * tmpVector.points[0] - points[0] * tmpVector.points[2]);
-			output.points[2] = (points[3] * tmpVector.points[2] + points[2] * tmpVector.points[3] + points[0] * tmpVector.points[1] - points[1] * tmpVector.points[0]);
+			output.mPoints[3] = (mPoints[3] * mTmpVector.mPoints[3] - mPoints[0] * mTmpVector.mPoints[0] - mPoints[1] * mTmpVector.mPoints[1] - mPoints[2] * mTmpVector.mPoints[2]);
+			output.mPoints[0] = (mPoints[3] * mTmpVector.mPoints[0] + mPoints[0] * mTmpVector.mPoints[3] + mPoints[1] * mTmpVector.mPoints[2] - mPoints[2] * mTmpVector.mPoints[1]);
+			output.mPoints[1] = (mPoints[3] * mTmpVector.mPoints[1] + mPoints[1] * mTmpVector.mPoints[3] + mPoints[2] * mTmpVector.mPoints[0] - mPoints[0] * mTmpVector.mPoints[2]);
+			output.mPoints[2] = (mPoints[3] * mTmpVector.mPoints[2] + mPoints[2] * mTmpVector.mPoints[3] + mPoints[0] * mTmpVector.mPoints[1] - mPoints[1] * mTmpVector.mPoints[0]);
 		}
 	}
 
 	public void multiplyByQuat(Quaternion input) {
-		this.dirty = true;
-		if(tmpQuaternion == null) tmpQuaternion = new Quaternion();
-		tmpQuaternion.copyVec4(this);
-		multiplyByQuat(input, tmpQuaternion);
-		this.copyVec4(tmpQuaternion);
+		this.mDirty = true;
+		if(mTmpQuaternion == null) mTmpQuaternion = new Quaternion();
+		mTmpQuaternion.copyVec4(this);
+		multiplyByQuat(input, mTmpQuaternion);
+		this.copyVec4(mTmpQuaternion);
 	}
 
 	public void multiplyByScalar(float scalar) {
-		this.dirty = true;
+		this.mDirty = true;
 		super.multiplyByScalar(scalar);
 	}
 
 	public void addQuat(Quaternion input) {
-		this.dirty = true;
+		this.mDirty = true;
 		addQuat(input, this);
 	}
 
@@ -83,7 +83,7 @@ public class Quaternion extends Vector4f {
 	}
 
 	public void subQuat(Quaternion input) {
-		this.dirty = true;
+		this.mDirty = true;
 		subQuat(input, this);
 	}
 
@@ -95,27 +95,27 @@ public class Quaternion extends Vector4f {
 	}
 
 	private void convertQuatToMatrix() {
-		float x = points[0];
-		float y = points[1];
-		float z = points[2];
-		float w = points[3];
+		float x = mPoints[0];
+		float y = mPoints[1];
+		float z = mPoints[2];
+		float w = mPoints[3];
 
-		matrix.setX0(1 - 2 * (y * y) - 2 * (z * z));
-		matrix.setX1(2 * (x * y) + 2 * (w * z));
-		matrix.setX2(2 * (x * z) - 2 * (w * y));
-		matrix.setX3(0);
-		matrix.setY0(2 * (x * y) - 2 * (w * z));
-		matrix.setY1(1 - 2 * (x * x) - 2 * (z * z));
-		matrix.setY2(2 * (y * z) + 2 * (w * x));
-		matrix.setY3(0);
-		matrix.setZ0(2 * (x * z) + 2 * (w * y));
-		matrix.setZ1(2 * (y * z) - 2 * (w * x));
-		matrix.setZ2(1 - 2 * (x * x) - 2 * (y * y));
-		matrix.setZ3(0);
-		matrix.setW0(0);
-		matrix.setW1(0);
-		matrix.setW2(0);
-		matrix.setW3(1);
+		mMatrix.setX0(1 - 2 * (y * y) - 2 * (z * z));
+		mMatrix.setX1(2 * (x * y) + 2 * (w * z));
+		mMatrix.setX2(2 * (x * z) - 2 * (w * y));
+		mMatrix.setX3(0);
+		mMatrix.setY0(2 * (x * y) - 2 * (w * z));
+		mMatrix.setY1(1 - 2 * (x * x) - 2 * (z * z));
+		mMatrix.setY2(2 * (y * z) + 2 * (w * x));
+		mMatrix.setY3(0);
+		mMatrix.setZ0(2 * (x * z) + 2 * (w * y));
+		mMatrix.setZ1(2 * (y * z) - 2 * (w * x));
+		mMatrix.setZ2(1 - 2 * (x * x) - 2 * (y * y));
+		mMatrix.setZ3(0);
+		mMatrix.setW0(0);
+		mMatrix.setW1(0);
+		mMatrix.setW2(0);
+		mMatrix.setW3(1);
 	}
 
 	public void toAxisAngle(Vector4f output) {
@@ -129,33 +129,33 @@ public class Quaternion extends Vector4f {
 
 		float s = (float) Math.sqrt(1 - getW() * getW());
 		if (s < 0.001) {
-			x = points[0]; // To get normalised axis replace with x=1 y=z=0
-			y = points[1];
-			z = points[2];
+			x = mPoints[0]; // To get normalised axis replace with x=1 y=z=0
+			y = mPoints[1];
+			z = mPoints[2];
 		} else {
 			// normalise axis
-			x = points[0] / s;
-			y = points[1] / s;
-			z = points[2] / s;
+			x = mPoints[0] / s;
+			y = mPoints[1] / s;
+			z = mPoints[2] / s;
 		}
 
-		output.points[0] = x;
-		output.points[1] = y;
-		output.points[2] = z;
-		output.points[3] = angle;
+		output.mPoints[0] = x;
+		output.mPoints[1] = y;
+		output.mPoints[2] = z;
+		output.mPoints[3] = angle;
 	}
 
 	public double[] toEulerAngles() {
 		double[] ret = new double[3];
 
-		ret[0] = Math.atan2(2 * points[1] * getW() - 2 * points[0] * points[2], 1 - 2 * (points[1] * points[1]) - 2 * (points[2] * points[2]));
-		ret[1] = Math.asin(2 * points[0] * points[1] + 2 * points[2] * getW());
-		ret[2] = Math.atan2(2 * points[0] * getW() - 2 * points[1] * points[2], 1 - 2 * (points[0] * points[0]) - 2 * (points[2] * points[2]));
+		ret[0] = Math.atan2(2 * mPoints[1] * getW() - 2 * mPoints[0] * mPoints[2], 1 - 2 * (mPoints[1] * mPoints[1]) - 2 * (mPoints[2] * mPoints[2]));
+		ret[1] = Math.asin(2 * mPoints[0] * mPoints[1] + 2 * mPoints[2] * getW());
+		ret[2] = Math.atan2(2 * mPoints[0] * getW() - 2 * mPoints[1] * mPoints[2], 1 - 2 * (mPoints[0] * mPoints[0]) - 2 * (mPoints[2] * mPoints[2]));
 		return ret;
 	}
 
 	private void loadIdentityQuat() {
-		this.dirty = true;
+		this.mDirty = true;
 		setX(0);
 		setY(0);
 		setZ(0);
@@ -174,20 +174,20 @@ public class Quaternion extends Vector4f {
 		float qz;
 		float qw;
 
-		float[] mat = matrix.getMatrix();
+		float[] mat = mMatrix.getMatrix();
 		int[] indices = null;
 
-		if (this.matrix.size() == 16) {
-			if (this.matrix.isColumnMajor()) {
-				indices = MatrixF4x4.matIndCol16_3x3;
+		if (this.mMatrix.size() == 16) {
+			if (this.mMatrix.isColumnMajor()) {
+				indices = MatrixF4x4.MAT_IND_COL16_3X3;
 			} else {
-				indices = MatrixF4x4.matIndRow16_3x3;
+				indices = MatrixF4x4.MAT_IND_ROW16_3X3;
 			}
 		} else {
-			if (this.matrix.isColumnMajor()) {
-				indices = MatrixF4x4.matIndCol9_3x3;
+			if (this.mMatrix.isColumnMajor()) {
+				indices = MatrixF4x4.MAT_IND_COL9_3X3;
 			} else {
-				indices = MatrixF4x4.matIndRow9_3x3;
+				indices = MatrixF4x4.MAT_IND_ROW9_3X3;
 			}
 		}
 
@@ -236,18 +236,18 @@ public class Quaternion extends Vector4f {
 		setW(qw);
 	}
 
-	public void setColumnMajor(float[] matrix) {
+	public void setColumnMajor(float[] mMatrix) {
 
-		this.matrix.setMatrix(matrix);
-		this.matrix.setColumnMajor(true);
+		this.mMatrix.setMatrix(mMatrix);
+		this.mMatrix.setColumnMajor(true);
 
 		generateQuaternionFromMatrix();
 	}
 
-	public void setRowMajor(float[] matrix) {
+	public void setRowMajor(float[] mMatrix) {
 
-		this.matrix.setMatrix(matrix);
-		this.matrix.setColumnMajor(false);
+		this.mMatrix.setMatrix(mMatrix);
+		this.mMatrix.setColumnMajor(false);
 
 		generateQuaternionFromMatrix();
 	}
@@ -271,7 +271,7 @@ public class Quaternion extends Vector4f {
 		setY((float) (s1 * c2 * c3 + c1 * s2 * s3));
 		setZ((float) (c1 * s2 * c3 - s1 * c2 * s3));
 
-		dirty = true;
+		mDirty = true;
 	}
 
 	public void setAxisAngle(Vector3f vec, float rot) {
@@ -281,7 +281,7 @@ public class Quaternion extends Vector4f {
 		setZ(vec.getZ() * (float) s);
 		setW((float) Math.cos(Math.toRadians(rot / 2)));
 
-		dirty = true;
+		mDirty = true;
 	}
 
 	public void setAxisAngleRad(Vector3f vec, double rot) {
@@ -291,15 +291,15 @@ public class Quaternion extends Vector4f {
 		setZ(vec.getZ() * (float) s);
 		setW((float) rot / 2);
 
-		dirty = true;
+		mDirty = true;
 	}
 
 	public MatrixF4x4 getMatrix4x4() {
-		if (dirty) {
+		if (mDirty) {
 			convertQuatToMatrix();
-			dirty = false;
+			mDirty = false;
 		}
-		return this.matrix;
+		return this.mMatrix;
 	}
 
 	public void copyFromVec3(Vector3f vec, float w) {
@@ -312,22 +312,22 @@ public class Quaternion extends Vector4f {
 		float cosHalftheta = this.dotProduct(input);
 
 		if (cosHalftheta < 0) {
-			if(tmpQuaternion == null) tmpQuaternion = new Quaternion();
-			bufferQuat = tmpQuaternion;
+			if(mTmpQuaternion == null) mTmpQuaternion = new Quaternion();
+			bufferQuat = mTmpQuaternion;
 			cosHalftheta = -cosHalftheta;
-			bufferQuat.points[0] = (-input.points[0]);
-			bufferQuat.points[1] = (-input.points[1]);
-			bufferQuat.points[2] = (-input.points[2]);
-			bufferQuat.points[3] = (-input.points[3]);
+			bufferQuat.mPoints[0] = (-input.mPoints[0]);
+			bufferQuat.mPoints[1] = (-input.mPoints[1]);
+			bufferQuat.mPoints[2] = (-input.mPoints[2]);
+			bufferQuat.mPoints[3] = (-input.mPoints[3]);
 		} else {
 			bufferQuat = input;
 		}
 
 		if (Math.abs(cosHalftheta) >= 1.0) {
-			output.points[0] = (this.points[0]);
-			output.points[1] = (this.points[1]);
-			output.points[2] = (this.points[2]);
-			output.points[3] = (this.points[3]);
+			output.mPoints[0] = (this.mPoints[0]);
+			output.mPoints[1] = (this.mPoints[1]);
+			output.mPoints[2] = (this.mPoints[2]);
+			output.mPoints[3] = (this.mPoints[3]);
 		} else {
 			double sinHalfTheta = Math.sqrt(1.0 - cosHalftheta * cosHalftheta);
 			double halfTheta = Math.acos(cosHalftheta);
@@ -336,11 +336,26 @@ public class Quaternion extends Vector4f {
 			double ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
 
 			//Calculate Quaternion
-			output.points[3] = ((float) (points[3] * ratioA + bufferQuat.points[3] * ratioB));
-			output.points[0] = ((float) (this.points[0] * ratioA + bufferQuat.points[0] * ratioB));
-			output.points[1] = ((float) (this.points[1] * ratioA + bufferQuat.points[1] * ratioB));
-			output.points[2] = ((float) (this.points[2] * ratioA + bufferQuat.points[2] * ratioB));
+			output.mPoints[3] = ((float) (mPoints[3] * ratioA + bufferQuat.mPoints[3] * ratioB));
+			output.mPoints[0] = ((float) (this.mPoints[0] * ratioA + bufferQuat.mPoints[0] * ratioB));
+			output.mPoints[1] = ((float) (this.mPoints[1] * ratioA + bufferQuat.mPoints[1] * ratioB));
+			output.mPoints[2] = ((float) (this.mPoints[2] * ratioA + bufferQuat.mPoints[2] * ratioB));
 		}
+	}
+
+	//Rotate a Vector by Quaternion
+	public Vector3f rotateVector(Vector3f v) {
+		float q0 = this.mPoints[3];
+		float q1 = this.mPoints[0];
+		float q2 = this.mPoints[1];
+		float q3 = this.mPoints[2];
+		float v1 = v.getX();
+		float v2 = v.getY();
+		float v3 = v.getZ();
+		float x = (1-2*q2*q2-2*q3*q3)*v1 + 2*(q1*q2+q0*q3)*v2 + 2*(q1*q3-q0*q2)*v3;
+		float y = 2*(q1*q2-q0*q3)*v1 + (1-2*q1*q1-2*q3*q3)*v2 + 2*(q2*q3+q0*q1)*v3;
+		float z = 2*(q1*q3-q0*q2) + (q2*q3-q0*q1)*v2 + (1-2*q1*q1-2*q2*q2)*v3;
+		return new Vector3f(x,y,z);
 	}
 }
 

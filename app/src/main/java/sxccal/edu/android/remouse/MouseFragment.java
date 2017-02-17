@@ -106,7 +106,9 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             case R.id.downscroll:
                 data = "downscroll";
         }
-        if(sConnectionAlive)    sSecuredClient.sendData("Mouse_Button", data);
+        if(sConnectionAlive) {
+            sSecuredClient.sendData("Mouse_Button", data);
+        }
     }
 
     private void sendMouseMovementData() {
