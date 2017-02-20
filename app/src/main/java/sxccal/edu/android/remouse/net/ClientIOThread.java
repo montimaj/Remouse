@@ -36,8 +36,13 @@ public class ClientIOThread implements Runnable {
         mEKEProvider = sSecuredClient.getEKEProvider();
         int len = pairingKey.length();
         if(len != PAIRING_KEY_LENGTH )    pairingKey = "1";
-        sSecuredClient.sendPairingKey(pairingKey);
-        System.out.println("Pairing key: " + pairingKey);
+        final String key = pairingKey;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sSecuredClient.sendPairingKey(key);
+            }
+        }).start();
     }
 
     @Override

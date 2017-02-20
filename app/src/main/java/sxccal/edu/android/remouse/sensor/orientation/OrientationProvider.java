@@ -1,5 +1,7 @@
 package sxccal.edu.android.remouse.sensor.orientation;
 
+import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -34,6 +36,11 @@ public abstract class OrientationProvider implements SensorEventListener {
 		// Initialise with identity
 		currentOrientationQuaternion = new Quaternion();
 	}
+
+	public static boolean checkGyro(Activity activity) {
+		SensorManager sensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
+        return sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null;
+    }
 
 	void sensorStart() {
 		for (Sensor sensor : mSensorList) {

@@ -5,23 +5,29 @@
         <item
             android:id="@+id/nav_mouse"
             android:icon="@drawable/ic_mouse_black_24dp"
-            android:title="Mouse" />
+            android:title="@string/_3d_mouse" />
+
+        <item
+            android:id="@+id/nav_touchpad"
+            android:icon="@drawable/ic_mouse_black_24dp"
+            android:title="@string/_2d_mouse" />
+
         <item
             android:id="@+id/nav_keyboard"
             android:icon="@drawable/ic_keyboard_black_24dp"
-            android:title="Keyboard" />
+            android:title="@string/keyboard" />
         <item
             android:id="@+id/nav_connect"
             android:icon="@drawable/ic_wifi_tethering_black_24dp"
-            android:title="Connect" />
+            android:title="@string/connect" />
         </group>
 
-    <item android:title="App info">
+    <item android:title="@string/app_info">
         <menu>
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_announcement_black_24dp"
-                android:title="About" />
+                android:title="@string/about" />
         </menu>
     </item>
 

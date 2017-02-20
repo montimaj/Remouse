@@ -20,7 +20,7 @@ import static sxccal.edu.android.remouse.net.ClientConnectionThread.sServerPubli
  */
 public class Client {
 
-    private ClientDataWrapper clientDataWrapper;
+    private ClientDataWrapper mClientDataWrapper;
 
     private static Socket sSocket;
     private static PrintWriter sOut;
@@ -40,7 +40,7 @@ public class Client {
         mEKEProvider = new EKEProvider(pairingKey, sServerPublicKey);
     }
 
-    void sendPairingKey(String pairingKey) throws IOException {
+    void sendPairingKey(String pairingKey) {
         sOut.println(mEKEProvider.encryptString(pairingKey));
     }
 
@@ -52,15 +52,21 @@ public class Client {
     
 
     public void sendData(String operationType, String data) {
-        clientDataWrapper = new ClientDataWrapper(operationType, data);
-        data = ClientDataWrapper.getGsonString(clientDataWrapper);
+        mClientDataWrapper = new ClientDataWrapper(operationType, data);
+        data = ClientDataWrapper.getGsonString(mClientDataWrapper);
         data = mEKEProvider.encryptString(data);
         sOut.println(data);
     }
 
+    public void sendData(int x, int y) {
+        mClientDataWrapper = new ClientDataWrapper(x,y);
+        String data = new Gson().toJson(mClientDataWrapper);
+        sOut.println(mEKEProvider.encryptString(data));
+    }
+
     public void sendData(Quaternion quaternion, boolean isInitQuat) {
-        clientDataWrapper = new ClientDataWrapper(quaternion, isInitQuat);
-        String data = new Gson().toJson(clientDataWrapper);
+        mClientDataWrapper = new ClientDataWrapper(quaternion, isInitQuat);
+        String data = new Gson().toJson(mClientDataWrapper);
         sOut.println(mEKEProvider.encryptString(data));
     }
 

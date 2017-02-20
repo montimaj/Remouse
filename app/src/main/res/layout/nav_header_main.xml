@@ -18,8 +18,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Smart I/O"
-        android:textSize="25dp"
+        android:text="@string/smart_i_o"
+        android:textSize="25sp"
         android:textColor="#F7F9F9"
         android:textStyle="italic" />
 

@@ -26,6 +26,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
+
 /**
  * @author Sayantan Majumdar
  */
@@ -139,9 +141,18 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         if (id == R.id.nav_mouse) {
-            // Handle the mouse action
-            fragment = new MouseFragment();
-            title="Remote Mouse";
+            // Handle the 3D mouse action
+            if(OrientationProvider.checkGyro(this)) {
+                fragment = new MouseFragment();
+                title = "Remote Mouse";
+            } else {
+                Toast.makeText(this, "Gyrosope not present!", Toast.LENGTH_LONG).show();
+            }
+
+        } else if(id == R.id.nav_touchpad) {
+            // 2D Mouse
+            fragment = new TouchpadFragment();
+            title = "Remote Mouse";
 
         } else if (id == R.id.nav_keyboard) {
             // Handle the keyboard action

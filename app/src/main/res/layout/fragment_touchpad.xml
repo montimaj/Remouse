@@ -4,66 +4,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context="sxccal.edu.android.remouse.MouseFragment">
+    tools:context="sxccal.edu.android.remouse.TouchpadFragment">
 
     <Button
         android:text="@string/left"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:id="@+id/button_left"
+        android:id="@+id/button_touch_left"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/button_middle" />
+        android:layout_below="@+id/button_touch" />
 
     <Button
         android:text="@string/right"
         android:layout_height="wrap_content"
-        android:id="@+id/button_right"
+        android:id="@+id/button_touch_right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/button_middle"
-        android:layout_width="130dp" />
+        android:layout_width="130dp"
+        android:layout_alignTop="@+id/button_touch_left" />
+
+    <Button
+        android:text="@string/touchpad"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/button_touch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:text="@string/middle"
-        android:layout_width="100dp"
-        android:layout_marginTop="14dp"
-        android:id="@+id/button_middle"
-        android:layout_height="130dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_width="wrap_content"
+        android:id="@+id/button_touch_middle"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="117dp" />
 
     <ImageButton
         android:layout_width="70dp"
         android:layout_height="80dp"
         app:srcCompat="@drawable/ic_expand_more_black_24dp"
-        android:id="@+id/downscroll"
+        android:id="@+id/touch_downscroll"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp" />
 
     <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/ic_mouse_black_24dp"
-        android:id="@+id/moveButton"
-        android:backgroundTint="#7fa87f"
-        android:layout_above="@+id/downscroll"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp" />
-
-    <ImageButton
         app:srcCompat="@drawable/ic_expand_less_black_24dp"
-        android:id="@+id/upscroll"
+        android:id="@+id/touch_upscroll"
         android:layout_height="80dp"
         android:layout_width="70dp"
-        android:layout_below="@+id/button_middle"
-        android:layout_alignLeft="@+id/downscroll"
-        android:layout_alignStart="@+id/downscroll"
-        android:layout_marginTop="13dp" />
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/touch_downscroll"
+        android:layout_alignStart="@+id/touch_downscroll" />
 
 </RelativeLayout>

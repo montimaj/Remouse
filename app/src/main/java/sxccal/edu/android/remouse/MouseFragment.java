@@ -114,7 +114,6 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
             public void run() {
                 if (sConnectionAlive) {
                     sSecuredClient.sendData("Mouse_Button", data);
-                    sendMouseMovementData();
                 }
             }
         }).start();
