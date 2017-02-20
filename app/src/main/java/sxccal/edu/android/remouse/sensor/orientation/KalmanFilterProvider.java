@@ -19,16 +19,19 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 public class KalmanFilterProvider extends OrientationProvider {
 
+    private final Quaternion deltaQuaternion = new Quaternion();
+    private Quaternion mCorrectedQuaternion = new Quaternion();
+
+    private long mTimestamp;
+    private boolean mIsInitQuat;
 
 	private static final float NS2S = 1.0f / 1000000000.0f;
-	private final Quaternion deltaQuaternion = new Quaternion();
-	private long timestamp;
 	private static final double EPSILON = 0.1f; //[Experimental value] Filter-threshold
-	private Quaternion correctedQuaternion = new Quaternion();
 
 	public KalmanFilterProvider(SensorManager sensorManager) {
 		super(sensorManager);
-		sensorList.add(sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));
+		mSensorList.add(sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));
+        mIsInitQuat = true;
         sensorStart();
 	}
 
@@ -39,8 +42,8 @@ public class KalmanFilterProvider extends OrientationProvider {
 		if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
 
 			// This timestamps delta rotation to be multiplied by the current rotation
-			if (timestamp != 0) {
-				final float dT = (event.timestamp - timestamp) * NS2S;
+			if (mTimestamp != 0) {
+				final float dT = (event.timestamp - mTimestamp) * NS2S;
 				// Axis of the rotation sample, not normalized yet.
 				float axisX = event.values[0];
 				float axisY = event.values[1];
@@ -73,20 +76,22 @@ public class KalmanFilterProvider extends OrientationProvider {
 					deltaQuaternion.multiplyByQuat(currentOrientationQuaternion, currentOrientationQuaternion);
 				}
 
-				correctedQuaternion.set(currentOrientationQuaternion);
+				mCorrectedQuaternion.set(currentOrientationQuaternion);
 				// We inverted w in the deltaQuaternion, because currentOrientationQuaternion required it.
 				// Before converting it back to matrix representation, we need to revert this process
-				correctedQuaternion.w(-correctedQuaternion.w());
+				mCorrectedQuaternion.w(-mCorrectedQuaternion.w());
 
 				synchronized (synchronizationToken) {
 					// Set the rotation matrix as well to have both representations
 					SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.mMatrix,
-							correctedQuaternion.array());
+							mCorrectedQuaternion.array());
 				}
-                if(sConnectionAlive && sMouseAlive) sSecuredClient.sendData(correctedQuaternion);
-				else sensorStop();
+                if(sConnectionAlive && sMouseAlive) {
+                    sSecuredClient.sendData(mCorrectedQuaternion, mIsInitQuat);
+                    mIsInitQuat = false;
+                } else	sensorStop();
 			}
-			timestamp = event.timestamp;
+			mTimestamp = event.timestamp;
 		}
 	}
 

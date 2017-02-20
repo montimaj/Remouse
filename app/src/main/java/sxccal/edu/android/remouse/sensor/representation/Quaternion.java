@@ -10,9 +10,10 @@ public class Quaternion extends Vector4f {
 	 * For better performance update it only when it is accessed, not on every change
 	 */
 	private MatrixF4x4 mMatrix;
-	private boolean mDirty = false;
 	private Vector4f mTmpVector = new Vector4f();
 	private Quaternion mTmpQuaternion;
+
+    private boolean mDirty = false;
 
 	public Quaternion() {
 		super();
@@ -175,7 +176,7 @@ public class Quaternion extends Vector4f {
 		float qw;
 
 		float[] mat = mMatrix.getMatrix();
-		int[] indices = null;
+		int[] indices;
 
 		if (this.mMatrix.size() == 16) {
 			if (this.mMatrix.isColumnMajor()) {

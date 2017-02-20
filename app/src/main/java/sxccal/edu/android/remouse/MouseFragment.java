@@ -1,17 +1,18 @@
 package sxccal.edu.android.remouse;
 
+import android.app.Activity;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
-import sxccal.edu.android.remouse.sensor.SensorActivity;
+import sxccal.edu.android.remouse.sensor.orientation.KalmanFilterProvider;
+import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
@@ -20,63 +21,28 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
  * @author Sayantan Majumdar
  */
 
-public class MouseFragment extends Fragment implements View.OnClickListener {
+public class MouseFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
-    private SwitchCompat mSwitch;
+    private OrientationProvider mOrientationProvider;
 
-    private static boolean sFirstTouch = false;
+    private long mTouchTime;
+    private boolean mFirstTouch;
 
-    private static long sTouchTime;
     public static boolean sMouseAlive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mouse, container, false);
-        mSwitch = (SwitchCompat) view.findViewById(R.id.switch2);
         Button left = (Button) view.findViewById(R.id.button_left);
         Button right = (Button) view.findViewById(R.id.button_right);
         Button middle = (Button) view.findViewById(R.id.button_middle);
         ImageButton upScroll = (ImageButton) view.findViewById(R.id.upscroll);
         ImageButton downScroll = (ImageButton) view.findViewById(R.id.downscroll);
+        ImageButton moveButton = (ImageButton) view.findViewById(R.id.moveButton);
 
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    mSwitch.setChecked(true);
-                    if(sConnectionAlive) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                sMouseAlive = true;
-                                sendMouseMovementData();
-                            }
-                        }).start();
-                    }
-                } else  {
-                    mSwitch.setChecked(false);
-                    sMouseAlive = false;
-                }
-            }
-        });
-
-        left.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    if(sFirstTouch && (System.currentTimeMillis() - sTouchTime) <= 300 ) {
-                        sFirstTouch = false;
-                        sSecuredClient.sendData("Mouse_Button", "left");
-                    } else {
-                        sFirstTouch = true;
-                        sTouchTime = System.currentTimeMillis();
-                        sSecuredClient.sendData("Mouse_Button", "left");
-                    }
-                }
-                return true;
-            }
-        });
+        moveButton.setOnTouchListener(this);
+        left.setOnTouchListener(this);
 
         right.setOnClickListener(this);
         middle.setOnClickListener(this);
@@ -84,6 +50,39 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
         downScroll.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        sMouseAlive = false;
+        if(mOrientationProvider != null)    mOrientationProvider.sensorStop();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(view.getId() == R.id.moveButton) {
+            if(sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                sMouseAlive = true;
+                sendMouseMovementData();
+            } else {
+                sMouseAlive = false;
+                if(mOrientationProvider != null)    mOrientationProvider.sensorStop();
+            }
+        }
+        if(view.getId() == R.id.button_left) {
+            if (sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                if (mFirstTouch && (System.currentTimeMillis() - mTouchTime) <= 300) {
+                    mFirstTouch = false;
+                    sendMouseButtonData("left");
+                } else {
+                    mFirstTouch = true;
+                    mTouchTime = System.currentTimeMillis();
+                    sendMouseButtonData("left");
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -106,17 +105,28 @@ public class MouseFragment extends Fragment implements View.OnClickListener {
             case R.id.downscroll:
                 data = "downscroll";
         }
-        if(sConnectionAlive) {
-            sSecuredClient.sendData("Mouse_Button", data);
-        }
+        sendMouseButtonData(data);
+    }
+
+    private void sendMouseButtonData(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (sConnectionAlive) {
+                    sSecuredClient.sendData("Mouse_Button", data);
+                    sendMouseMovementData();
+                }
+            }
+        }).start();
     }
 
     private void sendMouseMovementData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SensorActivity sensorActivity = new SensorActivity(getActivity());
-                if(!sMouseAlive || !sConnectionAlive)   sensorActivity.stopSensor();
+                mOrientationProvider = new KalmanFilterProvider((SensorManager)
+                        getActivity().getSystemService(Activity.SENSOR_SERVICE));
+                if (!sMouseAlive || !sConnectionAlive) mOrientationProvider.sensorStop();
             }
         }).start();
     }

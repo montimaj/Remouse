@@ -18,12 +18,10 @@ import java.util.List;
 public abstract class OrientationProvider implements SensorEventListener {
 
 	final Object synchronizationToken = new Object();
-
-	List<Sensor> sensorList = new ArrayList<>();
-
 	final MatrixF4x4 currentOrientationRotationMatrix;
-
 	final Quaternion currentOrientationQuaternion;
+
+	List<Sensor> mSensorList = new ArrayList<>();
 
 	private SensorManager sensorManager;
 
@@ -38,14 +36,14 @@ public abstract class OrientationProvider implements SensorEventListener {
 	}
 
 	void sensorStart() {
-		for (Sensor sensor : sensorList) {
+		for (Sensor sensor : mSensorList) {
 			sensorManager.registerListener(this, sensor,
-					SensorManager.SENSOR_DELAY_GAME);
+					SensorManager.SENSOR_DELAY_UI);
 		}
 	}
 
 	public void sensorStop() {
-		for (Sensor sensor : sensorList) {
+		for (Sensor sensor : mSensorList) {
 			sensorManager.unregisterListener(this, sensor);
 		}
 	}

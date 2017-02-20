@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        sFragmentList.add(new MouseFragment());
         sFragmentList.add(new ConnectionFragment());
         sFragmentList.add(new AboutFragment());
 
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         String title = getString(R.string.app_name);
         if (id == R.id.nav_mouse) {
             // Handle the mouse action
-            fragment = sFragmentList.get(0);
+            fragment = new MouseFragment();
             title="Remote Mouse";
 
         } else if (id == R.id.nav_keyboard) {
@@ -151,12 +150,12 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_connect) {
             // connection module
-            fragment = sFragmentList.get(1);
+            fragment = sFragmentList.get(0);
             title="Connect to PC";
 
         } else if (id == R.id.nav_about) {
             // App info
-            fragment = sFragmentList.get(2);
+            fragment = sFragmentList.get(1);
             title="About app";
         }
         if (fragment != null) {
