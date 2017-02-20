@@ -109,11 +109,13 @@ public class ConnectionFragment extends ListFragment {
     }
 
     private void getInternetPermission() {
-        boolean hasPermission = (ContextCompat.checkSelfPermission(this.getContext(),
+        boolean hasPermission1 = (ContextCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermission) {
+        boolean hasPermission2 = (ContextCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.CHANGE_WIFI_MULTICAST_STATE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission1 || !hasPermission2) {
             ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.INTERNET},
+                    new String[]{Manifest.permission.INTERNET, Manifest.permission.CHANGE_WIFI_MULTICAST_STATE},
                     REQUEST_INTERNET_ACCESS);
         }
     }
