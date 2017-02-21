@@ -2,6 +2,7 @@ package sxccal.edu.android.remouse;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -135,25 +136,28 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
         int distanceX = 0, distanceY = 0;
 
         if (mLastMoveX != Float.MAX_VALUE && mLastMoveY != Float.MAX_VALUE) {
-            distanceX = (int) (curMoveX - mDownX);
-            distanceY = (int) (curMoveY - mDownY);
+            distanceX = (int) (curMoveX - mLastMoveX /*mDownX*/);
+            distanceY = (int) (curMoveY - mLastMoveY /*mDownY*/);
         }
 
         int distance = (int) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         // send a move command per 0.5 s
-        if (distance > 100 || (System.currentTimeMillis() - mLastMoveTime) > 100) {
+//        if (distance > 100 || (System.currentTimeMillis() - mLastMoveTime) > 10) {
             sendMouseMovementData(distanceX, distanceY);
+//            Log.d("Touch", ""+distanceX+distanceY);
             mLastMoveX = curMoveX;
             mLastMoveY = curMoveY;
             mLastMoveTime = System.currentTimeMillis();
-        }
+//        }
     }
 
     private void onSingleClick(MotionEvent event, boolean down) {
         if (down) {
-            mDownX = event.getX();
-            mDownY = event.getY();
+//            mDownX = event.getX();
+//            mDownY = event.getY();
+            mLastMoveX = event.getX();
+            mLastMoveY = event.getY();
         }
     }
 }
