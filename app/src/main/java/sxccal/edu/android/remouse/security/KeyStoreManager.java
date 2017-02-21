@@ -15,7 +15,7 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import static sxccal.edu.android.remouse.MainActivity.REMOUSE_PATH;
+import static sxccal.edu.android.remouse.MainActivity.remouseDir;
 
 /**
  * @author Abhisek Maiti
@@ -27,7 +27,7 @@ class KeyStoreManager {
     private static final String KEY_STORE_TYPE = "pkcs12";
     private static final String KEY_STORE_ALIAS = "Remouse KeyStore";
     private static final String KEY_STORE_PASSWORD = "foo";
-    private static final String KEY_STORE_NAME = REMOUSE_PATH + "/remouse_keystore";
+    private static final String KEY_STORE_NAME = remouseDir + "/remouse_keystore";
 
     KeyStoreManager() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         mKeyStore = KeyStore.getInstance(KEY_STORE_TYPE);

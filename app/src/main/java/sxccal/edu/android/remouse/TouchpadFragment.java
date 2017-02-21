@@ -2,7 +2,6 @@ package sxccal.edu.android.remouse;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,7 @@ import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
+ * @author Sudipto Bhattacharjee
  */
 
 public class TouchpadFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
@@ -22,13 +22,8 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     private long mTouchTime;
     private boolean mFirstTouch;
 
-    private float mDownX;
-    private float mDownY;
-
     private float mLastMoveX = Float.MAX_VALUE;
     private float mLastMoveY = Float.MAX_VALUE;
-
-    private long mLastMoveTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,26 +131,17 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
         int distanceX = 0, distanceY = 0;
 
         if (mLastMoveX != Float.MAX_VALUE && mLastMoveY != Float.MAX_VALUE) {
-            distanceX = (int) (curMoveX - mLastMoveX /*mDownX*/);
-            distanceY = (int) (curMoveY - mLastMoveY /*mDownY*/);
+            distanceX = (int) (curMoveX - mLastMoveX);
+            distanceY = (int) (curMoveY - mLastMoveY);
         }
 
-        int distance = (int) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-        // send a move command per 0.5 s
-//        if (distance > 100 || (System.currentTimeMillis() - mLastMoveTime) > 10) {
-            sendMouseMovementData(distanceX, distanceY);
-//            Log.d("Touch", ""+distanceX+distanceY);
-            mLastMoveX = curMoveX;
-            mLastMoveY = curMoveY;
-            mLastMoveTime = System.currentTimeMillis();
-//        }
+        sendMouseMovementData(distanceX, distanceY);
+        mLastMoveX = curMoveX;
+        mLastMoveY = curMoveY;
     }
 
     private void onSingleClick(MotionEvent event, boolean down) {
         if (down) {
-//            mDownX = event.getX();
-//            mDownY = event.getY();
             mLastMoveX = event.getX();
             mLastMoveY = event.getY();
         }
