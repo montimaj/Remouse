@@ -1,5 +1,6 @@
 package sxccal.edu.android.remouse;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -32,6 +33,18 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             keyboardInput.addTextChangedListener(this);
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override

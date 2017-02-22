@@ -1,7 +1,5 @@
 package sxccal.edu.android.remouse.net;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -69,7 +67,6 @@ public class Client {
     public void sendData(Quaternion quaternion, boolean isInitQuat) {
         mClientDataWrapper = new ClientDataWrapper(quaternion, isInitQuat);
         String data = new Gson().toJson(mClientDataWrapper);
-        Log.d("Sensor: ", data);
         sOut.println(mEKEProvider.encryptString(data));
     }
 

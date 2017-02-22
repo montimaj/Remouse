@@ -1,6 +1,7 @@
 package sxccal.edu.android.remouse;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,6 +62,18 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
         downScroll.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override

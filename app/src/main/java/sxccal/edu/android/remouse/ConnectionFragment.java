@@ -3,6 +3,7 @@ package sxccal.edu.android.remouse;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,6 +87,18 @@ public class ConnectionFragment extends ListFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override

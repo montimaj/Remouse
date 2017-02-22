@@ -1,5 +1,6 @@
 package sxccal.edu.android.remouse;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,6 +46,18 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
         downScroll.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override

@@ -3,6 +3,7 @@ package sxccal.edu.android.remouse;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,6 +67,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override
