@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
     private static final int REQUEST_RW_STORAGE = 2909;
-    public static File remouseDir = null;
+    public static File sRemouseDir = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void makeRemouseDirectory() {
-        remouseDir = getDir("Remouse", Context.MODE_PRIVATE);
-        if(!remouseDir.exists())   remouseDir.mkdir();
+        sRemouseDir = getDir("Remouse", Context.MODE_PRIVATE);
+        if(!sRemouseDir.exists())   sRemouseDir.mkdir();
     }
 }
