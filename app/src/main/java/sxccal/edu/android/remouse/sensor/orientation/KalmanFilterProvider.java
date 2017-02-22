@@ -11,11 +11,9 @@ import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
 import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
- * Warning: This file has not checked/compiled thoroughly
  * @author Abhisek Maiti
  * @author Sayantan Majumdar
  */
-
 
 public class KalmanFilterProvider extends OrientationProvider {
 

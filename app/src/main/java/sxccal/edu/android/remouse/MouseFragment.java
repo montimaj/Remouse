@@ -37,10 +37,21 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
         Button left = (Button) view.findViewById(R.id.button_left);
         Button right = (Button) view.findViewById(R.id.button_right);
         Button middle = (Button) view.findViewById(R.id.button_middle);
+        Button moveButton = (Button) view.findViewById(R.id.moveButton);
         ImageButton upScroll = (ImageButton) view.findViewById(R.id.upscroll);
         ImageButton downScroll = (ImageButton) view.findViewById(R.id.downscroll);
-        ImageButton moveButton = (ImageButton) view.findViewById(R.id.moveButton);
 
+        moveButton.setLongClickable(true);
+        moveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(sConnectionAlive) {
+                    sMouseAlive = true;
+                    sendMouseMovementData();
+                }
+                return true;
+            }
+        });
         moveButton.setOnTouchListener(this);
         left.setOnTouchListener(this);
 
@@ -62,13 +73,11 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view.getId() == R.id.moveButton) {
-            if(sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                sMouseAlive = true;
-                sendMouseMovementData();
-            } else {
+            if(sConnectionAlive && sMouseAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                 sMouseAlive = false;
                 if(mOrientationProvider != null)    mOrientationProvider.sensorStop();
             }
+            return false;
         }
         if(view.getId() == R.id.button_left) {
             if (sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
