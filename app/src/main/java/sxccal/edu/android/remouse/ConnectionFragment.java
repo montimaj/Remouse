@@ -224,6 +224,13 @@ public class ConnectionFragment extends Fragment {
         mCustomAdapter.notifyDataSetChanged();
     }
 
+    public void removeItem(ServerInfo serverInfo) {
+        sSelectedServer.remove(serverInfo);
+        sConnectionAlive.put(serverInfo.getAddress(), false);
+        mNetworkList.remove(serverInfo);
+        mCustomAdapter.notifyDataSetChanged();
+    }
+
     public void setImage(ServerInfo serverInfo, int imageId) {
         int position = mCustomAdapter.getPosition(serverInfo);
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
@@ -233,14 +240,6 @@ public class ConnectionFragment extends Fragment {
     public void setImage(int position, int imageId) {
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
         img.setImageResource(imageId);
-    }
-
-    public void removeItem(ServerInfo serverInfo) {
-        sSelectedServer.remove(serverInfo);
-        sConnectionAlive.put(serverInfo.getAddress(), false);
-        mNetworkList.remove(serverInfo);
-        mCustomAdapter.notifyDataSetChanged();
-        mCustomAdapter.notifyDataSetChanged();
     }
 
     public void dismissAlertDialog() { if(mAlertDialog != null)    mAlertDialog.dismiss(); }

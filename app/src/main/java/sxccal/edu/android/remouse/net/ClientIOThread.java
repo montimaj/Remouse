@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
 import sxccal.edu.android.remouse.NetworkService;
