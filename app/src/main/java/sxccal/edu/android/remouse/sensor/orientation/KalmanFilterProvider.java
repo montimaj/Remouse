@@ -6,9 +6,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Abhisek Maiti
@@ -81,10 +81,10 @@ public class KalmanFilterProvider extends OrientationProvider {
 
 				synchronized (synchronizationToken) {
 					// Set the rotation matrix as well to have both representations
-					SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.mMatrix,
+					SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.matrix,
 							mCorrectedQuaternion.array());
 				}
-                if(sConnectionAlive && sMouseAlive) {
+                if(sConnectionAlive.containsValue(true) && sMouseAlive) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {

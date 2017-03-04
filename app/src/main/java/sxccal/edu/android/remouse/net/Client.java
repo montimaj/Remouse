@@ -11,7 +11,7 @@ import java.net.Socket;
 import sxccal.edu.android.remouse.security.EKEProvider;
 import sxccal.edu.android.remouse.sensor.representation.Quaternion;
 
-import static sxccal.edu.android.remouse.net.ClientConnectionThread.sServerPublicKey;
+import static sxccal.edu.android.remouse.MainActivity.PUBLIC_KEY;
 
 /**
  * Client module
@@ -26,8 +26,6 @@ public class Client {
     private static PrintWriter sOut;
     private static final int TCP_PORT = 1234;
 
-    static final byte[] PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
-
     private EKEProvider mEKEProvider;
 
     public Client(String address) throws IOException {
@@ -36,12 +34,12 @@ public class Client {
         sOut.println(new String(PUBLIC_KEY));
     }
 
-    Client(byte[] pairingKey) {
-        mEKEProvider = new EKEProvider(pairingKey, sServerPublicKey);
+    Client(byte[] pairingKey, byte[] serverPubKey) {
+        mEKEProvider = new EKEProvider(pairingKey, serverPubKey);
     }
 
     void sendPairingKey(String pairingKey) {
-        sOut.println(mEKEProvider.encryptString(pairingKey));
+        sOut.println(pairingKey);
     }
 
     BufferedReader getSocketReader() throws IOException {
@@ -49,7 +47,7 @@ public class Client {
     }
 
     EKEProvider getEKEProvider() { return mEKEProvider; }
-    
+
 
     public void sendData(String operationType, String data) {
         mClientDataWrapper = new ClientDataWrapper(operationType, data);
@@ -73,7 +71,7 @@ public class Client {
     public void sendStopSignal(boolean makeSecured) {
         if(makeSecured && mEKEProvider != null) {
             sendData("Stop","");
-        } else  sOut.println("Stop");
+        } else  sOut.println("Cancelled");
     }
 
     public void close() throws IOException {

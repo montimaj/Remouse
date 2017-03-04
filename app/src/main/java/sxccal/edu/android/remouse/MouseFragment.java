@@ -15,8 +15,8 @@ import android.widget.ImageButton;
 import sxccal.edu.android.remouse.sensor.orientation.KalmanFilterProvider;
 import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
 
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -46,7 +46,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
         moveButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(sConnectionAlive) {
+                if(sConnectionAlive.containsValue(true)) {
                     sMouseAlive = true;
                     sendMouseMovementData();
                 }
@@ -86,14 +86,14 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view.getId() == R.id.moveButton) {
-            if(sConnectionAlive && sMouseAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+            if(sConnectionAlive.containsValue(true) && sMouseAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                 sMouseAlive = false;
                 if(mOrientationProvider != null)    mOrientationProvider.sensorStop();
             }
             return false;
         }
         if(view.getId() == R.id.button_left) {
-            if (sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            if (sConnectionAlive.containsValue(true) && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                 if (mFirstTouch && (System.currentTimeMillis() - mTouchTime) <= 300) {
                     mFirstTouch = false;
                     sendMouseButtonData("left");
@@ -134,7 +134,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (sConnectionAlive) {
+                if (sConnectionAlive.containsValue(true)) {
                     sSecuredClient.sendData("Mouse_Button", data);
                 }
             }
@@ -147,7 +147,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
             public void run() {
                 mOrientationProvider = new KalmanFilterProvider((SensorManager)
                         getActivity().getSystemService(Activity.SENSOR_SERVICE));
-                if (!sMouseAlive || !sConnectionAlive) mOrientationProvider.sensorStop();
+                if (!sMouseAlive || !sConnectionAlive.containsValue(true)) mOrientationProvider.sensorStop();
             }
         }).start();
     }

@@ -199,5 +199,4 @@ public class Vector4f {
 	public String toString() {
 		return "X:" + mPoints[0] + " Y:" + mPoints[1] + " Z:" + mPoints[2] + " W:" + mPoints[3];
 	}
-
 }

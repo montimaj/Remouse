@@ -23,4 +23,6 @@
     <string name="_2d_mouse">2D Mouse</string>
     <string name="touchpad">Touchpad</string>
     <string name="press_move">Press hold and Move</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="textview">TextView</string>
 </resources>

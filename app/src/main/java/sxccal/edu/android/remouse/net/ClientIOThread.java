@@ -6,12 +6,17 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 
+import sxccal.edu.android.remouse.ConnectionFragment;
 import sxccal.edu.android.remouse.NetworkService;
+import sxccal.edu.android.remouse.R;
 import sxccal.edu.android.remouse.security.EKEProvider;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.sListItemClicked;
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
+import static sxccal.edu.android.remouse.ConnectionFragment.sSelectedServer;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
+import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 
 /**
  * @author Sayantan Majumdar
@@ -20,27 +25,25 @@ import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 public class ClientIOThread implements Runnable {
 
     private Activity mActivity;
-    private String mAddress;
     private EKEProvider mEKEProvider;
+    private ServerInfo mServerInfo;
+    private String mAddress;
+    private byte[] mPairingKey;
+    private byte[] mServerPubKey;
 
     private boolean mStopFlag;
-    public static boolean sConnectionAlive;
 
-    private static final int PAIRING_KEY_LENGTH = 6;
 
-    public ClientIOThread(Activity activity, String pairingKey, String address) throws IOException {
+    public ClientIOThread(Activity activity, final String pairingKey, ServerInfo serverInfo) throws IOException {
         mActivity = activity;
-        mAddress = address;
-
-        sSecuredClient = new Client(pairingKey.getBytes());
-        mEKEProvider = sSecuredClient.getEKEProvider();
-        int len = pairingKey.length();
-        if(len != PAIRING_KEY_LENGTH )    pairingKey = "1";
-        final String key = pairingKey;
+        mServerInfo = serverInfo;
+        mAddress = serverInfo.getAddress();
+        mServerPubKey = serverInfo.getServerPubKey();
+        mPairingKey = pairingKey.getBytes();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sSecuredClient.sendPairingKey(key);
+                sSecuredClient.sendPairingKey(pairingKey);
             }
         }).start();
     }
@@ -48,19 +51,24 @@ public class ClientIOThread implements Runnable {
     @Override
     public void run() {
         try {
+            sSecuredClient = new Client(mPairingKey, mServerPubKey);
+            mEKEProvider = sSecuredClient.getEKEProvider();
             while (!mStopFlag) {
                 recieveData();
             }
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    sListItemClicked = false;
-                    Toast.makeText(mActivity, "Server " + mAddress + " disconnected! " +
-                            "You may reconnect", Toast.LENGTH_LONG).show();
+                    sSelectedServer.remove(mServerInfo);
+                    ConnectionFragment connectionFragment = (ConnectionFragment) sFragmentList.get(0);
+                    try {
+                        connectionFragment.setImage(mServerInfo, R.mipmap.laptop_icon);
+                    } catch (RuntimeException ignored) {}
+                    Toast.makeText(mActivity, "Server " + mAddress + " disconnected! ", Toast.LENGTH_SHORT).show();
                 }
             });
             sSecuredClient.close();
-        } catch (IOException e) {}
+        } catch (IOException ignored) {}
     }
     private void recieveData() throws IOException {
         BufferedReader in = sSecuredClient.getSocketReader();
@@ -68,16 +76,15 @@ public class ClientIOThread implements Runnable {
         String s = mEKEProvider.decryptString(in.readLine());
         if(s != null) {
             if (s.equals("Stop")) {
-                sConnectionAlive = false;
+                sConnectionAlive.put(mAddress, false);
                 mStopFlag = true;
                 return;
             }
-            sConnectionAlive = s.equals("1");
+            sConnectionAlive.put(mAddress, s.equals("1"));
         }
-        if (!sConnectionAlive) {
+        if (!sConnectionAlive.get(mAddress)) {
             displayError(mActivity);
         } else {
-            sListItemClicked = true;
             Intent intent = new Intent(mActivity, NetworkService.class);
             intent.putExtra("Server", mAddress);
             mActivity.startService(intent);
@@ -90,7 +97,7 @@ public class ClientIOThread implements Runnable {
             public void run() {
                 Toast.makeText(activity, "Incorrect pin! Try connecting again",
                         Toast.LENGTH_LONG).show();
-                sListItemClicked = false;
+                sSelectedServer.remove(mServerInfo);
             }
         });
         sSecuredClient.close();

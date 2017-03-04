@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import sxccal.edu.android.remouse.security.EKEProvider;
 import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
 
 /**
@@ -34,16 +35,27 @@ import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
     private static final int REQUEST_RW_STORAGE = 2909;
+
+    public static ArrayList<Fragment> sFragmentList = new ArrayList<>();
     public static File sRemouseDir = null;
+    public static byte[] PUBLIC_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getRWPermission();
         makeRemouseDirectory();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
+            }
+        }).start();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

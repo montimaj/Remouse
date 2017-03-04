@@ -13,11 +13,10 @@
         android:src="@mipmap/keyboard" />
 
     <EditText
+        android:id="@+id/keyboard"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine"
-        android:ems="10"
-        android:id="@+id/keyboard"
-        style="@style/Widget.AppCompat.EditText" />
+        android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine" />
 
 </FrameLayout>

@@ -14,7 +14,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/moveButton" />
+        android:layout_below="@+id/moveButton"
+        style="@style/Widget.AppCompat.Button" />
 
     <Button
         android:text="@string/right"
@@ -24,7 +25,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="130dp"
-        android:layout_below="@+id/moveButton" />
+        android:layout_below="@+id/moveButton"
+        style="@style/Widget.AppCompat.Button" />
 
     <Button
         android:text= "@string/press_move"
@@ -36,7 +38,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        style="@style/Widget.AppCompat.Button" />
 
     <ImageButton
         app:srcCompat="@drawable/ic_expand_less_black_24dp"
@@ -45,7 +48,8 @@
         android:layout_width="90dp"
         android:layout_below="@+id/moveButton"
         android:layout_alignLeft="@+id/button_middle"
-        android:layout_alignStart="@+id/button_middle" />
+        android:layout_alignStart="@+id/button_middle"
+        style="@style/Widget.AppCompat.ImageButton" />
 
     <Button
         android:text="@string/middle"
@@ -55,7 +59,8 @@
         android:layout_alignBaseline="@+id/button_left"
         android:layout_alignBottom="@+id/button_left"
         android:layout_alignLeft="@+id/downscroll"
-        android:layout_alignStart="@+id/downscroll" />
+        android:layout_alignStart="@+id/downscroll"
+        style="@style/Widget.AppCompat.Button" />
 
     <ImageButton
         android:layout_width="90dp"
@@ -63,6 +68,7 @@
         app:srcCompat="@drawable/ic_expand_more_black_24dp"
         android:id="@+id/downscroll"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.AppCompat.ImageButton" />
 
 </RelativeLayout>

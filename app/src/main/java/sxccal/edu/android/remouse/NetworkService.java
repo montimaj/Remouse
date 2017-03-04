@@ -8,28 +8,32 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
+import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 public class NetworkService extends Service {
 
+    private static String sAddress;
+
     @Override
-    public IBinder onBind(Intent intent) {
-       return null;
-    }
+    public IBinder onBind(Intent intent) { return null; }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Connected to " + intent.getStringExtra("Server") +
-                        "\nOpen either Mouse or Keyboard Tabs from the navigation bar",
-                Toast.LENGTH_LONG).show();
+        ConnectionFragment connectionFragment = (ConnectionFragment) sFragmentList.get(0);
+        connectionFragment.setImage(connectionFragment.listItemPos, R.mipmap.connect_icon);
+        sAddress = intent.getStringExtra("Server");
+        Toast.makeText(this, "Connected to " + sAddress + "\nOpen either Mouse " +
+                        "or Keyboard Tabs from the navigation bar",
+                Toast.LENGTH_SHORT).show();
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(sConnectionAlive) {
+        if(sConnectionAlive.get(sAddress)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -37,11 +41,11 @@ public class NetworkService extends Service {
                     sMouseAlive = false;
                     try {
                         sSecuredClient.close();
-                        sConnectionAlive = false;
-                    } catch (IOException e) {}
+                        sConnectionAlive.put(sAddress, false);
+                    } catch (IOException ignored) {}
                 }
             }).start();
-            Toast.makeText(this, "Disconnected Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, sAddress + " disconnected successfully", Toast.LENGTH_SHORT).show();
         }
     }
 }

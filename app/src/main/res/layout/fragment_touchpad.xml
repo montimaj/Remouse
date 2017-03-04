@@ -14,7 +14,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/button_touch" />
+        android:layout_below="@+id/button_touch"
+        style="@style/Widget.AppCompat.Button" />
 
     <Button
         android:text="@string/right"
@@ -24,7 +25,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="130dp"
-        android:layout_alignTop="@+id/button_touch_left" />
+        android:layout_alignTop="@+id/button_touch_left"
+        style="@style/Widget.AppCompat.Button" />
 
     <Button
         android:text="@string/touchpad"
@@ -36,7 +38,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        style="@style/Widget.AppCompat.Button" />
 
     <Button
         android:text="@string/middle"
@@ -45,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button_touch_left"
         android:layout_alignBottom="@+id/button_touch_left"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.AppCompat.Button" />
 
     <ImageButton
         android:layout_width="90dp"
@@ -53,7 +57,8 @@
         app:srcCompat="@drawable/ic_expand_more_black_24dp"
         android:id="@+id/touch_downscroll"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.AppCompat.ImageButton" />
 
     <ImageButton
         app:srcCompat="@drawable/ic_expand_less_black_24dp"
@@ -62,6 +67,7 @@
         android:layout_width="90dp"
         android:layout_below="@+id/button_touch"
         android:layout_alignLeft="@+id/touch_downscroll"
-        android:layout_alignStart="@+id/touch_downscroll" />
+        android:layout_alignStart="@+id/touch_downscroll"
+        style="@style/Widget.AppCompat.ImageButton" />
 
 </RelativeLayout>

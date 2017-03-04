@@ -1,5 +1,6 @@
 package sxccal.edu.android.remouse;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
@@ -20,12 +22,16 @@ import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 public class KeyboardFragment extends Fragment implements View.OnKeyListener, TextWatcher {
 
     private String mLastInput;
+    private InputMethodManager mInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
+        mInput = null;
         if(sSecuredClient != null) {
+            mInput = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            mInput.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             EditText keyboardInput = (EditText) view.findViewById(R.id.keyboard);
             keyboardInput.setText("");
             keyboardInput.setTextSize(18);
@@ -33,6 +39,15 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             keyboardInput.addTextChangedListener(this);
         }
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        View view = getView();
+        if(mInput != null && view != null) {
+            mInput.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override

@@ -1,21 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffffff">
-    <android.support.v7.widget.SwitchCompat
-        android:text="@string/switchtext"
-        android:layout_width="match_parent"
-        android:id="@+id/switch1"
-        android:layout_height="46dp"
-        android:background="#566573"
-        android:theme="@style/CustomSwitch"/>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/switch1"
-    android:paddingTop="30dp"
+    android:background="#ffffff"
     tools:context=".ConnectionFragment">
     <ImageView
         android:layout_width="match_parent"
@@ -27,11 +14,10 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@android:id/list"
+        android:id="@+id/listView"
         android:layout_gravity="center_horizontal|top"
         android:background="#abcd"
         android:divider="@color/colorPrimaryDark"
         android:dividerHeight="1px"
         android:listSelector="@android:drawable/list_selector_background" />
 </FrameLayout>
-</RelativeLayout>

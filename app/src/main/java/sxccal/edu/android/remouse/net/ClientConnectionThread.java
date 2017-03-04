@@ -1,89 +1,105 @@
 package sxccal.edu.android.remouse.net;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.HashSet;
+import java.util.ArrayList;;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
 
-import static sxccal.edu.android.remouse.ConnectionFragment.sListItemClicked;
-import static sxccal.edu.android.remouse.ConnectionFragment.sSwitchChecked;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
+import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 
 /**
  * Client to Server connection
  * @author Sayantan Majumdar
  * @author Sudipto Bhattacharjee
  */
+
 public class ClientConnectionThread implements Runnable {
 
-    private Context mContext;
     private Activity mActivity;
-    private HashSet<String> mLocalDevices = new HashSet<>();
+    private WifiManager.MulticastLock mLock;
+    private ArrayList<String> mServerAddress;
+    private DatagramSocket mDatagramSocket;
+    private ConnectionFragment mConnectionFragment;
 
     private static final int UDP_PORT = 1235;
-    static byte[] sServerPublicKey;
 
-    public ClientConnectionThread(Context context, Activity activity) {
-        mContext = context;
+    public ClientConnectionThread(Activity activity, WifiManager.MulticastLock lock) {
         mActivity = activity;
+        mLock = lock;
+        mDatagramSocket = null;
+        mServerAddress = new ArrayList<>();
+        mConnectionFragment = (ConnectionFragment) sFragmentList.get(0);
     }
 
     @Override
     public void run() {
         try {
-            WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-            WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
-
-            while (sSwitchChecked) {
-                lock.acquire();
-                DatagramSocket datagramSocket = new DatagramSocket(UDP_PORT);
-                datagramSocket.setBroadcast(true);
-                final DatagramPacket datagramPacket = new DatagramPacket(new byte[Client.PUBLIC_KEY.length],
-                        Client.PUBLIC_KEY.length);
-                datagramSocket.receive(datagramPacket);
-                lock.release();
-
-                byte[] receivedData = datagramPacket.getData();
-                final String serverAddress = datagramPacket.getAddress().toString().substring(1);
-                if (new String(receivedData).contains("Stop")) {
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mActivity, "Server " + serverAddress + " stopped!",
-                                    Toast.LENGTH_LONG).show();
-                            ConnectionFragment.removeItem(serverAddress);
-                            ConnectionFragment.dismissAlertDialog();
-                            sListItemClicked = false;
-                            sConnectionAlive = false;
-                        }
-                    });
-                } else {
-                    sServerPublicKey = receivedData;
-                    mLocalDevices.add(serverAddress);
-
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mLocalDevices.isEmpty()) {
-                                Toast.makeText(mActivity, "No local devices found!", Toast.LENGTH_LONG).show();
-                            } else {
-                                ConnectionFragment.addItems(mLocalDevices);
-                            }
-                        }
-                    });
-                }
-                datagramSocket.close();
+            mLock.acquire();
+            if (mDatagramSocket == null) {
+                mDatagramSocket = new DatagramSocket(UDP_PORT);
+                mDatagramSocket.setBroadcast(true);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace(); }
+
+        while (mDatagramSocket != null) {
+            DatagramPacket datagramPacket = null;
+            try {
+                if (!mLock.isHeld()) mLock.acquire();
+                datagramPacket = new DatagramPacket(new byte[ServerInfo.SERVER_INFO_LENGTH],
+                        ServerInfo.SERVER_INFO_LENGTH);
+                mDatagramSocket.receive(datagramPacket);
+                mLock.release();
+            } catch (IOException ignored) {}
+            String gsonString = new String(datagramPacket.getData());
+            gsonString = gsonString.substring(0, gsonString.indexOf("}") + 1);
+            ServerInfo serverInfo = new Gson().fromJson(gsonString, ServerInfo.class);
+            String serverAddress = datagramPacket.getAddress().toString().substring(1);
+            serverInfo.setServerAddress(serverAddress);
+
+            checkAvailableDevices(serverInfo, serverAddress);
+        }
+    }
+    private void checkAvailableDevices(final ServerInfo serverInfo, final String serverAddress) {
+
+        if (serverInfo.getStopFlag()) {
+            mServerAddress.remove(serverAddress);
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mActivity, "Server " + serverInfo.getAddress() + " stopped!",
+                            Toast.LENGTH_SHORT).show();
+                    mConnectionFragment.removeItem(serverInfo);
+                    mConnectionFragment.dismissAlertDialog();
+                }
+            });
+        } else {
+            if (mServerAddress.isEmpty() || !mServerAddress.contains(serverAddress)) {
+                mServerAddress.add(serverAddress);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectionFragment.addItem(serverInfo);
+                        sConnectionAlive.put(serverAddress, false);
+                    }
+                });
+            }
+        }
+    }
+
+    public void close() {
+        if(mDatagramSocket != null) {
+            mDatagramSocket. close();
+            mDatagramSocket = null;
+            mServerAddress = null;
         }
     }
 }
-

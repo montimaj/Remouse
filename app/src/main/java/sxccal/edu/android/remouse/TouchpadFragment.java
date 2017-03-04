@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
-import static sxccal.edu.android.remouse.net.ClientIOThread.sConnectionAlive;
 
 /**
  * @author Sayantan Majumdar
@@ -63,10 +63,10 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view.getId() == R.id.button_touch) {
-            if (sConnectionAlive)   processTouch(motionEvent);
+            if (sConnectionAlive.containsValue(true))   processTouch(motionEvent);
         }
         if (view.getId() == R.id.button_touch_left) {
-            if (sConnectionAlive && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            if (sConnectionAlive.containsValue(true) && motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                 if (mFirstTouch && (System.currentTimeMillis() - mTouchTime) <= 300) {
                     mFirstTouch = false;
                     sendMouseButtonData("left");
@@ -107,7 +107,7 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (sConnectionAlive) {
+                if (sConnectionAlive.containsValue(true)) {
                     sSecuredClient.sendData("Mouse_Button", data);
                 }
             }
@@ -131,7 +131,7 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (sConnectionAlive) {
+                if (sConnectionAlive.containsValue(true)) {
                     sSecuredClient.sendData(x, y);
                 }
             }

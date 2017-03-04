@@ -1,92 +1,103 @@
 package sxccal.edu.android.remouse;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SwitchCompat;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 import sxccal.edu.android.remouse.net.Client;
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
 import sxccal.edu.android.remouse.net.ClientIOThread;
+import sxccal.edu.android.remouse.net.ServerInfo;
 
 /**
  * @author Sayantan Majumdar
  */
 
-public class ConnectionFragment extends ListFragment {
+public class ConnectionFragment extends Fragment {
 
-    private SwitchCompat mSwitch;
-    private static AlertDialog sAlertDialog;
-    private static ArrayList<String> sNetWorkList = new ArrayList<>();
-    private static ArrayAdapter<String> sAdapter;
+    private View mView;
+    private ListView mListView;
+    private CustomAdapter mCustomAdapter;
+    private ArrayList<ServerInfo> mNetworkList;
+    private AlertDialog mAlertDialog;
+    private boolean mInitDiscover;
+
+    public int listItemPos;
+
+    private static final int REQUEST_INTERNET_ACCESS = 1001;
+    private static final int PAIRING_KEY_LENGTH = 6;
 
     public static Client sSecuredClient;
-
-    public static boolean sListItemClicked;
-    public static boolean sSwitchChecked;
-    private static final int REQUEST_INTERNET_ACCESS = 1001;
+    public static ArrayList<ServerInfo> sSelectedServer = new ArrayList<>();
+    public static HashMap<String, Boolean> sConnectionAlive = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_connect, container, false);
+        if(mView == null) {
+            mView = inflater.inflate(R.layout.fragment_connect, container, false);
+            mNetworkList = new ArrayList<>();
+            mCustomAdapter = new CustomAdapter(getActivity(), R.layout.local_devices, mNetworkList);
+            mListView = (ListView) mView.findViewById(R.id.listView);
+            mListView.setAdapter(mCustomAdapter);
+        }
+        return mView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getInternetPermission();
         }
-        mSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        if(!mInitDiscover) {
+            discoverLocalDevices();
+            mInitDiscover = true;
+        }
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    sSwitchChecked = true;
-                    mSwitch.setChecked(true);
-                    if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
-                        sAdapter = new ArrayAdapter<>(getActivity(), android.R.layout
-                                .simple_selectable_list_item, sNetWorkList);
-                        setListAdapter(sAdapter);
-                    }
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(!sListItemClicked && (sAdapter == null || sAdapter.isEmpty())) {
-                                discoverLocalDevices();
-                            }
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                ServerInfo serverInfo = (ServerInfo) adapterView.getAdapter().getItem(position);
+                if (serverInfo != null) {
+                    if (!sSelectedServer.contains(serverInfo))  {
+                        sSelectedServer.add(serverInfo);
+                        if(sSelectedServer.size() > 1) {
+                            Toast.makeText(getContext(), "Device already connected! " +
+                                    "Disconnect to connect another device", Toast.LENGTH_SHORT).show();
+                            sSelectedServer.remove(serverInfo);
+                        } else {
+                            listItemPos = position;
+                            startCommunication(serverInfo);
                         }
-                    }).start();
-                } else {
-                    sSwitchChecked = false;
-                    mSwitch.setChecked(false);
-                    getActivity().stopService(new Intent(getContext(), NetworkService.class));
-                    sListItemClicked = false;
+                    } else disconnectDevice(position);
                 }
             }
         });
-
-        return view;
     }
 
     @Override
@@ -113,11 +124,24 @@ public class ConnectionFragment extends ListFragment {
         }
     }
 
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        String address = sAdapter.getItem(position);
-        Log.d("ListItem: ",address);
-        if (!sListItemClicked)  startCommunication(address);
+    public View getViewByPosition(int pos) {
+        final int firstListItemPosition = mListView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + mListView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return mCustomAdapter.getView(pos, null, mListView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return mListView.getChildAt(childIndex);
+        }
+    }
+
+    ArrayList<ServerInfo> getNetworkList() { return  mNetworkList; }
+
+    private void disconnectDevice(int position) {
+        getActivity().stopService(new Intent(getContext(), NetworkService.class));
+        setImage(position, R.mipmap.laptop_icon);
+        sSelectedServer.remove(0);
     }
 
     private void getInternetPermission() {
@@ -132,13 +156,14 @@ public class ConnectionFragment extends ListFragment {
         }
     }
 
-    private void startCommunication (final String address) {
+    private void startCommunication (final ServerInfo serverInfo) {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    sSecuredClient = new Client(address);
-                } catch (IOException e) {}
+                    sSecuredClient = new Client(serverInfo.getAddress());
+                } catch (IOException ignored) {}
             }
         }).start();
 
@@ -150,6 +175,9 @@ public class ConnectionFragment extends ListFragment {
         editText.setSelection(editText.getText().length());
         editText.setHint("Password");
         editText.setTextSize(18);
+        InputFilter[] FilterArray = new InputFilter[1];
+        FilterArray[0] = new InputFilter.LengthFilter(PAIRING_KEY_LENGTH);
+        editText.setFilters(FilterArray);
         alert.setView(editText);
 
         alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
@@ -158,8 +186,8 @@ public class ConnectionFragment extends ListFragment {
                 final String pairingKey = editText.getText().toString();
                 if(sSecuredClient != null) {
                     try {
-                        new Thread(new ClientIOThread(getActivity(), pairingKey, address)).start();
-                    } catch (IOException e) {}
+                        new Thread(new ClientIOThread(getActivity(), pairingKey, serverInfo)).start();
+                    } catch (IOException ignored) {}
                 }
             }
         });
@@ -171,8 +199,8 @@ public class ConnectionFragment extends ListFragment {
                     try {
                         sSecuredClient.sendStopSignal(false);
                         sSecuredClient.close();
-                    } catch (IOException e) {}
-                    sListItemClicked = false;
+                        sSelectedServer.remove(serverInfo);
+                    } catch (IOException ignored) {}
                     dialog.dismiss();
                 }
             }
@@ -180,32 +208,40 @@ public class ConnectionFragment extends ListFragment {
 
         alert.setTitle("Connect to PC");
         alert.setCancelable(false);
-        sAlertDialog = alert.create();
-        sAlertDialog.show();
+        mAlertDialog = alert.create();
+        mAlertDialog.show();
     }
 
     private void discoverLocalDevices() {
-        ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getContext(), getActivity());
+        WifiManager wifi = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
+        ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getActivity(), lock);
         new Thread(clientConnectionThread).start();
     }
 
-    public static void addItems(HashSet<String> addressSet) {
-        if(!sSwitchChecked) {
-            sNetWorkList.clear();
-        } else {
-            for (String address : addressSet) {
-                if (!sNetWorkList.contains(address)) sNetWorkList.add(address);
-            }
-        }
-        sAdapter.notifyDataSetChanged();
+    public void addItem(ServerInfo serverInfo) {
+        mNetworkList.add(serverInfo);
+        mCustomAdapter.notifyDataSetChanged();
     }
 
-    public static void removeItem(String address) {
-        sNetWorkList.remove(address);
-        if(sAdapter != null)    sAdapter.notifyDataSetChanged();
+    public void setImage(ServerInfo serverInfo, int imageId) {
+        int position = mCustomAdapter.getPosition(serverInfo);
+        ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
+        img.setImageResource(imageId);
     }
 
-    public static void dismissAlertDialog() {
-        if(sAlertDialog != null)    sAlertDialog.dismiss();
+    public void setImage(int position, int imageId) {
+        ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
+        img.setImageResource(imageId);
     }
+
+    public void removeItem(ServerInfo serverInfo) {
+        sSelectedServer.remove(serverInfo);
+        sConnectionAlive.put(serverInfo.getAddress(), false);
+        mNetworkList.remove(serverInfo);
+        mCustomAdapter.notifyDataSetChanged();
+        mCustomAdapter.notifyDataSetChanged();
+    }
+
+    public void dismissAlertDialog() { if(mAlertDialog != null)    mAlertDialog.dismiss(); }
 }

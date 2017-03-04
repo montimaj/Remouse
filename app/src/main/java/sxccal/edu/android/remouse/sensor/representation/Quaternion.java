@@ -359,4 +359,3 @@ public class Quaternion extends Vector4f {
 		return new Vector3f(x,y,z);
 	}
 }
-
