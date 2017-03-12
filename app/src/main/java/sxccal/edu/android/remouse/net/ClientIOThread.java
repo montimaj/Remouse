@@ -8,14 +8,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
+import sxccal.edu.android.remouse.MainActivity;
 import sxccal.edu.android.remouse.NetworkService;
-import sxccal.edu.android.remouse.R;
 import sxccal.edu.android.remouse.security.EKEProvider;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSelectedServer;
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
-import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 
 /**
  * @author Sayantan Majumdar
@@ -59,9 +58,9 @@ public class ClientIOThread implements Runnable {
                 @Override
                 public void run() {
                     sSelectedServer.remove(mServerInfo);
-                    ConnectionFragment connectionFragment = (ConnectionFragment) sFragmentList.get(0);
+                    ConnectionFragment connectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();
                     try {
-                        connectionFragment.setImage(mServerInfo, R.mipmap.laptop_icon);
+                        connectionFragment.resetIcon(mServerInfo);
                     } catch (RuntimeException ignored) {}
                     Toast.makeText(mActivity, "Server " + mAddress + " disconnected! ", Toast.LENGTH_SHORT).show();
                 }

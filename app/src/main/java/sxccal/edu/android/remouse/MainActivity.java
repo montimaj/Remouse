@@ -35,11 +35,12 @@ import sxccal.edu.android.remouse.sensor.orientation.OrientationProvider;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
     private static final int REQUEST_RW_STORAGE = 2909;
 
-    public static ArrayList<Fragment> sFragmentList = new ArrayList<>();
     public static File sRemouseDir = null;
-    public static byte[] PUBLIC_KEY;
+    public static byte[] sPublicKey;
+    public static final String DEVICE_NAME = Build.MANUFACTURER + " " + Build.MODEL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                PUBLIC_KEY = new EKEProvider().getBase64EncodedPubKey();
+                sPublicKey = new EKEProvider().getBase64EncodedPubKey();
             }
         }).start();
 
@@ -204,6 +205,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public static Fragment getConnectionFragment() { return sFragmentList.get(0); }
 
     private void makeRemouseDirectory() {
         sRemouseDir = getDir("Remouse", Context.MODE_PRIVATE);

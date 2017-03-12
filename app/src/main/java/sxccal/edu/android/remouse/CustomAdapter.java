@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import sxccal.edu.android.remouse.net.ServerInfo;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
-import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 
 /**
  * @author Sayantan Majumdar
@@ -27,7 +26,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
     CustomAdapter(Activity activity, int textViewResourceId, ArrayList<ServerInfo> arrayList) {
         super(activity, textViewResourceId, arrayList);
         mActivity = activity;
-        mConnectionFragment = (ConnectionFragment) sFragmentList.get(0);
+        mConnectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();;
     }
 
     private class ViewHolder {

@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
-import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 import static sxccal.edu.android.remouse.MouseFragment.sMouseAlive;
 
 public class NetworkService extends Service {
@@ -21,8 +20,8 @@ public class NetworkService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        ConnectionFragment connectionFragment = (ConnectionFragment) sFragmentList.get(0);
-        connectionFragment.setImage(connectionFragment.listItemPos, R.mipmap.connect_icon);
+        ConnectionFragment connectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();
+        connectionFragment.setIcon();
         sAddress = intent.getStringExtra("Server");
         Toast.makeText(this, "Connected to " + sAddress + "\nOpen either Mouse " +
                         "or Keyboard Tabs from the navigation bar",

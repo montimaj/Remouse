@@ -11,7 +11,8 @@ import java.net.Socket;
 import sxccal.edu.android.remouse.security.EKEProvider;
 import sxccal.edu.android.remouse.sensor.representation.Quaternion;
 
-import static sxccal.edu.android.remouse.MainActivity.PUBLIC_KEY;
+import static sxccal.edu.android.remouse.MainActivity.DEVICE_NAME;
+import static sxccal.edu.android.remouse.MainActivity.sPublicKey;
 
 /**
  * Client module
@@ -31,7 +32,8 @@ public class Client {
     public Client(String address) throws IOException {
         sSocket = new Socket(address, TCP_PORT);
         sOut = new PrintWriter(sSocket.getOutputStream(), true);
-        sOut.println(new String(PUBLIC_KEY));
+        String gsonStr = new Gson().toJson(new ClientInfo(DEVICE_NAME, sPublicKey));
+        sOut.println(gsonStr);
     }
 
     Client(byte[] pairingKey, byte[] serverPubKey) {

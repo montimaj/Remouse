@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -42,12 +43,12 @@ public class ConnectionFragment extends Fragment {
 
     private View mView;
     private ListView mListView;
+    private TextView mTextView;
     private CustomAdapter mCustomAdapter;
     private ArrayList<ServerInfo> mNetworkList;
     private AlertDialog mAlertDialog;
     private boolean mInitDiscover;
-
-    public int listItemPos;
+    private int mSelectedServerPos;
 
     private static final int REQUEST_INTERNET_ACCESS = 1001;
     private static final int PAIRING_KEY_LENGTH = 6;
@@ -66,6 +67,7 @@ public class ConnectionFragment extends Fragment {
             mCustomAdapter = new CustomAdapter(getActivity(), R.layout.local_devices, mNetworkList);
             mListView = (ListView) mView.findViewById(R.id.listView);
             mListView.setAdapter(mCustomAdapter);
+            mTextView = (TextView) getActivity().findViewById(R.id.device_conn);
         }
         return mView;
     }
@@ -91,7 +93,7 @@ public class ConnectionFragment extends Fragment {
                                     "Disconnect to connect another device", Toast.LENGTH_SHORT).show();
                             sSelectedServer.remove(serverInfo);
                         } else {
-                            listItemPos = position;
+                            mSelectedServerPos = position;
                             startCommunication(serverInfo);
                         }
                     } else disconnectDevice(position);
@@ -140,7 +142,7 @@ public class ConnectionFragment extends Fragment {
 
     private void disconnectDevice(int position) {
         getActivity().stopService(new Intent(getContext(), NetworkService.class));
-        setImage(position, R.mipmap.laptop_icon);
+        resetIcon(position);
         sSelectedServer.remove(0);
     }
 
@@ -231,15 +233,28 @@ public class ConnectionFragment extends Fragment {
         mCustomAdapter.notifyDataSetChanged();
     }
 
-    public void setImage(ServerInfo serverInfo, int imageId) {
+    public void resetIcon(ServerInfo serverInfo) {
         int position = mCustomAdapter.getPosition(serverInfo);
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
-        img.setImageResource(imageId);
+        img.setImageResource(R.mipmap.laptop_icon);
+        mTextView.setText(R.string.no_device_connected);
     }
 
-    public void setImage(int position, int imageId) {
+    public void resetIcon(int position) {
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
-        img.setImageResource(imageId);
+        img.setImageResource(R.mipmap.laptop_icon);
+        mTextView.setText(R.string.no_device_connected);
+    }
+
+    public void setIcon() {
+        ImageView img = (ImageView) getViewByPosition(mSelectedServerPos).findViewById(R.id.connectIcon);
+        img.setImageResource(R.mipmap.connect_icon);
+        ServerInfo serverInfo = mCustomAdapter.getItem(mSelectedServerPos);
+        if(serverInfo != null) {
+            String s = "\nConnected to: " + serverInfo.getServerInfo();
+            s += "\nIP: " + serverInfo.getAddress();
+            mTextView.setText(s);
+        }
     }
 
     public void dismissAlertDialog() { if(mAlertDialog != null)    mAlertDialog.dismiss(); }

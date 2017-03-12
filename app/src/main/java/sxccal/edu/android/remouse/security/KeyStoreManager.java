@@ -34,9 +34,7 @@ class KeyStoreManager {
         mKeyStore.load(null, KEY_STORE_PASSWORD.toCharArray());
     }
 
-    static boolean keyStoreExists() {
-        return new File(KEY_STORE_NAME).exists();
-    }
+    static boolean keyStoreExists() { return new File(KEY_STORE_NAME).exists(); }
 
     void setMasterKey(PrivateKey privateKey, Certificate ...cert) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         KeyStore.PrivateKeyEntry privateKeyEntry = new KeyStore.PrivateKeyEntry(privateKey, cert);

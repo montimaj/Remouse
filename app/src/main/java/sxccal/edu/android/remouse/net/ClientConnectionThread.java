@@ -12,9 +12,9 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;;
 
 import sxccal.edu.android.remouse.ConnectionFragment;
+import sxccal.edu.android.remouse.MainActivity;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sConnectionAlive;
-import static sxccal.edu.android.remouse.MainActivity.sFragmentList;
 
 /**
  * Client to Server connection
@@ -37,7 +37,7 @@ public class ClientConnectionThread implements Runnable {
         mLock = lock;
         mDatagramSocket = null;
         mServerAddress = new ArrayList<>();
-        mConnectionFragment = (ConnectionFragment) sFragmentList.get(0);
+        mConnectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();;
     }
 
     @Override
