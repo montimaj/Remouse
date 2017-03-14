@@ -26,22 +26,18 @@ public class ClientIOThread implements Runnable {
     private EKEProvider mEKEProvider;
     private ServerInfo mServerInfo;
     private String mAddress;
-    private byte[] mPairingKey;
-    private byte[] mServerPubKey;
-
     private boolean mStopFlag;
-
 
     public ClientIOThread(Activity activity, final String pairingKey, ServerInfo serverInfo) throws IOException {
         mActivity = activity;
         mServerInfo = serverInfo;
         mAddress = serverInfo.getAddress();
-        mServerPubKey = serverInfo.getServerPubKey();
-        mPairingKey = pairingKey.getBytes();
+        sSecuredClient = new Client(pairingKey.getBytes(), serverInfo.getServerPubKey());
+        mEKEProvider = sSecuredClient.getEKEProvider();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sSecuredClient.sendPairingKey(pairingKey);
+                sSecuredClient.sendPairingKey(mEKEProvider.encryptString(pairingKey));
             }
         }).start();
     }
@@ -49,8 +45,6 @@ public class ClientIOThread implements Runnable {
     @Override
     public void run() {
         try {
-            sSecuredClient = new Client(mPairingKey, mServerPubKey);
-            mEKEProvider = sSecuredClient.getEKEProvider();
             while (!mStopFlag) {
                 recieveData();
             }
@@ -68,6 +62,7 @@ public class ClientIOThread implements Runnable {
             sSecuredClient.close();
         } catch (IOException ignored) {}
     }
+
     private void recieveData() throws IOException {
         BufferedReader in = sSecuredClient.getSocketReader();
         if(!in.ready())    return;

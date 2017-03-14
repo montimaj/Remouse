@@ -169,9 +169,13 @@ public class ConnectionFragment extends Fragment {
             }
         }).start();
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setMessage("Enter pairing key as shown in PC");
-        final EditText editText = new EditText(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_layout, null);
+        alert.setView(dialogView);
+        final EditText editText = (EditText) dialogView.findViewById(R.id.password);
+        //final ProgressBar progressBar = (ProgressBar) dialogView.findViewById(R.id.progress);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         editText.setSelection(editText.getText().length());
@@ -180,15 +184,16 @@ public class ConnectionFragment extends Fragment {
         InputFilter[] FilterArray = new InputFilter[1];
         FilterArray[0] = new InputFilter.LengthFilter(PAIRING_KEY_LENGTH);
         editText.setFilters(FilterArray);
-        alert.setView(editText);
 
         alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int button) {
+                //progressBar.setVisibility(View.VISIBLE);
                 final String pairingKey = editText.getText().toString();
                 if(sSecuredClient != null) {
                     try {
-                        new Thread(new ClientIOThread(getActivity(), pairingKey, serverInfo)).start();
+                        ClientIOThread clientIOThread = new ClientIOThread(getActivity(), pairingKey, serverInfo);
+                        new Thread(clientIOThread).start();
                     } catch (IOException ignored) {}
                 }
             }
@@ -251,7 +256,7 @@ public class ConnectionFragment extends Fragment {
         img.setImageResource(R.mipmap.connect_icon);
         ServerInfo serverInfo = mCustomAdapter.getItem(mSelectedServerPos);
         if(serverInfo != null) {
-            String s = "\nConnected to: " + serverInfo.getServerInfo();
+            String s = "\nConnected to:\n" + serverInfo.getServerInfo();
             s += "\nIP: " + serverInfo.getAddress();
             mTextView.setText(s);
         }

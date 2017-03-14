@@ -193,13 +193,7 @@ public class MainActivity extends AppCompatActivity
             fragment = sFragmentList.get(1);
             title="About app";
         }
-        if (fragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                                       .replace(R.id.content_frame, fragment)
-                                       .commit();
-        }
-        // set the toolbar title
-        if (getSupportActionBar() != null)  getSupportActionBar().setTitle(title);
+        if(fragment != null)    displayFragment(fragment, title);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -207,6 +201,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static Fragment getConnectionFragment() { return sFragmentList.get(0); }
+
+    private void displayFragment(Fragment fragment, String title) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        }
+        // set the toolbar title
+        if (getSupportActionBar() != null)  getSupportActionBar().setTitle(title);
+    }
 
     private void makeRemouseDirectory() {
         sRemouseDir = getDir("Remouse", Context.MODE_PRIVATE);
