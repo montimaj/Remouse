@@ -8,6 +8,7 @@ public class ServerInfo {
     private byte[] mServerPubKey;
     private String mServerInfo;
     private String mAddress;
+    private String mPairingKey;
     private boolean mStopFlag;
     private boolean mIsSelected;
 
@@ -32,6 +33,7 @@ public class ServerInfo {
     }
 
     void setServerAddress(String address) { mAddress = address; }
+    public void setPairingKey(String pairingKey) { mPairingKey = pairingKey; }
     public void setSelected( boolean value) { mIsSelected = value; }
     void setStopFlag() { mStopFlag = true; }
     void clearStopFlag() { mStopFlag = false; }
@@ -41,4 +43,5 @@ public class ServerInfo {
     public byte[] getServerPubKey() { return mServerPubKey; }
     public String getServerInfo() { return mServerInfo; }
     public String getAddress() { return mAddress; }
+    public String getPairingKey() { return mPairingKey; }
 }

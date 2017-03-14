@@ -2,7 +2,6 @@ package sxccal.edu.android.remouse;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 
 import sxccal.edu.android.remouse.net.Client;
 import sxccal.edu.android.remouse.net.ClientConnectionThread;
-import sxccal.edu.android.remouse.net.ClientIOThread;
+import sxccal.edu.android.remouse.net.ConnectionTask;
 import sxccal.edu.android.remouse.net.ServerInfo;
 
 /**
@@ -49,6 +48,8 @@ public class ConnectionFragment extends Fragment {
     private AlertDialog mAlertDialog;
     private boolean mInitDiscover;
     private int mSelectedServerPos;
+
+    public ServerInfo mServerInfo;
 
     private static final int REQUEST_INTERNET_ACCESS = 1001;
     private static final int PAIRING_KEY_LENGTH = 6;
@@ -169,13 +170,7 @@ public class ConnectionFragment extends Fragment {
             }
         }).start();
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setMessage("Enter pairing key as shown in PC");
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_layout, null);
-        alert.setView(dialogView);
-        final EditText editText = (EditText) dialogView.findViewById(R.id.password);
-        //final ProgressBar progressBar = (ProgressBar) dialogView.findViewById(R.id.progress);
+        EditText editText = new EditText(getActivity());
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         editText.setSelection(editText.getText().length());
@@ -185,38 +180,47 @@ public class ConnectionFragment extends Fragment {
         FilterArray[0] = new InputFilter.LengthFilter(PAIRING_KEY_LENGTH);
         editText.setFilters(FilterArray);
 
-        alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+        displayAlertDialog(editText, serverInfo);
+    }
+
+    private void displayAlertDialog(final EditText editText, final ServerInfo serverInfo) {
+        mAlertDialog = new AlertDialog.Builder(getContext())
+                .setView(editText)
+                .setTitle("Connect to CPU")
+                .setMessage("Enter pairing key as shown in PC")
+                .setPositiveButton(R.string.Send, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setCancelable(false)
+                .create();
+
+        mAlertDialog.show();
+        mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int button) {
-                //progressBar.setVisibility(View.VISIBLE);
-                final String pairingKey = editText.getText().toString();
+            public void onClick(View view) {
+                String pairingKey = editText.getText().toString();
+                serverInfo.setPairingKey(pairingKey);
                 if(sSecuredClient != null) {
-                    try {
-                        ClientIOThread clientIOThread = new ClientIOThread(getActivity(), pairingKey, serverInfo);
-                        new Thread(clientIOThread).start();
-                    } catch (IOException ignored) {}
+                    ConnectionTask connectionTask = new ConnectionTask();
+                    mServerInfo = serverInfo;
+                    connectionTask.execute(serverInfo);
                 }
+                mAlertDialog.dismiss();
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        mAlertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View view) {
                 if(sSecuredClient != null)  {
                     try {
                         sSecuredClient.sendStopSignal(false);
                         sSecuredClient.close();
                         sSelectedServer.remove(serverInfo);
                     } catch (IOException ignored) {}
-                    dialog.dismiss();
+                    mAlertDialog.dismiss();
                 }
             }
         });
-
-        alert.setTitle("Connect to PC");
-        alert.setCancelable(false);
-        mAlertDialog = alert.create();
-        mAlertDialog.show();
     }
 
     private void discoverLocalDevices() {

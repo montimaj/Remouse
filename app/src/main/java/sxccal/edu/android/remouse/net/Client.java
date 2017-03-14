@@ -36,20 +36,13 @@ public class Client {
         sOut.println(gsonStr);
     }
 
-    Client(byte[] pairingKey, byte[] serverPubKey) {
-        mEKEProvider = new EKEProvider(pairingKey, serverPubKey);
-    }
+    void setEKEProvider(EKEProvider ekeProvider) { mEKEProvider = ekeProvider; }
 
-    void sendPairingKey(String pairingKey) {
-        sOut.println(pairingKey);
-    }
+    void sendPairingKey(String pairingKey) { sOut.println(pairingKey); }
 
     BufferedReader getSocketReader() throws IOException {
         return new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
     }
-
-    EKEProvider getEKEProvider() { return mEKEProvider; }
-
 
     public void sendData(String operationType, String data) {
         mClientDataWrapper = new ClientDataWrapper(operationType, data);

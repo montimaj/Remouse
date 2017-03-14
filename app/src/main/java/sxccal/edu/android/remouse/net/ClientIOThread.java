@@ -20,7 +20,7 @@ import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
  * @author Sayantan Majumdar
  */
 
-public class ClientIOThread implements Runnable {
+class ClientIOThread implements Runnable {
 
     private Activity mActivity;
     private EKEProvider mEKEProvider;
@@ -28,16 +28,16 @@ public class ClientIOThread implements Runnable {
     private String mAddress;
     private boolean mStopFlag;
 
-    public ClientIOThread(Activity activity, final String pairingKey, ServerInfo serverInfo) throws IOException {
+    ClientIOThread(Activity activity, final ServerInfo serverInfo, EKEProvider ekeProvider) throws IOException {
         mActivity = activity;
         mServerInfo = serverInfo;
         mAddress = serverInfo.getAddress();
-        sSecuredClient = new Client(pairingKey.getBytes(), serverInfo.getServerPubKey());
-        mEKEProvider = sSecuredClient.getEKEProvider();
+        mEKEProvider = ekeProvider;
+        sSecuredClient.setEKEProvider(ekeProvider);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sSecuredClient.sendPairingKey(mEKEProvider.encryptString(pairingKey));
+                sSecuredClient.sendPairingKey(mEKEProvider.encryptString(serverInfo.getPairingKey()));
             }
         }).start();
     }
@@ -65,7 +65,7 @@ public class ClientIOThread implements Runnable {
 
     private void recieveData() throws IOException {
         BufferedReader in = sSecuredClient.getSocketReader();
-        if(!in.ready())    return;
+        if(!in.ready()) return;
         String s = mEKEProvider.decryptString(in.readLine());
         if(s != null) {
             if (s.equals("Stop")) {
@@ -75,7 +75,7 @@ public class ClientIOThread implements Runnable {
             }
             sConnectionAlive.put(mAddress, s.equals("1"));
         }
-        if (!sConnectionAlive.get(mAddress)) {
+        if (s == null || !sConnectionAlive.get(mAddress)) {
             displayError(mActivity);
         } else {
             Intent intent = new Intent(mActivity, NetworkService.class);
