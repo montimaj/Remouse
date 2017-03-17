@@ -77,7 +77,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
                 String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
                 sendKeyboardData(string);
             } else if(diff < 0) {
-                sendKeyboardData("backspace");
+                sendKeyboardData("\b"); //sends backspace
             }
         } else mLastInput = null;
     }
@@ -85,14 +85,14 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     @Override
     public void afterTextChanged(Editable s) {
         if(mLastInput == null) {
-            sendKeyboardData("backspace");
+            sendKeyboardData("\b"); //sends backspace
         }
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-            sendKeyboardData("backspace");
+            sendKeyboardData("\b"); //sends backspace
             return true;
         }
         return false;
