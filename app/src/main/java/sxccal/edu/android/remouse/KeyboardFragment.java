@@ -29,6 +29,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
         mInput = null;
+        mLastInput = null;
         if(sSecuredClient != null) {
             mInput = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             mInput.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -64,30 +65,30 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        mLastInput = s.toString();
+
+        if(count>after) {     //backspace ... less chars in future
+            String data = "";
+//            Log.d ("Keyboard before", count-after+" backspaces : "+s.subSequence(start+after,start+count));
+            for (int i = 0; i < count - after; ++i) // send (count-after) backspaces.
+                 data = data + "\b";
+            sendKeyboardData(data);
+        }
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(s.length() != 0 ) {
-            int currentInputLength = s.length();
-            int lastInputLength = mLastInput.length();
-            int diff = currentInputLength - lastInputLength;
-            if(diff > 0) {
-                String string = s.subSequence(currentInputLength - diff, currentInputLength).toString();
-                sendKeyboardData(string);
-            } else if(diff < 0) {
-                sendKeyboardData("\b"); //sends backspace
-            }
-        } else mLastInput = null;
+
+        int diff = count - before;
+        if(diff>0) {          //'s' contains more chars after text change
+            String input = s.subSequence(start + before, start + count).toString();
+//            Log.d("Keyboard on", input);
+            sendKeyboardData(input);
+        }
+        mLastInput = (s.length() == 0) ? null : s.toString();
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-        if(mLastInput == null) {
-            sendKeyboardData("\b"); //sends backspace
-        }
-    }
+    public void afterTextChanged(Editable s) {}
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
