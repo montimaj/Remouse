@@ -40,6 +40,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             keyboardInput.setTextSize(18);
             keyboardInput.setOnKeyListener(this);
             keyboardInput.addTextChangedListener(this);
+            mLastWord = "";
         }
         return view;
     }
@@ -67,7 +68,8 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+//        Log.d("Keyboard before", s.length()+" "+start+" "+count+" "+after);
+        mLastWord = s.subSequence(start, start+count).toString();
         if(count>after) {     //backspace ... less chars in future
             String data = "";
 //            Log.d ("Keyboard before", count-after+" backspaces : "+s.subSequence(start+after,start+count));
@@ -75,31 +77,25 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
                  data = data + "\b";
             sendKeyboardData(data);
         }
-        int space = Math.max(s.toString().lastIndexOf(' '), s.toString().lastIndexOf('\n'));
-        mLastWord = s.subSequence(space+1, s.length()).toString();
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+//        Log.d("Keyboard on", s.length()+" "+start+" "+before+" "+count);
         int diff = count - before;
         if(diff>0) {          //'s' contains more chars after text change
-            String input = s.subSequence(start + before, start + count).toString();
-//            Log.d("Keyboard on", input);
-            int space = Math.max(s.toString().lastIndexOf(' ', s.length()-2),
-                                    s.toString().lastIndexOf('\n', s.length()-2));
-            String currLastWord = s.subSequence(space+1, s.length()).toString();
-//            Log.d("Keyboard on", mLastWord);
-//            Log.d("Keyboard on", currLastWord);
-            if(input.equals(" ") && !(currLastWord.equals(mLastWord+" "))) {
-                String data = "";
-                for (int i = 0; i < mLastWord.length(); ++i)
-                    data = data + "\b";
-                sendKeyboardData(data + currLastWord);
-//                sendKeyboardData();
-            }
-            else
+            String currWord = s.subSequence(start, start+count).toString();
+
+            if(mLastWord.equals(s.subSequence(start, start+before).toString())) {
+                String input = s.subSequence(start + before, start + count).toString();
+//                Log.d("Keyboard on", input);
                 sendKeyboardData(input);
+            } else {
+                String data = "";
+                for(int i=0;i<before;++i)
+                    data = data + "\b";
+                sendKeyboardData(data + currWord);
+            }
         }
         mLastInput = (s.length() == 0) ? null : s.toString();
     }
