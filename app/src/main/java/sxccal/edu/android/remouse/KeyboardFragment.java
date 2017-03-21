@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
 
     private String mLastInput;
     private InputMethodManager mInput;
+    private String mLastWord;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +75,8 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
                  data = data + "\b";
             sendKeyboardData(data);
         }
+        int space = Math.max(s.toString().lastIndexOf(' '), s.toString().lastIndexOf('\n'));
+        mLastWord = s.subSequence(space+1, s.length()).toString();
     }
 
     @Override
@@ -82,7 +86,20 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         if(diff>0) {          //'s' contains more chars after text change
             String input = s.subSequence(start + before, start + count).toString();
 //            Log.d("Keyboard on", input);
-            sendKeyboardData(input);
+            int space = Math.max(s.toString().lastIndexOf(' ', s.length()-2),
+                                    s.toString().lastIndexOf('\n', s.length()-2));
+            String currLastWord = s.subSequence(space+1, s.length()).toString();
+//            Log.d("Keyboard on", mLastWord);
+//            Log.d("Keyboard on", currLastWord);
+            if(input.equals(" ") && !(currLastWord.equals(mLastWord+" "))) {
+                String data = "";
+                for (int i = 0; i < mLastWord.length(); ++i)
+                    data = data + "\b";
+                sendKeyboardData(data + currLastWord);
+//                sendKeyboardData();
+            }
+            else
+                sendKeyboardData(input);
         }
         mLastInput = (s.length() == 0) ? null : s.toString();
     }
