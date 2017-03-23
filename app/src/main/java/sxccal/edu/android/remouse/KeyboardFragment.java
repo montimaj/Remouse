@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import sxccal.edu.android.remouse.net.KeyboardThread;
+
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 
 /**
@@ -25,6 +27,8 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     private String mLastInput;
     private InputMethodManager mInput;
     private String mLastWord;
+    private Thread mTransferThread;
+    private KeyboardThread mKeyboardThread;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +44,9 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             keyboardInput.setTextSize(18);
             keyboardInput.setOnKeyListener(this);
             keyboardInput.addTextChangedListener(this);
+            mKeyboardThread = new KeyboardThread();
+            mTransferThread = new Thread(mKeyboardThread);
+            mTransferThread.start();
             mLastWord = "";
         }
         return view;
@@ -52,6 +59,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         if(mInput != null && view != null) {
             mInput.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+        mKeyboardThread.setStopFlag();
     }
 
     @Override
@@ -75,7 +83,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
 //            Log.d ("Keyboard before", count-after+" backspaces : "+s.subSequence(start+after,start+count));
             for (int i = 0; i < count - after; ++i) // send (count-after) backspaces.
                  data = data + "\b";
-            sendKeyboardData(data);
+            mKeyboardThread.addToBuffer(data);
         }
     }
 
@@ -86,15 +94,19 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         if(diff>0) {          //'s' contains more chars after text change
             String currWord = s.subSequence(start, start+count).toString();
 
+            // insertion of chars
             if(mLastWord.equals(s.subSequence(start, start+before).toString())) {
                 String input = s.subSequence(start + before, start + count).toString();
 //                Log.d("Keyboard on", input);
-                sendKeyboardData(input);
-            } else {
+                mKeyboardThread.addToBuffer(input);
+            }
+            // replace old with new text
+            else {
                 String data = "";
                 for(int i=0;i<before;++i)
                     data = data + "\b";
-                sendKeyboardData(data + currWord);
+//                Log.d("Keyboard on", data+currWord);
+                mKeyboardThread.addToBuffer(data + currWord);
             }
         }
         mLastInput = (s.length() == 0) ? null : s.toString();
@@ -106,18 +118,19 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-            sendKeyboardData("\b"); //sends backspace
+            mKeyboardThread.addToBuffer("\b");
             return true;
         }
         return false;
     }
 
-    private void sendKeyboardData(final String data) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sSecuredClient.sendData("Key", data);
-            }
-        }).start();
-    }
+//    private void sendKeyboardData(final String data) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                sSecuredClient.sendData("Key", data);
+//                Log.d("Keyboard sent w", data+"__>"+data.length());
+//            }
+//        }).start();
+//    }
 }
