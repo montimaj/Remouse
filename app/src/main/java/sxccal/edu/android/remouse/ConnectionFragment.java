@@ -200,9 +200,8 @@ public class ConnectionFragment extends Fragment {
                 String pairingKey = editText.getText().toString();
                 serverInfo.setPairingKey(pairingKey);
                 if(sSecuredClient != null) {
-                    ConnectionTask connectionTask = new ConnectionTask();
                     mServerInfo = serverInfo;
-                    connectionTask.execute(serverInfo);
+                    new ConnectionTask().execute(serverInfo);
                 }
                 mAlertDialog.dismiss();
             }

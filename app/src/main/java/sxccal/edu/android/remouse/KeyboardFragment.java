@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,6 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
     private String mLastInput;
     private InputMethodManager mInput;
     private String mLastWord;
-    private Thread mTransferThread;
     private KeyboardThread mKeyboardThread;
 
     @Override
@@ -45,8 +43,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
             keyboardInput.setOnKeyListener(this);
             keyboardInput.addTextChangedListener(this);
             mKeyboardThread = new KeyboardThread();
-            mTransferThread = new Thread(mKeyboardThread);
-            mTransferThread.start();
+            new Thread(mKeyboardThread).start();
             mLastWord = "";
         }
         return view;
@@ -123,14 +120,4 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         }
         return false;
     }
-
-//    private void sendKeyboardData(final String data) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                sSecuredClient.sendData("Key", data);
-//                Log.d("Keyboard sent w", data+"__>"+data.length());
-//            }
-//        }).start();
-//    }
 }

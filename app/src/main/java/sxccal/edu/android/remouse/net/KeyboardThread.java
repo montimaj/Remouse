@@ -1,7 +1,7 @@
 package sxccal.edu.android.remouse.net;
 
-import android.util.Log;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import static sxccal.edu.android.remouse.ConnectionFragment.sSecuredClient;
 
@@ -22,26 +22,28 @@ public class KeyboardThread implements Runnable {
     }
 
     public void addToBuffer(String data) {
-        while(mWait == true);
+        while(mWait);
         setWait();
         mBuffer.addLast(data);
         clearWait();
     }
 
     public void setStopFlag() { mStopFlag = true; }
-    public void setWait() { mWait = true; }
-    public void clearWait() { mWait = false; }
+    private void setWait() { mWait = true; }
+    private void clearWait() { mWait = false; }
 
     @Override
     public void run() {
         while(!mStopFlag) {
-            if(mWait == false) {
+            if(!mWait) {
                 setWait();
                 if (!mBuffer.isEmpty()) {
 //                    Log.d("Keyboard Status", mBuffer.size() + "");
-                    String data = mBuffer.removeFirst();
-                    sSecuredClient.sendData("Key", data);
+                    try {
+                        String data = mBuffer.removeFirst();
+                        sSecuredClient.sendData("Key", data);
 //                    Log.d("Keyboard sent", data + "__>" + data.length());
+                    } catch (NoSuchElementException e) { e.printStackTrace(); }
                 }
                 clearWait();
             }

@@ -22,12 +22,9 @@ public class ServerInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj)    return true;
+        if (obj == null)    return false;
+        if (getClass() != obj.getClass())   return false;
         ServerInfo other = (ServerInfo) obj;
         return mAddress.equals(other.mAddress);
     }
