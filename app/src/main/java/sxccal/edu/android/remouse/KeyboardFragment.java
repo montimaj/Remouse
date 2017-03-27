@@ -56,7 +56,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Te
         if(mInput != null && view != null) {
             mInput.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        mKeyboardThread.setStopFlag();
+        if(mKeyboardThread != null) mKeyboardThread.setStopFlag();
     }
 
     @Override

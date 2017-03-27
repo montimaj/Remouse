@@ -152,9 +152,13 @@ public class ConnectionFragment extends Fragment {
                 Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED);
         boolean hasPermission2 = (ContextCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.CHANGE_WIFI_MULTICAST_STATE) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermission1 || !hasPermission2) {
+        boolean hasPermission3 = (ContextCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission1 || !hasPermission2 || !hasPermission3) {
             ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.INTERNET, Manifest.permission.CHANGE_WIFI_MULTICAST_STATE},
+                    new String[]{Manifest.permission.INTERNET,
+                            Manifest.permission.CHANGE_WIFI_MULTICAST_STATE,
+                            Manifest.permission.ACCESS_NETWORK_STATE},
                     REQUEST_INTERNET_ACCESS);
         }
     }
