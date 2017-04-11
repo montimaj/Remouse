@@ -26,19 +26,42 @@ import project.android.sensor.orientation.OrientationProvider;
 import project.edu.android.remouse.R;
 
 /**
- * @author Sayantan Majumdar
+ * Class representing the activity that is launched at app startup.
+ *
+ * <p>
+ *     Screenshot: <br /> <br />
+ *     <img src= "../../../../../../scr/remouse.png" width="180" height="320" />
+ * </p>
+ * <p>
+ *      It provides an interface for navigation bar which contains the following
+ *      navigation items:
+ *      <ul>
+ *          <li> 3D Mouse </li>
+ *          <li> 2D Mouse </li>
+ *          <li> Keyboard </li>
+ *          <li> Connect </li>
+ *          <li> About </li>
+ *      </ul>
+ * </p>
  */
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
-    private static final int REQUEST_RW_STORAGE = 2909;
 
     public static File sRemouseDir = null;
     public static byte[] sPublicKey;
     public static final String DEVICE_NAME = Build.MANUFACTURER + " " + Build.MODEL;
 
+    /**
+     * Overrides the <code>android.support.v7.app.AppCompatActivity.onCreate(Bundle)</code>.<br/>
+     *
+     * Called when the activity is first created
+     * @param savedInstanceState If the activity is being re-initialized after previously being
+     *                           shut down then this Bundle contains the data it most recently
+     *                           supplied in onSaveInstanceState(Bundle).
+     *                           <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,18 +101,33 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.FragmentActivity.onResume()</code>.<br/>
+     *
+     * Called when the activity will start interacting with the user.
+     */
     @Override
     public void onResume() {
         super.onResume();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.FragmentActivity.onPause()</code>.<br/>
+     *
+     * Called when the system is about to start resuming a previous activity.
+     */
     @Override
     public void onPause() {
         super.onPause();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.FragmentActivity.onBackPressed()</code>.<br/>
+     *
+     * Called when the activity has detected the user's press of the back key.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -100,12 +138,25 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.AppCompatActivity.onDestroy()</code>.<br/>
+     *
+     * The final call received before an activity is destroyed.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         this.stopService(new Intent(this, NetworkService.class));
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.Activity.onCreateOptionsMenu(Menu)</code>.<br/>
+     *
+     * Initializes the contents of the Activity's standard options menu.
+     * @param menu The options menu for placing items.
+     * @return <code>true</code>, if the menu is to be displayed,
+     *         <code>false</code>, otherwise.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -113,11 +164,18 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Overrides the <code>android.support.v7.app.Activity.onOptionsItemSelected(MenuItem)</code>.<br/>
+     *
+     * Handles action bar item clicks. The action bar will automatically handle
+     * clicks on the Home/Up button, so long as a parent activity is specified
+     * in AndroidManifest.xml.
+     * @param item The menu item that was selected.
+     * @return <code>false</code>, if normal menu processing is allowed to proceed,
+     *         <code>true</code>, if it is to be consumed here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -128,6 +186,13 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Implements the <code>android.support.design.widget.NavigationView.OnNavigationItemSelectedListener.onNavigationItemSelected(MenuItem).</code>
+     *
+     * Called when an item in the navigation menu is selected.
+     * @param item The selected item.
+     * @return @return <code>true</code> if the selected item is to be displayed.
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -171,6 +236,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Returns the {@link project.android.ConnectionFragment} object.
+     * @return the {@link project.android.ConnectionFragment} object.
+     */
     public static Fragment getConnectionFragment() { return sFragmentList.get(0); }
 
     private void displayFragment(Fragment fragment, String title) {

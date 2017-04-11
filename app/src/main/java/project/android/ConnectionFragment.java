@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -36,9 +37,29 @@ import project.android.net.ServerInfo;
 import project.edu.android.remouse.R;
 
 /**
- * @author Sayantan Majumdar
+ * Class representing the <code>Fragment</code> that provides GUI frontend for the network module.
+ * <p>
+ *     It performs the following operations:
+ *     <ul>
+ *         <li>Displays the list of available servers with appropriate icons.</li>
+ *         <li>
+ *             Displays an alert dialog upon selecting a server from the list to input
+ *             the pairing key as shown in the PC.
+ *         </li>
+ *         <li>
+ *             Connects with the respective server upon successful authentication and
+ *             starts the communication by creating a TCP socket.
+ *             It also changes the icon of the selected server in the list.
+ *             icon
+ *         </li>
+ *     </ul>
+ * </p>
+ *
+ * @see project.android.net.ServerInfo
+ * @see project.android.net.Client
+ * @see project.android.net.ClientConnectionThread
+ * @see project.android.net.ConnectionTask
  */
-
 public class ConnectionFragment extends Fragment {
 
     private View mView;
@@ -59,6 +80,18 @@ public class ConnectionFragment extends Fragment {
     public static ArrayList<ServerInfo> sSelectedServer = new ArrayList<>();
     public static HashMap<String, Boolean> sConnectionAlive = new HashMap<>();
 
+    /**
+     * Overrides the <code>android.support.v4.app.Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>.<br/>
+     *
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The <code>LayoutInflater</code> object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     *                  The fragment should not add the view itself, but this can be used to generate
+     *                  the <code>LayoutParams</code> of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     *                           saved state as given here.
+     * @return the <code>View</code> for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,6 +107,17 @@ public class ConnectionFragment extends Fragment {
         return mView;
     }
 
+    /**
+     * Overrides the <code>android.support.v4.app.Fragment.onViewCreated(View, Bundle)</code>.<br/>
+     *
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)} has returned,
+     * but before any saved state has been restored in to the view. This gives subclasses a chance
+     * to initialize themselves once they know their view hierarchy has been completely created.
+     * The fragment's view hierarchy is not however attached to its parent at this point.
+     * @param view The <code>View</code> returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     *                           saved state as given here.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -104,20 +148,46 @@ public class ConnectionFragment extends Fragment {
         });
     }
 
+    /**
+     * Overrides the <code>android.support.v4.app.Fragment.onResume()</code>.<br/>
+     *
+     * Called when the activity will start interacting with the user.
+     */
     @Override
     public void onResume() {
         super.onResume();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+    /**
+     * Overrides the <code>android.support.v4.app.Fragment.onPause()</code>.<br/>
+     *
+     * Called when the system is about to start resuming a previous activity.
+     */
     @Override
     public void onPause() {
         super.onPause();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
+    /**
+     * Override the <code>android.support.v4.app.Fragment.onRequestPermissionsResult(int, String[], int[])</code>.<br/>
+     *
+     * <p>
+     *     Callback for the result from requesting permissions. This method is invoked for every call on
+     *     <code>android.support.v4.app.Fragment.requestPermissions(String[], int)</code>.
+     * </p>
+     * <p>
+     *     <b>Note </b>: It is possible that the permissions request interaction with the user is interrupted.
+     *     In this case empty permissions will be received and results arrays which should be treated as a cancellation.
+     * </p>
+     * @param requestCode The request code passed in requestPermissions(String[], int).
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions which is either
+     *                     <code>PERMISSION_GRANTED</code> or <code>PERMISSION_DENIED</code>. Never null.
+     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_INTERNET_ACCESS: {
@@ -127,6 +197,12 @@ public class ConnectionFragment extends Fragment {
             }
         }
     }
+
+    /**
+     * Returns the <code>View</code> of the clicked list item.
+     * @param pos Position of the item.
+     * @return the <code>View</code> of the clicked list item.
+     */
 
     public View getViewByPosition(int pos) {
         final int firstListItemPosition = mListView.getFirstVisiblePosition();
@@ -140,6 +216,10 @@ public class ConnectionFragment extends Fragment {
         }
     }
 
+    /**
+     * Returns a list of {@link project.android.net.ServerInfo} objects.
+     * @return a list of {@link project.android.net.ServerInfo} objects.
+     */
     ArrayList<ServerInfo> getNetworkList() { return  mNetworkList; }
 
     private void disconnectDevice(int position) {
@@ -234,11 +314,19 @@ public class ConnectionFragment extends Fragment {
         new Thread(clientConnectionThread).start();
     }
 
+    /**
+     * Adds an active {@link project.android.net.ServerInfo} object to a list.
+     * @param serverInfo the active {@link project.android.net.ServerInfo} object.
+     */
     public void addItem(ServerInfo serverInfo) {
         mNetworkList.add(serverInfo);
         mCustomAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Removes an inactive {@link project.android.net.ServerInfo} object from the list.
+     * @param serverInfo the inactive {@link project.android.net.ServerInfo} object.
+     */
     public void removeItem(ServerInfo serverInfo) {
         sSelectedServer.remove(serverInfo);
         sConnectionAlive.put(serverInfo.getAddress(), false);
@@ -246,6 +334,10 @@ public class ConnectionFragment extends Fragment {
         mCustomAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Sets an icon for an inactive server.
+     * @param serverInfo the {@link project.android.net.ServerInfo} of the inactive server.
+     */
     public void resetIcon(ServerInfo serverInfo) {
         int position = mCustomAdapter.getPosition(serverInfo);
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
@@ -253,12 +345,19 @@ public class ConnectionFragment extends Fragment {
         mTextView.setText(R.string.no_device_connected);
     }
 
+    /**
+     * Sets an icon for an inactive server.
+     * @param position List position of the inactive server.
+     */
     public void resetIcon(int position) {
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
         img.setImageResource(R.mipmap.laptop_icon);
         mTextView.setText(R.string.no_device_connected);
     }
 
+    /**
+     * Sets an icon for an active server.
+     */
     public void setIcon() {
         ImageView img = (ImageView) getViewByPosition(mSelectedServerPos).findViewById(R.id.connectIcon);
         img.setImageResource(R.mipmap.connect_icon);
@@ -270,5 +369,8 @@ public class ConnectionFragment extends Fragment {
         }
     }
 
+    /**
+     * Method to dismiss the alert dialog prompting the pairing key input.
+     */
     public void dismissAlertDialog() { if(mAlertDialog != null)    mAlertDialog.dismiss(); }
 }
