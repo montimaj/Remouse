@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context="sxccal.edu.android.remouse.TouchpadFragment">
+    tools:context="project.android.TouchpadFragment">
 
     <Button
         android:text="@string/left"

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffffff"
-    tools:context="sxccal.edu.android.remouse.KeyboardFragment">
+    tools:context="project.android.KeyboardFragment">
 
     <ImageView
         android:layout_width="match_parent"

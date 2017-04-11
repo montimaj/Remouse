@@ -1,0 +1,50 @@
+package project.android;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.widget.Toast;
+
+import java.io.IOException;
+
+import static project.android.ConnectionFragment.sSecuredClient;
+import static project.android.ConnectionFragment.sConnectionAlive;
+import static project.android.MouseFragment.sMouseAlive;
+
+public class NetworkService extends Service {
+
+    private static String sAddress;
+
+    @Override
+    public IBinder onBind(Intent intent) { return null; }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        ConnectionFragment connectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();
+        connectionFragment.setIcon();
+        sAddress = intent.getStringExtra("Server");
+        Toast.makeText(this, "Connected to " + sAddress + "\nOpen either Mouse " +
+                        "or Keyboard Tabs from the navigation bar",
+                Toast.LENGTH_SHORT).show();
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(sConnectionAlive.get(sAddress)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sSecuredClient.sendStopSignal(true);
+                    sMouseAlive = false;
+                    try {
+                        sSecuredClient.close();
+                        sConnectionAlive.put(sAddress, false);
+                    } catch (IOException ignored) {}
+                }
+            }).start();
+            Toast.makeText(this, sAddress + " disconnected successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+}

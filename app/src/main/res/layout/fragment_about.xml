@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffffff"
-    tools:context="sxccal.edu.android.remouse.AboutFragment">
+    tools:context="project.android.AboutFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
