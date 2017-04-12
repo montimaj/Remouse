@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import project.edu.android.remouse.R;
-
 /**
  * Class representing the <code>Fragment</code> for displaying app information.
  *

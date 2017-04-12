@@ -20,15 +20,17 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
     compile files('libs/spongycastle/core-1.54.0.0.jar')
     compile files('libs/spongycastle/prov-1.54.0.0.jar')
     compile files('libs/spongycastle/pkix-1.54.0.0.jar')
     compile files('libs/apache/commons-codec-1.10.jar')
     compile files('libs/gson/gson-2.8.1-SNAPSHOT.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
 }

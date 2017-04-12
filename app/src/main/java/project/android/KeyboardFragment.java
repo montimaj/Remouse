@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import project.android.net.KeyboardThread;
-import project.edu.android.remouse.R;
 
 import static project.android.ConnectionFragment.sSecuredClient;
 

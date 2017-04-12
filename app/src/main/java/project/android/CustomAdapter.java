@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import project.android.net.ServerInfo;
-import project.edu.android.remouse.R;
 
 import static project.android.ConnectionFragment.sConnectionAlive;
 

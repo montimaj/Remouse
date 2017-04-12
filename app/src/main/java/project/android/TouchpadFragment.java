@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import project.edu.android.remouse.R;
-
 import static project.android.ConnectionFragment.sConnectionAlive;
 import static project.android.ConnectionFragment.sSecuredClient;
 

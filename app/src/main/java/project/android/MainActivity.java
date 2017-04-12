@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import project.android.security.EKEProvider;
 import project.android.sensor.orientation.OrientationProvider;
-import project.edu.android.remouse.R;
 
 /**
  * Class representing the activity that is launched at app startup.

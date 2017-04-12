@@ -34,7 +34,6 @@ import project.android.net.Client;
 import project.android.net.ClientConnectionThread;
 import project.android.net.ConnectionTask;
 import project.android.net.ServerInfo;
-import project.edu.android.remouse.R;
 
 /**
  * Class representing the <code>Fragment</code> that provides GUI frontend for the network module.

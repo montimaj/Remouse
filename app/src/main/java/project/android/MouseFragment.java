@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import project.edu.android.remouse.R;
 import project.android.sensor.orientation.KalmanFilterProvider;
 import project.android.sensor.orientation.OrientationProvider;
 

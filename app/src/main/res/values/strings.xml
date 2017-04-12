@@ -27,4 +27,7 @@
     <string name="textview">TextView</string>
     <string name="no_device_connected">No device connected</string>
     <string name="Send">Send</string>
+    <string name="change_master_password">Change Master Password</string>
+    <string name="change_3d_mouse_settings">Change 3D Mouse Settings</string>
+    <string name="change_2d_mouse_settings">Change 2D mouse settings</string>
 </resources>
