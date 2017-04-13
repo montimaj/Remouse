@@ -27,15 +27,16 @@ import project.android.security.EKEProvider;
 import project.android.sensor.orientation.OrientationProvider;
 
 /**
- * Class representing the activity that is launched at app startup.
+ * Class representing the <code>Activity</code> that is launched
+ * at app startup.
  *
  * <p>
  *     Screenshot: <br /> <br />
  *     <img src= "../../../../../../scr/remouse.png" width="180" height="320" />
  * </p>
  * <p>
- *      It provides an interface for navigation bar which contains the following
- *      navigation items:
+ *      It provides an interface for navigation bar which contains
+ *      the following navigation items:
  *      <ul>
  *          <li> 3D Mouse </li>
  *          <li> 2D Mouse </li>
@@ -56,12 +57,15 @@ public class MainActivity extends AppCompatActivity
     public static final String DEVICE_NAME = Build.MANUFACTURER + " " + Build.MODEL;
 
     /**
-     * Overrides the <code>android.support.v7.app.AppCompatActivity.onCreate(Bundle)</code>.<br/>
+     * Overrides the <code>AppCompatActivity.onCreate(Bundle)</code>
+     * method of the Android API. <br/>
      *
-     * Called when the activity is first created
-     * @param savedInstanceState If the activity is being re-initialized after previously being
-     *                           shut down then this Bundle contains the data it most recently
-     *                           supplied in onSaveInstanceState(Bundle).
+     * Called when the activity is first created.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this <code>
+     *                           Bundle</code> contains the data it most
+     *                           recently supplied. <br/>
      *                           <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
@@ -104,9 +108,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.FragmentActivity.onResume()</code>.<br/>
+     * Overrides the <code>FragmentActivity.onResume()</code>
+     * method of the Android API. <br/>
      *
-     * Called when the activity will start interacting with the user.
+     * Called when the activity will start interacting with
+     * the user.
      */
     @Override
     public void onResume() {
@@ -115,9 +121,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.FragmentActivity.onPause()</code>.<br/>
+     * Overrides the <code>FragmentActivity.onPause()</code>
+     * method of the Android API. <br/>
      *
-     * Called when the system is about to start resuming a previous activity.
+     * Called when the system is about to start resuming a
+     * previous activity.
      */
     @Override
     public void onPause() {
@@ -126,9 +134,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.FragmentActivity.onBackPressed()</code>.<br/>
+     * Overrides the <code>FragmentActivity.onBackPressed()</code>
+     * method of the Android API. <br/>
      *
-     * Called when the activity has detected the user's press of the back key.
+     * Called when the activity has detected the user's press of
+     * the back key.
      */
     @Override
     public void onBackPressed() {
@@ -141,7 +151,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.AppCompatActivity.onDestroy()</code>.<br/>
+     * Overrides the <code>AppCompatActivity.onDestroy()</code>
+     * method of the Android API. <br/>
      *
      * The final call received before an activity is destroyed.
      */
@@ -152,11 +163,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.Activity.onCreateOptionsMenu(Menu)</code>.<br/>
+     * Overrides the <code>Activity.onCreateOptionsMenu(Menu)</code>
+     * method of the Android API. <br/>
      *
-     * Initializes the contents of the Activity's standard options menu.
+     * Initializes the contents of the Activity's standard options
+     * menu.
+     *
      * @param menu The options menu for placing items.
-     * @return <code>true</code>, if the menu is to be displayed,
+     * @return <code>true</code>, if the menu is to be displayed,<br/>
      *         <code>false</code>, otherwise.
      */
     @Override
@@ -167,13 +181,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Overrides the <code>android.support.v7.app.Activity.onOptionsItemSelected(MenuItem)</code>.<br/>
+     * Overrides the
+     * <code>Activity.onOptionsItemSelected(MenuItem)</code>
+     * method of the Android API. <br/>
      *
-     * Handles action bar item clicks. The action bar will automatically handle
-     * clicks on the Home/Up button, so long as a parent activity is specified
-     * in AndroidManifest.xml.
+     * Handles action bar item clicks. The action bar will
+     * automatically handle clicks on the Home/Up button, so
+     * long as a parent activity is specified in
+     * <code>AndroidManifest.xml</code>.
+     *
      * @param item The menu item that was selected.
-     * @return <code>false</code>, if normal menu processing is allowed to proceed,
+     * @return <code>false</code>, if normal menu processing is
+     *                             allowed to proceed, <br/>
      *         <code>true</code>, if it is to be consumed here.
      */
     @Override
@@ -190,11 +209,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Implements the <code>android.support.design.widget.NavigationView.OnNavigationItemSelectedListener.onNavigationItemSelected(MenuItem).</code>
+     * Implements the
+     * <code>
+     *     NavigationView.OnNavigationItemSelectedListener.onNavigationItemSelected(MenuItem)
+     * </code>
+     * method of the Android API. <br/>
      *
      * Called when an item in the navigation menu is selected.
+     *
      * @param item The selected item.
-     * @return @return <code>true</code> if the selected item is to be displayed.
+     * @return @return <code>true</code>, if the selected item is
+     *                                    to be displayed, <br/>
+     *                 <code>false</code>, otherwise.
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -209,7 +235,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MouseFragment();
                 title = "Remote Mouse";
             } else {
-                Toast.makeText(this, "Gyrosope not present!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Gyroscope not present!", Toast.LENGTH_LONG).show();
             }
 
         } else if(id == R.id.nav_touchpad) {
@@ -241,7 +267,9 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Returns the {@link project.android.ConnectionFragment} object.
+     *
      * @return the {@link project.android.ConnectionFragment} object.
+     * @see project.android.ConnectionFragment
      */
     public static Fragment getConnectionFragment() { return sFragmentList.get(0); }
 

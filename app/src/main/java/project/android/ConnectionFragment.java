@@ -36,19 +36,24 @@ import project.android.net.ConnectionTask;
 import project.android.net.ServerInfo;
 
 /**
- * Class representing the <code>Fragment</code> that provides GUI frontend for the network module.
+ * Class representing the <code>Fragment</code> that provides GUI frontend for
+ * the network module.
+ *
  * <p>
  *     It performs the following operations:
  *     <ul>
- *         <li>Displays the list of available servers with appropriate icons.</li>
  *         <li>
- *             Displays an alert dialog upon selecting a server from the list to input
- *             the pairing key as shown in the PC.
+ *             Displays the list of available servers with appropriate icons. It
+ *             maintains a list of servers available.
  *         </li>
  *         <li>
- *             Connects with the respective server upon successful authentication and
- *             starts the communication by creating a TCP socket.
- *             It also changes the icon of the selected server in the list.
+ *             Displays an alert dialog upon selecting a server from the list to
+ *             input the pairing key as shown in the PC.
+ *         </li>
+ *         <li>
+ *             Connects with the respective server upon successful authentication
+ *             and starts the communication by creating a TCP socket. It also changes
+ *             the icon of the selected server in the list.
  *             icon
  *         </li>
  *     </ul>
@@ -80,16 +85,21 @@ public class ConnectionFragment extends Fragment {
     public static HashMap<String, Boolean> sConnectionAlive = new HashMap<>();
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>.<br/>
+     * Overrides the
+     * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
+     * method of the Android API. <br/>
      *
      * Called to have the fragment instantiate its user interface view.
-     * @param inflater The <code>LayoutInflater</code> object that can be used to inflate any views in the fragment.
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
-     *                  The fragment should not add the view itself, but this can be used to generate
-     *                  the <code>LayoutParams</code> of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
-     * @return the <code>View</code> for the fragment's UI, or null.
+     *
+     * @param inflater The <code>LayoutInflater</code> object that can be used
+     *                 to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI
+     *                  should be attached to. The fragment should not add the view
+     *                  itself, but this can be used to generate the
+     *                  <code>LayoutParams</code> of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
+     * @return the <code>View</code> for the fragment's UI, or <code>null</code>.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,15 +117,16 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onViewCreated(View, Bundle)</code>.<br/>
+     * Overrides the <code>Fragment.onViewCreated(View, Bundle)</code>.
+     * method of the Android API. <br/>
      *
-     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)} has returned,
-     * but before any saved state has been restored in to the view. This gives subclasses a chance
-     * to initialize themselves once they know their view hierarchy has been completely created.
-     * The fragment's view hierarchy is not however attached to its parent at this point.
-     * @param view The <code>View</code> returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * has returned, but before any saved state has been restored in to the view.
+     *
+     * @param view The <code>View</code> returned by
+     *             {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -148,9 +159,11 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onResume()</code>.<br/>
+     * Overrides the <code>Fragment.onResume()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the activity will start interacting with the user.
+     * Called when the activity will start interacting with
+     * the user.
      */
     @Override
     public void onResume() {
@@ -159,9 +172,11 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onPause()</code>.<br/>
+     * Overrides the <code>Fragment.onPause()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the system is about to start resuming a previous activity.
+     * Called when the system is about to start resuming a
+     * previous activity.
      */
     @Override
     public void onPause() {
@@ -170,20 +185,15 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Override the <code>android.support.v4.app.Fragment.onRequestPermissionsResult(int, String[], int[])</code>.<br/>
+     * Override the
+     * <code>Fragment.onRequestPermissionsResult(int, String[], int[])</code>
+     * method of the Android API.
      *
-     * <p>
-     *     Callback for the result from requesting permissions. This method is invoked for every call on
-     *     <code>android.support.v4.app.Fragment.requestPermissions(String[], int)</code>.
-     * </p>
-     * <p>
-     *     <b>Note </b>: It is possible that the permissions request interaction with the user is interrupted.
-     *     In this case empty permissions will be received and results arrays which should be treated as a cancellation.
-     * </p>
-     * @param requestCode The request code passed in requestPermissions(String[], int).
+     * @param requestCode The request code .
      * @param permissions The requested permissions. Never null.
-     * @param grantResults The grant results for the corresponding permissions which is either
-     *                     <code>PERMISSION_GRANTED</code> or <code>PERMISSION_DENIED</code>. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *                     which is either <code>PERMISSION_GRANTED</code> or
+     *                     <code>PERMISSION_DENIED</code>. Never null.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -199,6 +209,7 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Returns the <code>View</code> of the clicked list item.
+     *
      * @param pos Position of the item.
      * @return the <code>View</code> of the clicked list item.
      */
@@ -216,8 +227,11 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Returns a list of {@link project.android.net.ServerInfo} objects.
-     * @return a list of {@link project.android.net.ServerInfo} objects.
+     * Returns a list of <code>ServerInfo</code> objects.
+     *
+     * @return a list of {@link project.android.net.ServerInfo}
+     *         objects.
+     * @see project.android.net.ServerInfo
      */
     ArrayList<ServerInfo> getNetworkList() { return  mNetworkList; }
 
@@ -314,8 +328,12 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Adds an active {@link project.android.net.ServerInfo} object to a list.
-     * @param serverInfo the active {@link project.android.net.ServerInfo} object.
+     * Adds the <code>ServerInfo</code> object of an active server
+     * to the list of servers.
+     *
+     * @param serverInfo the active {@link project.android.net.ServerInfo}
+     *                   object.
+     * @see project.android.net.ServerInfo
      */
     public void addItem(ServerInfo serverInfo) {
         mNetworkList.add(serverInfo);
@@ -323,8 +341,12 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Removes an inactive {@link project.android.net.ServerInfo} object from the list.
-     * @param serverInfo the inactive {@link project.android.net.ServerInfo} object.
+     * Removes the <code>ServerInfo</code> object of an inactive server
+     * from the list of servers.
+     *
+     * @param serverInfo the inactive {@link project.android.net.ServerInfo}
+     *                   object.
+     * @see project.android.net.ServerInfo
      */
     public void removeItem(ServerInfo serverInfo) {
         sSelectedServer.remove(serverInfo);
@@ -335,7 +357,10 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Sets an icon for an inactive server.
-     * @param serverInfo the {@link project.android.net.ServerInfo} of the inactive server.
+     *
+     * @param serverInfo the {@link project.android.net.ServerInfo}
+     *                   of the inactive server.
+     * @see project.android.net.ServerInfo
      */
     public void resetIcon(ServerInfo serverInfo) {
         int position = mCustomAdapter.getPosition(serverInfo);
@@ -346,6 +371,7 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Sets an icon for an inactive server.
+     *
      * @param position List position of the inactive server.
      */
     public void resetIcon(int position) {

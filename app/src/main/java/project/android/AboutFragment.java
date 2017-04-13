@@ -14,16 +14,21 @@ import android.view.ViewGroup;
 public class AboutFragment extends Fragment {
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>.<br/>
+     * Overrides the
+     * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
+     * method of the Android API. <br/>
      *
      * Called to have the fragment instantiate its user interface view.
-     * @param inflater The <code>LayoutInflater</code> object that can be used to inflate any views in the fragment.
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
-     *                  The fragment should not add the view itself, but this can be used to generate
-     *                  the <code>LayoutParams</code> of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
-     * @return the <code>View</code> for the fragment's UI, or null.
+     *
+     * @param inflater The <code>LayoutInflater</code> object that can be used to
+     *                 inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's
+     *                  UI should be attached to.The fragment should not add the
+     *                  view itself, but this can be used to generate the
+     *                  <code>LayoutParams</code> of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
+     * @return the <code>View</code> for the fragment's UI, or <code>null</code>.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +38,8 @@ public class AboutFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onResume()</code>.<br/>
+     * Overrides the <code>Fragment.onResume()</code> method
+     * of the Android API. <br/>
      *
      * Called when the activity will start interacting with the user.
      */
@@ -44,9 +50,11 @@ public class AboutFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onPause()</code>.<br/>
+     * Overrides the <code>Fragment.onPause()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the system is about to start resuming a previous activity.
+     * Called when the system is about to start resuming a previous
+     * activity.
      */
     @Override
     public void onPause() {
