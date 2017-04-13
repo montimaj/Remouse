@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
      * Overrides the <code>android.support.v7.app.Activity.onCreateOptionsMenu(Menu)</code>.<br/>
      *
      * Initializes the contents of the Activity's standard options menu.
-     * @param menu The options menu for placing items.return password;
+     * @param menu The options menu for placing items.
      * @return <code>true</code>, if the menu is to be displayed,
      *         <code>false</code>, otherwise.
      */
