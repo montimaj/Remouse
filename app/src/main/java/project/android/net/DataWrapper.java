@@ -51,7 +51,6 @@ import project.android.sensor.representation.Quaternion;
  * @see project.android.TouchpadFragment
  * @see project.android.KeyboardFragment
  */
-
 class DataWrapper {
 
     private String mOperationType;

@@ -18,9 +18,17 @@ import project.android.net.KeyboardThread;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * @author Sayantan Majumdar
+ * Class representing the <code>Fragment</code> for providing the GUI frontend for the keyboard module.<br/>
+ *
+ * The following keyboard features are provided:
+ * <ul>
+ *     <li>Predictive text input.</li>
+ *     <li>Autocorrect feature.</li>
+ *     <li>Hide sensitive text.</li>
+ *     <li>Support for special keys like Ctrl, Alt etc. </li>
+ * </ul>
+ * @see project.android.net.KeyboardThread
  */
-
 public class KeyboardFragment extends Fragment implements View.OnKeyListener, TextWatcher {
 
     private String mLastInput;

@@ -1,4 +1,4 @@
-package project.android;
+package project.android.net;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,10 +7,26 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import project.android.ConnectionFragment;
+import project.android.MainActivity;
+import project.android.security.EKEProvider;
+
 import static project.android.ConnectionFragment.sSecuredClient;
 import static project.android.ConnectionFragment.sConnectionAlive;
 import static project.android.MouseFragment.sMouseAlive;
 
+/**
+ * Class representing the <code>android.app.Service</code> that runs upon successful client-server connection.<br/>
+ *
+ * <p>
+ *     {@link ClientIOThread} starts this service when a successful client-server
+ *     connection has been established. The <code>android.app.Service</code> is destroyed when {@link NetworkService#onDestroy()}
+ *     is invoked upon app closing.
+ * </p>
+ * @see project.android.net.ConnectionTask#onPostExecute(EKEProvider)
+ * @see project.android.net.ClientIOThread#recieveData()
+ * @see project.android.MainActivity#onDestroy()
+ */
 public class NetworkService extends Service {
 
     private static String sAddress;
@@ -58,7 +74,6 @@ public class NetworkService extends Service {
      *     Upon return, there will be no more calls in to this <code>android.app.Service</code> object and it is effectively dead.
      * </p>
      */
-
     @Override
     public void onDestroy() {
         super.onDestroy();

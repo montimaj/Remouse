@@ -31,8 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import project.android.net.Client;
-import project.android.net.ClientConnectionThread;
+import project.android.net.BroadcastReceiverThread;
 import project.android.net.ConnectionTask;
+import project.android.net.NetworkService;
 import project.android.net.ServerInfo;
 
 /**
@@ -54,14 +55,13 @@ import project.android.net.ServerInfo;
  *             Connects with the respective server upon successful authentication
  *             and starts the communication by creating a TCP socket. It also changes
  *             the icon of the selected server in the list.
- *             icon
  *         </li>
  *     </ul>
  * </p>
  *
  * @see project.android.net.ServerInfo
  * @see project.android.net.Client
- * @see project.android.net.ClientConnectionThread
+ * @see BroadcastReceiverThread
  * @see project.android.net.ConnectionTask
  */
 public class ConnectionFragment extends Fragment {
@@ -189,7 +189,7 @@ public class ConnectionFragment extends Fragment {
      * <code>Fragment.onRequestPermissionsResult(int, String[], int[])</code>
      * method of the Android API.
      *
-     * @param requestCode The request code .
+     * @param requestCode The request code.
      * @param permissions The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions
      *                     which is either <code>PERMISSION_GRANTED</code> or
@@ -213,7 +213,6 @@ public class ConnectionFragment extends Fragment {
      * @param pos Position of the item.
      * @return the <code>View</code> of the clicked list item.
      */
-
     public View getViewByPosition(int pos) {
         final int firstListItemPosition = mListView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + mListView.getChildCount() - 1;
@@ -323,8 +322,8 @@ public class ConnectionFragment extends Fragment {
     private void discoverLocalDevices() {
         WifiManager wifi = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiManager.MulticastLock lock = wifi.createMulticastLock("remouseMulticastLock");
-        ClientConnectionThread clientConnectionThread = new ClientConnectionThread(getActivity(), lock);
-        new Thread(clientConnectionThread).start();
+        BroadcastReceiverThread broadcastReceiverThread = new BroadcastReceiverThread(getActivity(), lock);
+        new Thread(broadcastReceiverThread).start();
     }
 
     /**

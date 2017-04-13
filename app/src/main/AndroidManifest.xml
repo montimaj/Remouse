@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name=".NetworkService"
+            android:name=".net.NetworkService"
             android:enabled="true"
             android:exported="true" />
 

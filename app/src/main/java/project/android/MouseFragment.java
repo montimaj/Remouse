@@ -19,9 +19,23 @@ import static project.android.ConnectionFragment.sConnectionAlive;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * @author Sayantan Majumdar
+ * Class representing the <code>Fragment</code> for providing the GUI frontend for the 3D mouse module.<br/>
+ *
+ * The following features have been provided:
+ * <ul>
+ *     <li>
+ *         3D mouse movement using {@link project.android.sensor.orientation.OrientationProvider} and
+ *         {@link project.android.sensor.orientation.KalmanFilterProvider}
+ *     </li>
+ *     <li>
+ *         Single left click and double left click.
+ *     </li>
+ *     <li>Right click</li>
+ *     <li>Middle click.</li>
+ * </ul>
+ * @see project.android.sensor.orientation.OrientationProvider
+ * @see project.android.sensor.orientation.KalmanFilterProvider
  */
-
 public class MouseFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
     private OrientationProvider mOrientationProvider;

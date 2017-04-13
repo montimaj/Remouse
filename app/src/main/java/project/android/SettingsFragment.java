@@ -14,7 +14,6 @@ import android.preference.PreferenceFragment;
  * @see project.android.SettingsActivity
  * @see project.android.SettingsActivity#onCreate(Bundle)
  */
-
 public class SettingsFragment extends PreferenceFragment {
 
     /**

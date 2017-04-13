@@ -2,6 +2,8 @@ package project.android.net;
 
 import android.app.Activity;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -17,12 +19,17 @@ import project.android.MainActivity;
 import static project.android.ConnectionFragment.sConnectionAlive;
 
 /**
- * Client to Server connection
- * @author Sayantan Majumdar
- * @author Sudipto Bhattacharjee
+ * Class representing the server broadcast receiver module.<br/>
+ *
+ * <p>
+ *     This class receives the UDP packets broadcasted by the server and updates the <code>ListView</code>
+ *     in the {@link project.android.ConnectionFragment} accordingly. This thread is first run when {@link ConnectionFragment#onViewCreated(View, Bundle)}
+ *     is invoked and runs until the app is closed.
+ * </p>
+ * @see project.android.ConnectionFragment
+ * @see project.android.net.ServerInfo
  */
-
-public class ClientConnectionThread implements Runnable {
+public class BroadcastReceiverThread implements Runnable {
 
     private Activity mActivity;
     private WifiManager.MulticastLock mLock;
@@ -32,7 +39,13 @@ public class ClientConnectionThread implements Runnable {
 
     private static final int UDP_PORT = 1235;
 
-    public ClientConnectionThread(Activity activity, WifiManager.MulticastLock lock) {
+    /**
+     * Constructor.<br/>
+     * Initializes this <code>BroadcastReceiverThread</code>.
+     * @param activity The current <code>android.app.Activity</code> object.
+     * @param lock <code>android.net.wifi.WifiManager.MulticastLock</code> object.
+     */
+    public BroadcastReceiverThread(Activity activity, WifiManager.MulticastLock lock) {
         mActivity = activity;
         mLock = lock;
         mDatagramSocket = null;
@@ -40,6 +53,21 @@ public class ClientConnectionThread implements Runnable {
         mConnectionFragment = (ConnectionFragment) MainActivity.getConnectionFragment();;
     }
 
+    /**
+     * Performs the broadcast receiving operation.
+     * <ul>
+     *     <li>
+     *         Checks whether a stop signal has been broadcasted by the server. If so, removes the
+     *         {@link ServerInfo} object from the <code>ListView</code> in the
+     *         {@link project.android.ConnectionFragment}.
+     *     </li>
+     *     <li>
+     *         Constructs a {@link ServerInfo} object from the data obtained from
+     *         the <code>DatagramPacket</code> using <code>com.google.Gson</code> API and updates the
+     *         <code>ListView</code> in the {@link project.android.ConnectionFragment} accordingly.
+     *     </li>
+     * </ul>
+     */
     @Override
     public void run() {
         try {
@@ -92,14 +120,6 @@ public class ClientConnectionThread implements Runnable {
                     }
                 });
             }
-        }
-    }
-
-    public void close() {
-        if(mDatagramSocket != null) {
-            mDatagramSocket. close();
-            mDatagramSocket = null;
-            mServerAddress = null;
         }
     }
 }

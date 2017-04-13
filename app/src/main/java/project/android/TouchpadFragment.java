@@ -14,10 +14,20 @@ import static project.android.ConnectionFragment.sConnectionAlive;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * @author Sayantan Majumdar
- * @author Sudipto Bhattacharjee
+ * Class representing the <code>Fragment</code> for providing the GUI frontend for the 2D mouse module.<br/>
+ *
+ * The following features have been provided:
+ * <ul>
+ *     <li>
+ *         2D mouse movement by implementing <code>View.OnTouchListener</code> interface.
+ *     </li>
+ *     <li>
+ *         Single left click and double left click.
+ *     </li>
+ *     <li>Right click</li>
+ *     <li>Middle click.</li>
+ * </ul>
  */
-
 public class TouchpadFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
     private long mTouchTime;

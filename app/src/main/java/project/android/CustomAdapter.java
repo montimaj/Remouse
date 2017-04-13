@@ -16,9 +16,12 @@ import project.android.net.ServerInfo;
 import static project.android.ConnectionFragment.sConnectionAlive;
 
 /**
- * @author Sayantan Majumdar
+ * Class for displaying the list of available servers in a <code>ListView</code> format.<br/>
+ *
+ * The <code>CustomAdapter</code> populates the <code>ListView</code> in the <code>ConnectionFragment</code>.
+ * List items consist of <code>ServerInfo</code> objects and are added/removed dynamically.
+ * @see project.android.ConnectionFragment
  */
-
 class CustomAdapter extends ArrayAdapter<ServerInfo> {
 
     private Activity mActivity;
@@ -60,7 +63,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
      * Get a <code>View</code that displays the data at the specified position in the data set.
      * @param position The position of the item within the adapter's data set of the item whose view is required.
      * @param convertView The old view to reuse, if possible.
-     * @param parent The parent that this view will eventually be attached to
+     * @param parent The parent that this view will eventually be attached to.
      * @return A <code>View</code> corresponding to the data at the specified position.
      */
     @NonNull

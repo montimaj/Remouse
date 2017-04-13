@@ -32,7 +32,7 @@ class KeyStoreManager {
 
     private static final String KEY_STORE_TYPE = "pkcs12";
     private static final String KEY_STORE_ALIAS = "Remouse KeyStore";
-    private static final String KEY_STORE_PASSWORD = generateKeystorePassword();
+    private static final String KEY_STORE_PASSWORD = generateKSPassword();
     private static final String KEY_STORE_NAME = sRemouseDir + "/remouse_keystore";
 
     KeyStoreManager() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
@@ -63,7 +63,7 @@ class KeyStoreManager {
         return null;
     }
 
-    private static String generateKeystorePassword() {
+    private static String generateKSPassword() {
         String password = sSharedPrefs.getString("Password", null);
         if(password == null) {
             SecureRandom random = new SecureRandom();
@@ -82,7 +82,6 @@ class KeyStoreManager {
             editor.putString("Password", password);
             editor.apply();
         }
-        System.out.println("password: " + password);
         return password;
     }
 }

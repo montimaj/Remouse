@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import project.android.ConnectionFragment;
 import project.android.MainActivity;
-import project.android.NetworkService;
 import project.android.security.EKEProvider;
 
 import static project.android.ConnectionFragment.sConnectionAlive;
@@ -17,9 +16,14 @@ import static project.android.ConnectionFragment.sSelectedServer;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * @author Sayantan Majumdar
+ * Class representing the client-server interaction module.<br/>
+ *
+ * {@link ConnectionTask} starts this thread by invoking {@link ConnectionTask#onPostExecute(EKEProvider)}.
+ * This class is responsible for enabling/disabling client-server connection.
+ * @see project.android.net.ConnectionTask
+ * @see project.android.net.Client
+ * @see project.android.net.NetworkService
  */
-
 class ClientIOThread implements Runnable {
 
     private Activity mActivity;
@@ -28,6 +32,14 @@ class ClientIOThread implements Runnable {
     private String mAddress;
     private boolean mStopFlag;
 
+    /**
+     * Constructor.<br/>
+     * Initializes this <code>ClientIOThread</code>.
+     * @param activity The current <code>android.app.Activity</code> object.
+     * @param serverInfo {@link ServerInfo} object.
+     * @param ekeProvider {@link project.android.security.EKEProvider} object.
+     * @throws IOException
+     */
     ClientIOThread(Activity activity, final ServerInfo serverInfo, EKEProvider ekeProvider) throws IOException {
         mActivity = activity;
         mServerInfo = serverInfo;
@@ -42,6 +54,14 @@ class ClientIOThread implements Runnable {
         }).start();
     }
 
+    /**
+     * Performs operations for reading data from a server.
+     * <ul>
+     *     <li>Reads stop signal sent from server and disables the respective server</li>
+     *     <li>Starts {@link NetworkService} upon successful server connection</li>
+     * </ul>
+     * @see project.android.ConnectionFragment
+     */
     @Override
     public void run() {
         try {
