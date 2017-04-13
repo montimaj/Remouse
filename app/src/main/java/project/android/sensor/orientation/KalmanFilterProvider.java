@@ -57,7 +57,7 @@ public class KalmanFilterProvider extends OrientationProvider {
 					axisZ /= gyroscopeRotationVelocity;
 				}
 
-				/**
+				/*
 				 * Integrate around this axis with the angular speed by the timestep
 				 * in order to get a delta rotation from this sample over the timestep
 				 */

@@ -2,9 +2,11 @@ package project.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     public static File sRemouseDir = null;
     public static byte[] sPublicKey;
+    public static SharedPreferences sSharedPrefs;
     public static final String DEVICE_NAME = Build.MANUFACTURER + " " + Build.MODEL;
 
     /**
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sSharedPrefs = getSharedPreferences("REMOUSE", Context.MODE_PRIVATE);
         makeRemouseDirectory();
 
         new Thread(new Runnable() {
@@ -152,7 +155,7 @@ public class MainActivity extends AppCompatActivity
      * Overrides the <code>android.support.v7.app.Activity.onCreateOptionsMenu(Menu)</code>.<br/>
      *
      * Initializes the contents of the Activity's standard options menu.
-     * @param menu The options menu for placing items.
+     * @param menu The options menu for placing items.return password;
      * @return <code>true</code>, if the menu is to be displayed,
      *         <code>false</code>, otherwise.
      */
@@ -179,6 +182,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -194,7 +198,7 @@ public class MainActivity extends AppCompatActivity
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;

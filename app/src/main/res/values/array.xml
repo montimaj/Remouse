@@ -1,13 +1,25 @@
 <resources>
-    <string-array name="listArray">
-        <item>Headings</item>
-        <item>Headings and Details</item>
-        <item>All Data</item>
+    <string-array name="listArray3D">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
     </string-array>
 
-    <string-array name="listValues">
+    <string-array name="listValues3D">
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+    </string-array>
+
+    <string-array name="listArray2D">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
+
+    <string-array name="listValues2D">
         <item>1</item>
-        <item>2</item>
+        <item>1.5</item>
         <item>3</item>
     </string-array>
 </resources>

@@ -65,7 +65,7 @@ public class EKEProvider {
     private static final String CIPHER_MODE = "AES/GCM/NoPadding";
 
     private static final Date NOT_BEFORE = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-    private static final Date NOT_AFTER = new Date(System.currentTimeMillis() + 63072000000L);
+    private static final Date NOT_AFTER = new Date(System.currentTimeMillis() + 2592000000L);
 
     static {
         Security.insertProviderAt(new BouncyCastleProvider(), 1);

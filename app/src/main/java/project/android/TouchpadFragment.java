@@ -22,7 +22,6 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
 
     private long mTouchTime;
     private boolean mFirstTouch;
-
     private float mLastMoveX = Float.MAX_VALUE;
     private float mLastMoveY = Float.MAX_VALUE;
 

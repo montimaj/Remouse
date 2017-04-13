@@ -13,6 +13,8 @@ import project.android.sensor.representation.Quaternion;
 
 import static project.android.MainActivity.DEVICE_NAME;
 import static project.android.MainActivity.sPublicKey;
+import static project.android.SettingsActivity.sMouseSensitivity2d;
+import static project.android.SettingsActivity.sMouseSensitivity3d;
 
 /**
  * Client module
@@ -21,7 +23,7 @@ import static project.android.MainActivity.sPublicKey;
  */
 public class Client {
 
-    private ClientDataWrapper mClientDataWrapper;
+    private DataWrapper mDataWrapper;
 
     private static Socket sSocket;
     private static PrintWriter sOut;
@@ -45,21 +47,21 @@ public class Client {
     }
 
     public void sendData(String operationType, String data) {
-        mClientDataWrapper = new ClientDataWrapper(operationType, data);
-        data = ClientDataWrapper.getGsonString(mClientDataWrapper);
+        mDataWrapper = new DataWrapper(operationType, data);
+        data = DataWrapper.getGsonString(mDataWrapper);
         data = mEKEProvider.encryptString(data);
         sOut.println(data);
     }
 
     public void sendData(int x, int y) {
-        mClientDataWrapper = new ClientDataWrapper(x,y);
-        String data = new Gson().toJson(mClientDataWrapper);
+        mDataWrapper = new DataWrapper(x, y, sMouseSensitivity2d);
+        String data = new Gson().toJson(mDataWrapper);
         sOut.println(mEKEProvider.encryptString(data));
     }
 
     public void sendData(Quaternion quaternion, boolean isInitQuat) {
-        mClientDataWrapper = new ClientDataWrapper(quaternion, isInitQuat);
-        String data = new Gson().toJson(mClientDataWrapper);
+        mDataWrapper = new DataWrapper(quaternion, isInitQuat, sMouseSensitivity3d);
+        String data = new Gson().toJson(mDataWrapper);
         sOut.println(mEKEProvider.encryptString(data));
     }
 
