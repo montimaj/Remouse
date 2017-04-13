@@ -45,10 +45,24 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
 /**
- * @author Abhisek Maiti
- * @author Sayantan Majumdar
+ * Class representing the end-to-end security module.<br/>
+ *
+ * This class provides the following features:
+ * <ul>
+ *     <li>
+ *         256-bit Elliptic Curve private and public key generation.
+ *     </li>
+ *     <li>
+ *         AES 256-bit plaintext encryption.
+ *     </li>
+ *     <li>
+ *         AES 256-bit ciphertext decryption.
+ *     </li>
+ *     <li>
+ *         Self-signed certificate generation.
+ *     </li>
+ * </ul>
  */
-
 public class EKEProvider {
 
     private SecretKey mSecretKey;
@@ -71,6 +85,13 @@ public class EKEProvider {
         Security.insertProviderAt(new BouncyCastleProvider(), 1);
     }
 
+    /**
+     * Constructor.
+     * Initializes this <code>EKEProvider</code>.
+     * If keystore exists, private and public <code>KeyPair</code> is loaded, otherwise <code>KeyPair</code>
+     * is generated.
+     * @see project.android.security.KeyStoreManager
+     */
     public EKEProvider() {
         try {
             KeyPair keyPair = null;
@@ -93,6 +114,16 @@ public class EKEProvider {
         }
     }
 
+    /**
+     * Constructor.
+     * Initializes this <code>EKEProvider</code>.
+     * <p>
+     *     Generates a secret key using the SHA-256 message digest of the pairing key used for
+     *     client-server authentication and the server <code>PublicKey</code>.
+     * </p>
+     * @param pairingKey Pairing key used for client-server authentication.
+     * @param serverPublicKey Public key of the server.
+     */
     public EKEProvider(byte[] pairingKey, byte[] serverPublicKey) {
         MessageDigest msgDigest;
         try {
@@ -111,6 +142,10 @@ public class EKEProvider {
         }
     }
 
+    /**
+     * Returns the <code>Base64</code> encoded client <code>PublicKey</code>.
+     * @return the <code>Base64</code> encoded client <code>PublicKey</code>.
+     */
     public byte[] getBase64EncodedPubKey() {
         if (mPublicKey != null) {
             return Base64.encodeBase64(mPublicKey.getEncoded());
@@ -142,6 +177,11 @@ public class EKEProvider {
         }
     }
 
+    /**
+     * Encrypt plaintext using AES 256-bit encryption algorithm.
+     * @param plainText plaintext to be encrypted.
+     * @return ciphertext.
+     */
     public String encryptString(String plainText) {
         try {
             Cipher cipher = Cipher.getInstance(CIPHER_MODE, SECURITY_PROVIDER);
@@ -157,6 +197,11 @@ public class EKEProvider {
         }
     }
 
+    /**
+     * Decrypt ciphertext using AES-256 bit algorithm.
+     * @param cipherText ciphertext to be decrypted.
+     * @return plaintext.
+     */
     public String decryptString(String cipherText) {
         try {
             Key decryptionKey = new SecretKeySpec(mSecretKey.getEncoded(),
