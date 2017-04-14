@@ -18,8 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
-
 import project.android.net.KeyboardThread;
 
 import static project.android.ConnectionFragment.sConnectionAlive;
@@ -31,7 +29,7 @@ import static project.android.ConnectionFragment.sConnectionAlive;
  * <ul>
  *     <li>Predictive text input.</li>
  *     <li>Autocorrect feature.</li>
- *     <li>Hide sensitive text.</li>
+ *     <li>Hide sensitive text.</li>The new checked state of buttonView.
  *     <li>Support for special keys like Ctrl, Alt etc. </li>
  * </ul>
  * @see project.android.net.KeyboardThread
@@ -232,6 +230,13 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
         return false;
     }
 
+    /**
+     * Overrides the <code>android.widget.CompoundButton.onCheckChanged(CompoundButton, boolean)</code>.
+     *
+     * Called when the checked state of a compound button has changed.
+     * @param buttonView The compound button view whose state has changed.
+     * @param isChecked The new checked state of buttonView.
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         String data = "";
@@ -254,6 +259,12 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
         mKeyboardThread.addToBuffer(data);
     }
 
+    /**
+     * Overrides the <code>android.view.View.onClickListener.onClick(View)</code>.<br/>
+     *
+     * Called when a view has been clicked.
+     * @param v The view that was clicked.
+     */
     @Override
     public void onClick(View v) {
         String data = "";
