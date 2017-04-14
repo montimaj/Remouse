@@ -159,17 +159,26 @@
                 android:layout_height="wrap_content"
                 android:text="@string/f10" />
 
+            <ImageButton
+                android:id="@+id/upArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
+
             <Button
                 android:id="@+id/f11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f11" />
 
+
             <Button
                 android:id="@+id/f12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f12" />
+        </TableRow>
+        <TableRow>
 
             <ImageButton
                 android:id="@+id/leftArrow"
@@ -177,24 +186,18 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
-        </TableRow>
-        <TableRow>
-
-            <ImageButton
-                android:id="@+id/rightArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />            <ImageButton
-                android:id="@+id/upArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
-
             <ImageButton
                 android:id="@+id/downArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_arrow_downward_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/rightArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+
         </TableRow>
 
     </TableLayout>
