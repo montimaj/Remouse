@@ -283,7 +283,7 @@ public class ConnectionFragment extends Fragment {
     private void displayAlertDialog(final EditText editText, final ServerInfo serverInfo) {
         mAlertDialog = new AlertDialog.Builder(getContext())
                 .setView(editText)
-                .setTitle("Connect to CPU")
+                .setTitle("Connect to PC")
                 .setMessage("Enter pairing key as shown in PC")
                 .setPositiveButton(R.string.Send, null)
                 .setNegativeButton(android.R.string.cancel, null)

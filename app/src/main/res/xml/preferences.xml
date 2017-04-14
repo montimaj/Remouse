@@ -4,7 +4,7 @@
     android:layout_width="match_parent">
     <ListPreference
         android:title="@string/change_3d_mouse_sensitivity"
-        android:summary="Select the type of sensitivity that you would like to use"
+        android:summary="Select the type of sensitivity"
         android:key="sensitivity_3D"
         android:defaultValue="2000"
         android:entries="@array/listArray3D"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content" />
     <ListPreference
         android:title="@string/change_2d_mouse_sensitivity"
-        android:summary="Select the type of sensitivity that you would like to use"
+        android:summary="Select the type of sensitivity"
         android:key="sensitivity_2D"
         android:defaultValue="@string/sensitivity2D"
         android:entries="@array/listArray2D"
