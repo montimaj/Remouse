@@ -48,4 +48,5 @@
     <string name="esc">Esc</string>
     <string name="tab">Tab</string>
     <string name="show_hide_text">Hide Text</string>
+    <string name="type_here">Type here</string>
 </resources>

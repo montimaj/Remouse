@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine"
+            android:hint="@string/type_here"
             android:maxLines="10" />
 
     </FrameLayout>

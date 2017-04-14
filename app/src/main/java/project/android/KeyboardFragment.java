@@ -94,6 +94,9 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             mInput = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             mInput.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             mKeyboardInput = (EditText) view.findViewById(R.id.keyboard);
+            mKeyboardInput.setCursorVisible(false);
+            mKeyboardInput.setLongClickable(false);
+            mKeyboardInput.setOnClickListener(this);
             mKeyboardInput.setText("");
             mKeyboardInput.setTextSize(18);
             mKeyboardInput.setOnKeyListener(this);
@@ -354,6 +357,11 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
 
             case R.id.rightArrow:
                 data = "Right";
+                break;
+
+            case R.id.keyboard:
+                mKeyboardInput.setSelection(mKeyboardInput.getText().length());
+                return;
         }
         mKeyboardThread.setSpecialKey(true);
         mKeyboardThread.addToBuffer(data);
