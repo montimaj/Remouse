@@ -60,14 +60,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/shift" />
 
+            <CheckBox
+                android:id="@+id/Show_Hide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_hide_text" />
+
+
+        </TableRow>
+        <TableRow>
+
             <Button
                 android:id="@+id/Del"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/del" />
-
-        </TableRow>
-        <TableRow>
 
             <Button
                 android:id="@+id/Esc"
@@ -87,14 +94,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/f1" />
 
+
+        </TableRow>
+        <TableRow>
+
             <Button
                 android:id="@+id/f2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f2" />
-
-        </TableRow>
-        <TableRow>
 
             <Button
                 android:id="@+id/f3"
@@ -114,14 +122,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/f5" />
 
+        </TableRow>
+        <TableRow>
+
             <Button
                 android:id="@+id/f6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f6" />
-
-        </TableRow>
-        <TableRow>
 
             <Button
                 android:id="@+id/f7"
@@ -140,14 +148,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f9" />
+
+        </TableRow>
+        <TableRow>
+
             <Button
                 android:id="@+id/f10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/f10" />
-
-        </TableRow>
-        <TableRow>
 
             <Button
                 android:id="@+id/f11"
@@ -167,14 +176,14 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
+        </TableRow>
+        <TableRow>
+
             <ImageButton
                 android:id="@+id/rightArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
-        </TableRow>
-        <TableRow>
-            <ImageButton
+                app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />            <ImageButton
                 android:id="@+id/upArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

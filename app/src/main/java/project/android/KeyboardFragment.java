@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ import static project.android.ConnectionFragment.sConnectionAlive;
  * <ul>
  *     <li>Predictive text input.</li>
  *     <li>Autocorrect feature.</li>
- *     <li>Hide sensitive text.</li>The new checked state of buttonView.
+ *     <li>Hide sensitive text.</li>
  *     <li>Support for special keys like Ctrl, Alt etc. </li>
  * </ul>
  * @see project.android.net.KeyboardThread
@@ -41,30 +42,32 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     private InputMethodManager mInput;
     private String mLastWord;
     private KeyboardThread mKeyboardThread;
+    private EditText mKeyboardInput;
 
     private static final int[] SPECIAL_KEY_ID = {
             R.id.Ctrl,   //0
             R.id.Alt,    //1
             R.id.Shift,  //2
-            R.id.Del,    //3
-            R.id.Esc,    //4
-            R.id.Tab,    //5
-            R.id.f1,     //6
-            R.id.f2,     //7
-            R.id.f3,     //8
-            R.id.f4,     //9
-            R.id.f5,     //10
-            R.id.f6,     //11
-            R.id.f7,     //12
-            R.id.f8,     //13
-            R.id.f9,     //14
-            R.id.f10,    //15
-            R.id.f11,    //16
-            R.id.f12,    //17
-            R.id.upArrow,     //18
-            R.id.downArrow,  //19
-            R.id.leftArrow,  //20
-            R.id.rightArrow  //21
+            R.id.Show_Hide, //3
+            R.id.Del,    //4
+            R.id.Esc,    //5
+            R.id.Tab,    //6
+            R.id.f1,     //7
+            R.id.f2,     //8
+            R.id.f3,     //9
+            R.id.f4,     //10
+            R.id.f5,     //11
+            R.id.f6,     //12
+            R.id.f7,     //13
+            R.id.f8,     //14
+            R.id.f9,     //15
+            R.id.f10,    //16
+            R.id.f11,    //17
+            R.id.f12,    //18
+            R.id.upArrow,     //19
+            R.id.downArrow,  //20
+            R.id.leftArrow,  //21
+            R.id.rightArrow  //22
     };
 
     /**
@@ -90,11 +93,11 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             imageView.setVisibility(View.GONE);
             mInput = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             mInput.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            EditText keyboardInput = (EditText) view.findViewById(R.id.keyboard);
-            keyboardInput.setText("");
-            keyboardInput.setTextSize(18);
-            keyboardInput.setOnKeyListener(this);
-            keyboardInput.addTextChangedListener(this);
+            mKeyboardInput = (EditText) view.findViewById(R.id.keyboard);
+            mKeyboardInput.setText("");
+            mKeyboardInput.setTextSize(18);
+            mKeyboardInput.setOnKeyListener(this);
+            mKeyboardInput.addTextChangedListener(this);
             mKeyboardThread = new KeyboardThread();
             new Thread(mKeyboardThread).start();
             mLastWord = "";
@@ -254,6 +257,14 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             case R.id.Shift:
                 if(isChecked)   data = "Shift_On";
                 else    data = "Shift_Off";
+                break;
+
+            case R.id.Show_Hide:
+                if(isChecked) {
+                    mKeyboardInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else mKeyboardInput.setTransformationMethod(null);
+                mKeyboardInput.setSelection(mKeyboardInput.getText().length());
+                return;
         }
         mKeyboardThread.setSpecialKey(true);
         mKeyboardThread.addToBuffer(data);
@@ -350,10 +361,10 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
 
     private void setListeners(View view) {
         for(int numSpecialButtons = 0; numSpecialButtons < SPECIAL_KEY_ID.length; ++numSpecialButtons) {
-            if(numSpecialButtons >=0 && numSpecialButtons <=2) {
+            if(numSpecialButtons >=0 && numSpecialButtons <=3) {
                 CheckBox checkBox = (CheckBox) view.findViewById(SPECIAL_KEY_ID[numSpecialButtons]);
                 checkBox.setOnCheckedChangeListener(this);
-            } else if(numSpecialButtons >=3 && numSpecialButtons <=17) {
+            } else if(numSpecialButtons >=4 && numSpecialButtons <=18) {
                 Button button = (Button) view.findViewById(SPECIAL_KEY_ID[numSpecialButtons]);
                 button.setOnClickListener(this);
             } else {

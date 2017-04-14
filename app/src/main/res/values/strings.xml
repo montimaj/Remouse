@@ -47,4 +47,5 @@
     <string name="del">Del</string>
     <string name="esc">Esc</string>
     <string name="tab">Tab</string>
+    <string name="show_hide_text">Hide Text</string>
 </resources>
