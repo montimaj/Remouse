@@ -13,6 +13,7 @@ public class KeyboardThread implements Runnable {
 
     private boolean mStopFlag;
     private LinkedBlockingQueue<String> mBuffer;
+    private boolean isSpecialKey;
 
     public KeyboardThread() {
         mStopFlag = false;
@@ -32,9 +33,13 @@ public class KeyboardThread implements Runnable {
         while(!mStopFlag) {
             try {
                 String data = mBuffer.take();
-                sSecuredClient.sendData("Key", data);
+                if(isSpecialKey) {
+                    sSecuredClient.sendData(data);
+                } else sSecuredClient.sendData("Key", data);
 //                Log.d("Keyboard sent", data + "__>" + data.length());
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
+
+    public void setSpecialKey(boolean value) { isSpecialKey = value; }
 }

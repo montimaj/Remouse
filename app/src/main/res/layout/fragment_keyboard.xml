@@ -1,22 +1,193 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffffff"
-    tools:context="project.android.KeyboardFragment">
+    android:weightSum="1"
+    android:orientation="vertical"
+    tools:context="project.android.KeyboardFragment" >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView4"
         android:layout_gravity="center"
-        android:src="@mipmap/keyboard" />
+        android:id="@+id/keyboard_img"/>
 
-    <EditText
-        android:id="@+id/keyboard"
-        style="@style/Widget.AppCompat.EditText"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine" />
+        android:layout_weight="0.9"
+        android:background="@color/keyColor"
+        tools:context="project.android.KeyboardFragment">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/keyboard"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text|textImeMultiLine|textAutoComplete|textMultiLine"
+            android:maxLines="10" />
+
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:background="@color/keyboardColor"
+        android:stretchColumns="0, 1, 2, 3"
+        tools:ignore="ExtraText">
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/Ctrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ctrl" />
+
+            <CheckBox
+                android:id="@+id/Alt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alt" />
+
+            <CheckBox
+                android:id="@+id/Shift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shift" />
+
+            <Button
+                android:id="@+id/Del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/del" />
+
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/Esc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/esc" />
+
+            <Button
+                android:id="@+id/Tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab" />
+
+            <Button
+                android:id="@+id/f1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f1" />
+
+            <Button
+                android:id="@+id/f2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f2" />
+
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/f3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f3" />
+
+            <Button
+                android:id="@+id/f4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f4" />
+
+            <Button
+                android:id="@+id/f5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f5" />
+
+            <Button
+                android:id="@+id/f6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f6" />
+
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/f7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f7" />
+
+            <Button
+                android:id="@+id/f8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f8" />
+
+            <Button
+                android:id="@+id/f9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f9" />
+            <Button
+                android:id="@+id/f10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f10" />
+
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/f11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f11" />
+
+            <Button
+                android:id="@+id/f12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/f12" />
+
+            <ImageButton
+                android:id="@+id/leftArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/rightArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+        </TableRow>
+        <TableRow>
+            <ImageButton
+                android:id="@+id/upArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/downArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrow_downward_black_24dp" />
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>
+
+

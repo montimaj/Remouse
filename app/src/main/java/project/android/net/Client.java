@@ -88,6 +88,18 @@ public class Client {
     }
 
     /**
+     * Send special key data
+     * @param data special key data
+     * @see project.android.net.DataWrapper#DataWrapper(String)
+     */
+    public void sendData(String data) {
+        mDataWrapper = new DataWrapper(data);
+        data = DataWrapper.getGsonString(mDataWrapper);
+        data = mEKEProvider.encryptString(data);
+        sOut.println(data);
+    }
+
+    /**
      * Send 2D mouse movement data.
      * @param x relative x coordinate.
      * @param y relative y coordinate.

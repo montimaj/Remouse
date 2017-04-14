@@ -20,7 +20,8 @@ import project.android.sensor.representation.Quaternion;
  * <p>
  *     For keyboard input, the <i>type of operation</i> field contains
  *     <code>Key</code> and the <i>data</i> field contains the sequence
- *     of characters and keyboard strokes for input.
+ *     of characters and keyboard strokes for input. In case of special
+ *     keys, the <code>data</code> field contains the special key type.
  * </p>
  * <p>
  *     For 3-D mouse movement operation, the <i>type of operation</i>
@@ -72,6 +73,16 @@ class DataWrapper {
      */
     DataWrapper(String operationType, String data) {
         mOperationType = operationType;
+        mData = data;
+    }
+
+    /**
+     * Constructor. <br/>
+     * Used to create a <code>DataWrapper</code> for special keys like Ctrl, Alt etc.
+     * @param data the <i>data</i> field.
+     */
+    DataWrapper(String data) {
+        mOperationType = "Special_Key";
         mData = data;
     }
 
