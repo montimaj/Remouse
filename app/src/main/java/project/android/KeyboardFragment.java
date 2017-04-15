@@ -24,15 +24,19 @@ import project.android.net.KeyboardThread;
 import static project.android.ConnectionFragment.sConnectionAlive;
 
 /**
- * Class representing the <code>Fragment</code> for providing the GUI frontend for the keyboard module.<br/>
+ * Class representing the <code>Fragment</code> for providing the
+ * GUI frontend for the keyboard module.
  *
- * The following keyboard features are provided:
- * <ul>
- *     <li>Predictive text input.</li>
- *     <li>Autocorrect feature.</li>
- *     <li>Hide sensitive text.</li>
- *     <li>Support for special keys like Ctrl, Alt etc. </li>
- * </ul>
+ * <p>
+ *     The following keyboard features are provided:
+ *     <ul>
+ *         <li>Predictive text input.</li>
+ *         <li>Auto-correct feature.</li>
+ *         <li>Hide sensitive text.</li>
+ *         <li>Support for special keys like Ctrl, Alt etc. </li>
+ *     </ul>
+ * </p>
+ *
  * @see project.android.net.KeyboardThread
  */
 public class KeyboardFragment extends Fragment implements View.OnKeyListener, View.OnClickListener,
@@ -71,16 +75,22 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     };
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>.<br/>
+     * Overrides the
+     * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
+     * of the Android API. <br/>
      *
      * Called to have the fragment instantiate its user interface view.
-     * @param inflater The <code>LayoutInflater</code> object that can be used to inflate any views in the fragment.
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
-     *                  The fragment should not add the view itself, but this can be used to generate
-     *                  the <code>LayoutParams</code> of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
-     * @return the <code>View</code> for the fragment's UI, or null.
+     *
+     * @param inflater The <code>LayoutInflater</code> object that can be
+     *                 used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the
+     *                  fragment's UI is attached to. The fragment should
+     *                  not add the view itself, but this can be used to
+     *                  generate the <code>LayoutParams</code> of the view.
+     * @param savedInstanceState If non-null, this fragment is being
+     *                           re-constructed from a previous saved
+     *                           state as given here.
+     * @return the <code>View</code> for the fragment's UI, or <code>null</code>.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,12 +122,13 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onDestroyView()</code>.<br/>
+     * Overrides the <code>Fragment.onDestroyView()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the view previously created by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * Called when the view previously created by
+     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * has been detached from the fragment.
      */
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -129,9 +140,11 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onResume()</code>.<br/>
+     * Overrides the <code>Fragment.onResume()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the activity will start interacting with the user.
+     * Called when the activity will start interacting with
+     * the user.
      */
     @Override
     public void onResume() {
@@ -140,9 +153,11 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onPause()</code>.<br/>
+     * Overrides the <code>Fragment.onPause()</code> method
+     * of the Android API. <br/>
      *
-     * Called when the system is about to start resuming a previous activity.
+     * Called when the system is about to start resuming a
+     * previous activity.
      */
     @Override
     public void onPause() {
@@ -151,11 +166,17 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.text.TextWatcher.beforeTextChanged(CharSequence, int, int, int)</code>.<br/>
+     * Overrides the
+     * <code>TextWatcher.beforeTextChanged(CharSequence, int, int, int)</code>
+     * method of the Android API. <br/>
      *
-     * Called to notify that, within <code>s</code>, the <code>count</code> characters
-     * beginning at <code>start</code> are about to be replaced by new text with length <code>after</code>.
-     * It is an error to attempt to make changes to <code>s</code> from this callback.
+     * <p>
+     *     Called to notify that, within <code>s</code>, the <code>count</code>
+     *     characters beginning at <code>start</code> are about to be replaced
+     *     by new text with length <code>after</code>. It is an error to attempt
+     *     to make changes to <code>s</code> from this callback.
+     * </p>
+     *
      * @param s the <code>CharSequence</code>.
      * @param start start index of the current word.
      * @param count number of characters to be replaced.
@@ -176,11 +197,17 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.text.TextWatcher.onTextChanged(CharSequence, int, int, int)</code>.<br/>
+     * Overrides the
+     * <code>onTextChanged(CharSequence, int, int, int)</code>
+     * method of the Android API. <br/>
      *
-     * Called to notify that, within <code>s</code>, the <code>count</code> characters beginning at
-     * <code>start</code> have just replaced old text that had length <code>before</code>.
-     * It is an error to attempt to make changes to <code>s</code> from this callback.
+     * <p>
+     *     Called to notify that, within <code>s</code>, the <code>count</code>
+     *     characters beginning at <code>start</code> have just replaced old
+     *     text that had length <code>before</code>. It is an error to attempt
+     *     to make changes to <code>s</code> from this callback.
+     * </p>
+     *
      * @param s the <code>CharSequence</code>.
      * @param start start index of the current word.
      * @param before number of characters that are replaced.
@@ -216,15 +243,20 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     public void afterTextChanged(Editable s) {}
 
     /**
-     * Overrides the <code>android.view.View.onKeyListener.onKey(View, int, KeyEvent)</code>.<br/>
+     * Overrides the
+     * <code>View.onKeyListener.onKey(View, int, KeyEvent)</code>
+     * method of the Android API. <br/>
      *
-     * Called when a hardware key is dispatched to a view. This allows listeners to get a chance to
-     * respond before the target view. This has been used for detecting backpress down event.
-     * @param v The view the key has been dispatched to.
-     * @param keyCode The code for the physical key that was pressed.
-     * @param event The <code>KeyEvent</code> object containing full information about the event.
-     * @return <code>true</code> if the listener has consumed the event,<br/>
-     *         <code>false</code> otherwise.
+     * Called when a hardware key is dispatched to a view. This allows
+     * listeners to get a chance to respond before the target view.
+     * This has been used for detecting back key down event.
+     *
+     * @param v the view to which the key has been dispatched.
+     * @param keyCode the code for the physical key that was pressed.
+     * @param event the <code>KeyEvent</code> object containing full
+     *              information about the event.
+     * @return <code>true</code>, if the listener has consumed the event,<br/>
+     *         <code>false</code>, otherwise.
      */
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -237,11 +269,15 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.widget.CompoundButton.onCheckChanged(CompoundButton, boolean)</code>.
+     * Overrides the
+     * <code>CompoundButton.onCheckChanged(CompoundButton, boolean)</code>
+     * method of the Android API. <br/>
      *
      * Called when the checked state of a compound button has changed.
-     * @param buttonView The compound button view whose state has changed.
-     * @param isChecked The new checked state of buttonView.
+     *
+     * @param buttonView the <code>CompoundButton</code> view whose state
+     *                   has changed.
+     * @param isChecked the new checked state of <code>buttonView</code>.
      */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -274,10 +310,12 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     }
 
     /**
-     * Overrides the <code>android.view.View.onClickListener.onClick(View)</code>.<br/>
+     * Overrides the <code>View.onClickListener.onClick(View)</code>
+     * method of the Android API. <br/>
      *
      * Called when a view has been clicked.
-     * @param v The view that was clicked.
+     *
+     * @param v the view that was clicked.
      */
     @Override
     public void onClick(View v) {

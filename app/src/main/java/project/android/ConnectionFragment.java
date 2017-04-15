@@ -189,9 +189,9 @@ public class ConnectionFragment extends Fragment {
      * <code>Fragment.onRequestPermissionsResult(int, String[], int[])</code>
      * method of the Android API.
      *
-     * @param requestCode The request code.
-     * @param permissions The requested permissions. Never null.
-     * @param grantResults The grant results for the corresponding permissions
+     * @param requestCode the request code.
+     * @param permissions the requested permissions. Never null.
+     * @param grantResults the grant results for the corresponding permissions
      *                     which is either <code>PERMISSION_GRANTED</code> or
      *                     <code>PERMISSION_DENIED</code>. Never null.
      */
@@ -210,7 +210,7 @@ public class ConnectionFragment extends Fragment {
     /**
      * Returns the <code>View</code> of the clicked list item.
      *
-     * @param pos Position of the item.
+     * @param pos position of the item.
      * @return the <code>View</code> of the clicked list item.
      */
     public View getViewByPosition(int pos) {
@@ -371,7 +371,7 @@ public class ConnectionFragment extends Fragment {
     /**
      * Sets an icon for an inactive server.
      *
-     * @param position List position of the inactive server.
+     * @param position position of the inactive server in the list.
      */
     public void resetIcon(int position) {
         ImageView img = (ImageView) getViewByPosition(position).findViewById(R.id.connectIcon);
