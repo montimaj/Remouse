@@ -1,15 +1,60 @@
 package project.android.sensor.representation;
 
 /**
- * Matrices are 4 x 4 column-vector(float) matrices stored in column-major order
  * @author Abhisek Maiti
  * @author Sayantan Majumdar
+ *
+ * Matrix math utilities. These methods operate on OpenGL ES format
+ * matrices and vectors stored in float arrays.
+ *
+ * Matrices are 4 x 4 column-vector(float) matrices stored in column-major order:
+ *
+ * <pre>
+ *  m[offset +  0] m[offset +  4] m[offset +  8] m[offset + 12]
+ *  m[offset +  1] m[offset +  5] m[offset +  9] m[offset + 13]
+ *  m[offset +  2] m[offset +  6] m[offset + 10] m[offset + 14]
+ *  m[offset +  3] m[offset +  7] m[offset + 11] m[offset + 15]
+ * </pre>
+ *
+ * Vectors are 4 row x 1 column column-vectors stored in order:
+ *
+ * <pre>
+ * v[offset + 0]
+ * v[offset + 1]
+ * v[offset + 2]
+ * v[offset + 3]
+ * </pre>
+ *
  */
-
 class Matrix {
 
+	/**
+	 * Temporary memory for operations that need temporary matrix data.
+	 */
 	private static final float[] TEMP_MATRIX_ARRAY = new float[32];
 
+	/**
+	 * Multiplies two 4x4 matrices together and store the result in a third 4x4
+	 * matrix. In matrix notation: output = lhs x rhs. Due to the way
+	 * matrix multiplication works, the result matrix will have the same
+	 * effect as first multiplying by the rhs matrix, then multiplying by
+	 * the lhs matrix. This is the opposite of what you might expect.
+	 *
+	 * The same float array may be passed for result, lhs, and/or rhs. However,
+	 * the result element values are undefined if the result elements overlap
+	 * either the lhs or rhs elements.
+	 *
+	 * @param output The float array that holds the result.
+	 * @param outputOffset The offset into the result array where the result is stored.
+	 * @param lhs The float array that holds the left-hand-side matrix.
+	 * @param lhsOffset The offset into the lhs array where the lhs is stored
+	 * @param rhs The float array that holds the right-hand-side matrix.
+	 * @param rhsOffset The offset into the rhs array where the rhs is stored.
+	 *
+	 * @throws IllegalArgumentException if result, lhs, or rhs are null, or if
+	 *             resultOffset + 16 > result.length or lhsOffset + 16 > lhs.length or
+	 *             rhsOffset + 16 > rhs.length.
+	 */
 	private static void multiplyMM(float[] output, int outputOffset, float[] lhs, int lhsOffset, float[] rhs, int rhsOffset) {
 		output[outputOffset] = lhs[lhsOffset] * rhs[rhsOffset] + lhs[lhsOffset + 4] * rhs[rhsOffset + 1] + lhs[lhsOffset + 8] * rhs[rhsOffset + 2] + lhs[lhsOffset + 12] * rhs[rhsOffset + 3];
 		output[outputOffset + 1] = lhs[lhsOffset + 1] * rhs[rhsOffset] + lhs[lhsOffset + 5] * rhs[rhsOffset + 1] + lhs[lhsOffset + 9] * rhs[rhsOffset + 2] + lhs[lhsOffset + 13] * rhs[rhsOffset + 3];
@@ -32,6 +77,17 @@ class Matrix {
 		output[outputOffset + 15] = lhs[lhsOffset + 3] * rhs[rhsOffset + 12] + lhs[lhsOffset + 7] * rhs[rhsOffset + 13] + lhs[lhsOffset + 11] * rhs[rhsOffset + 14] + lhs[lhsOffset + 15] * rhs[rhsOffset + 15];
 	}
 
+	/**
+	 *
+	 * Overloaded MultiplyMM
+	 * Works without the offsets
+	 *
+	 * @param output The float array that holds the result.
+	 * @param lhs The float array that holds the left-hand-side matrix.
+	 * @param rhs The float array that holds the right-hand-side matrix.
+	 *
+	 * @throws IllegalArgumentException if result, lhs, or rhs are null.
+	 */
 	public static void multiplyMM(float[] output, float[] lhs, float[] rhs) {
 		output[0] = lhs[0] * rhs[0] + lhs[4] * rhs[1] + lhs[8] * rhs[2] + lhs[12] * rhs[3];
 		output[1] = lhs[1] * rhs[0] + lhs[5] * rhs[1] + lhs[9] * rhs[2] + lhs[13] * rhs[3];
@@ -54,6 +110,25 @@ class Matrix {
 		output[15] = lhs[3] * rhs[12] + lhs[7] * rhs[13] + lhs[11] * rhs[14] + lhs[15] * rhs[15];
 	}
 
+	/**
+	 * Multiplies a 4 element vector by a 4x4 matrix and store the result in a 4
+	 * element column vector. In matrix notation: output = lhs x rhs
+	 *
+	 * The same float array may be passed for output, lhs, and/or rhs.
+	 * However, the resultVec element values are undefined if the resultVec
+	 * elements overlap either the lhsMat or rhsVec elements.
+	 *
+	 * @param output The float array that holds the result vector.
+	 * @param outputOffset The offset into the result array where the result vector is stored.
+	 * @param lhs The float array that holds the left-hand-side matrix.
+	 * @param lhsOffset The offset into the lhs array where the lhs is stored
+	 * @param rhs The float array that holds the right-hand-side vector.
+	 * @param rhsOffset The offset into the rhs vector where the rhs vector is stored.
+	 * @throws IllegalArgumentException if output, <code>lhs</code>,
+	 *             or <code>rhs</code> are <code>null</code>, or if <code>outputOffset + 4</code> >
+	 *             <code>outputVec.length</code> or <code>lhsOffset + 16</code> > <code>lhs.length</code> or
+	 *             <code>rhsOffset + 4</code> > <code>rhs.length</code>.
+	 */
 	public static void multiplyMV(float[] output, int outputOffset, float[] lhs, int lhsOffset, float[] rhs, int rhsOffset) {
 		output[outputOffset] = lhs[lhsOffset] * rhs[rhsOffset] + lhs[lhsOffset + 4] * rhs[rhsOffset + 1] + lhs[lhsOffset + 8] * rhs[rhsOffset + 2] + lhs[lhsOffset + 12] * rhs[rhsOffset + 3];
 		output[outputOffset + 1] = lhs[lhsOffset + 1] * rhs[rhsOffset] + lhs[lhsOffset + 5] * rhs[rhsOffset + 1] + lhs[lhsOffset + 9] * rhs[rhsOffset + 2] + lhs[lhsOffset + 13] * rhs[rhsOffset + 3];
@@ -62,6 +137,16 @@ class Matrix {
 
 	}
 
+	/**
+	 * Overloaded multiplyMV
+	 * Works without offsets
+	 *
+	 * @param outputV The float array that holds the result vector.
+	 * @param inputM The float array that holds the left-hand-side matrix.
+	 * @param inputV The float array that holds the right-hand-side vector.
+	 * @throws IllegalArgumentException if <code>output</code>, <code>lhs</code> or <code>rhs</code> are <code>null</code>
+	 *
+	 */
 	public static void multiplyMV(float[] outputV, float[] inputM, float[] inputV) {
 		outputV[0] = inputM[0] * inputV[0] + inputM[4] * inputV[1] + inputM[8] * inputV[2] + inputM[12] * inputV[3];
 		outputV[1] = inputM[1] * inputV[0] + inputM[5] * inputV[1] + inputM[9] * inputV[2] + inputM[13] * inputV[3];
@@ -69,12 +154,30 @@ class Matrix {
 		outputV[3] = inputM[3] * inputV[0] + inputM[7] * inputV[1] + inputM[11] * inputV[2] + inputM[15] * inputV[3];
 	}
 
+	/**
+	 * Similar to <code>MultiplyMV</code>
+	 * Works with vector of size three
+	 *
+	 * @param w Works as fourth element of inputV, makes the multiplication valid.
+	 * @param outputV The float array that holds the result vector.
+	 * @param inputM The float array that holds the left-hand-side matrix.
+	 * @param inputV The float array that holds the right-hand-side vector.
+	 * @throws IllegalArgumentException if output, lhs or rhs are null
+	 */
 	public static void multiplyMV3(float[] outputV, float[] inputM, float[] inputV, float w) {
 		outputV[0] = inputM[0] * inputV[0] + inputM[4] * inputV[1] + inputM[8] * inputV[2] + inputM[12] * w;
 		outputV[1] = inputM[1] * inputV[0] + inputM[5] * inputV[1] + inputM[9] * inputV[2] + inputM[13] * w;
 		outputV[2] = inputM[2] * inputV[0] + inputM[6] * inputV[1] + inputM[10] * inputV[2] + inputM[14] * w;
 	}
 
+	/**
+	 * Transposes a 4 x 4 matrix.
+	 *
+	 * @param mTrans the array that holds the output inverted matrix
+	 * @param mTransOffset an offset into mInv where the inverted matrix is stored.
+	 * @param m the input array
+	 * @param mOffset an offset into m where the matrix is stored.
+	 */
 	public static void transposeM(float[] mTrans, int mTransOffset, float[] m, int mOffset) {
 		for (int i = 0; i < 4; i++) {
 			int mBase = i * 4 + mOffset;
@@ -85,6 +188,15 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Inverts a 4 x 4 matrix.
+	 *
+	 * @param mInv the array that holds the output inverted matrix
+	 * @param mInvOffset an offset into mInv where the inverted matrix is stored.
+	 * @param m the input array
+	 * @param mOffset an offset into m where the matrix is stored.
+	 * @return true if the matrix could be inverted, false if it could not.
+	 */
 	public static boolean invertM(float[] mInv, int mInvOffset, float[] m, int mOffset) {
 		// Invert a 4 x 4 matrix using Cramer's Rule
 
@@ -201,6 +313,18 @@ class Matrix {
 		return true;
 	}
 
+	/**
+	 * Computes an orthographic projection matrix.
+	 *
+	 * @param m returns the result
+	 * @param mOffset
+	 * @param left
+	 * @param right
+	 * @param bottom
+	 * @param top
+	 * @param near
+	 * @param far
+	 */
 	public static void orthoM(float[] m, int mOffset, float left, float right, float bottom, float top, float near, float far) {
 		if (left == right) {
 			throw new IllegalArgumentException("left == right");
@@ -239,6 +363,20 @@ class Matrix {
 		m[mOffset + 11] = 0.0f;
 	}
 
+	/**
+	 * Define a projection matrix in terms of six clip planes
+	 *
+	 * @param m the float array that holds the perspective matrix
+	 * @param offset the offset into float array m where the perspective
+	 *            matrix data is written
+	 * @param left
+	 * @param right
+	 * @param bottom
+	 * @param top
+	 * @param near
+	 * @param far
+	 *
+	 */
 	public static void frustumM(float[] m, int offset, float left, float right, float bottom, float top, float near,
 								float far) {
 		if (left == right) {
@@ -283,6 +421,19 @@ class Matrix {
 		m[offset + 15] = 0.0f;
 	}
 
+	/**
+	 * Define a projection matrix in terms of a field of view angle, an
+	 * aspect ratio, and z clip planes
+	 *
+	 * @param m the float array that holds the perspective matrix
+	 * @param offset the offset into float array m where the perspective
+	 *            matrix data is written
+	 * @param fovy field of view in y direction, in degrees
+	 * @param aspect width to height aspect ratio of the viewport
+	 * @param zNear
+	 * @param zFar
+	 *
+	 */
 	public static void perspectiveM(float[] m, int offset, float fovy, float aspect, float zNear, float zFar) {
 		float f = 1.0f / (float) Math.tan(fovy * (Math.PI / 360.0));
 		float rangeReciprocal = 1.0f / (zNear - zFar);
@@ -308,10 +459,26 @@ class Matrix {
 		m[offset + 15] = 0.0f;
 	}
 
+	/**
+	 * Computes the length of a vector
+	 *
+	 * @param x x coordinate of a vector
+	 * @param y y coordinate of a vector
+	 * @param z z coordinate of a vector
+	 * @return the length of a vector
+	 *
+	 */
 	private static float length(float x, float y, float z) {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 
+	/**
+	 * Sets matrix m to the identity matrix.
+	 *
+	 * @param sm returns the result
+	 * @param smOffset index into sm where the result matrix starts
+	 *
+	 */
 	static void setIdentityM(float[] sm, int smOffset) {
 		for (int i = 0; i < 16; i++) {
 			sm[smOffset + i] = 0;
@@ -321,6 +488,18 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Scales matrix m by x, y, and z, putting the result in sm
+	 *
+	 * @param sm returns the result
+	 * @param smOffset index into sm where the result matrix starts
+	 * @param m source matrix
+	 * @param mOffset index into m where the source matrix starts
+	 * @param x scale factor x
+	 * @param y scale factor y
+	 * @param z scale factor z
+	 *
+	 */
 	public static void scaleM(float[] sm, int smOffset, float[] m, int mOffset, float x, float y, float z) {
 		for (int i = 0; i < 4; i++) {
 			int smi = smOffset + i;
@@ -332,6 +511,16 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Scales matrix m in place by sx, sy, and sz
+	 *
+	 * @param m matrix to scale
+	 * @param mOffset index into m where the matrix starts
+	 * @param x scale factor x
+	 * @param y scale factor y
+	 * @param z scale factor z
+	 *
+	 */
 	public static void scaleM(float[] m, int mOffset, float x, float y, float z) {
 		for (int i = 0; i < 4; i++) {
 			int mi = mOffset + i;
@@ -341,8 +530,20 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Translates matrix m by x, y, and z, putting the result in tm
+	 *
+	 * @param tm returns the result
+	 * @param tmOffset index into sm where the result matrix starts
+	 * @param m source matrix
+	 * @param mOffset index into m where the source matrix starts
+	 * @param x translation factor x
+	 * @param y translation factor y
+	 * @param z translation factor z
+	 *
+	 */
 	public static void translateM(float[] tm, int tmOffset, float[] m, int mOffset, float x, float y, float z) {
-        System.arraycopy(m, mOffset, tm, tmOffset, 12);
+		System.arraycopy(m, mOffset, tm, tmOffset, 12);
 		for (int i = 0; i < 4; i++) {
 			int tmi = tmOffset + i;
 			int mi = mOffset + i;
@@ -350,6 +551,16 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Translates matrix m by x, y, and z in place.
+	 *
+	 * @param m matrix
+	 * @param mOffset index into m where the matrix starts
+	 * @param x translation factor x
+	 * @param y translation factor y
+	 * @param z translation factor z
+	 *
+	 */
 	private static void translateM(float[] m, int mOffset, float x, float y, float z) {
 		for (int i = 0; i < 4; i++) {
 			int mi = mOffset + i;
@@ -357,6 +568,19 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Rotates matrix m by angle a (in degrees) around the axis (x, y, z)
+	 *
+	 * @param rm returns the result
+	 * @param rmOffset index into rm where the result matrix starts
+	 * @param m source matrix
+	 * @param mOffset index into m where the source matrix starts
+	 * @param a angle to rotate in degrees
+	 * @param x scale factor x
+	 * @param y scale factor y
+	 * @param z scale factor z
+	 *
+	 */
 	public static void rotateM(float[] rm, int rmOffset, float[] m, int mOffset, float a, float x, float y, float z) {
 		synchronized (TEMP_MATRIX_ARRAY) {
 			setRotateM(TEMP_MATRIX_ARRAY, 0, a, x, y, z);
@@ -364,6 +588,18 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Rotates matrix m in place by angle a (in degrees)
+	 * around the axis (x, y, z)
+	 *
+	 * @param m source matrix
+	 * @param mOffset index into m where the matrix starts
+	 * @param a angle to rotate in degrees
+	 * @param x scale factor x
+	 * @param y scale factor y
+	 * @param z scale factor z
+	 *
+	 */
 	public static void rotateM(float[] m, int mOffset, float a, float x, float y, float z) {
 		synchronized (TEMP_MATRIX_ARRAY) {
 			setRotateM(TEMP_MATRIX_ARRAY, 0, a, x, y, z);
@@ -372,6 +608,17 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Rotates matrix m by angle a (in degrees) around the axis (x, y, z)
+	 *
+	 * @param rm returns the result
+	 * @param rmOffset index into rm where the result matrix starts
+	 * @param a angle to rotate in degrees
+	 * @param x scale factor x
+	 * @param y scale factor y
+	 * @param z scale factor z
+	 *
+	 */
 	private static void setRotateM(float[] rm, int rmOffset, float a, float x, float y, float z) {
 		rm[rmOffset + 3] = 0;
 		rm[rmOffset + 7] = 0;
@@ -440,6 +687,16 @@ class Matrix {
 		}
 	}
 
+	/**
+	 * Converts Euler angles to a rotation matrix
+	 *
+	 * @param rm returns the result
+	 * @param rmOffset index into rm where the result matrix starts
+	 * @param x angle of rotation, in degrees
+	 * @param y angle of rotation, in degrees
+	 * @param z angle of rotation, in degrees
+	 *
+	 */
 	public static void setRotateEulerM(float[] rm, int rmOffset, float x, float y, float z) {
 		x *= (float) (Math.PI / 180.0f);
 		y *= (float) (Math.PI / 180.0f);
@@ -474,6 +731,22 @@ class Matrix {
 		rm[rmOffset + 15] = 1.0f;
 	}
 
+	/**
+	 * Define a viewing transformation in terms of an eye point, a center of view, and an up vector.
+	 *
+	 * @param rm returns the result
+	 * @param rmOffset index into rm where the result matrix starts
+	 * @param eyeX eye point X
+	 * @param eyeY eye point Y
+	 * @param eyeZ eye point Z
+	 * @param centerX center of view X
+	 * @param centerY center of view Y
+	 * @param centerZ center of view Z
+	 * @param upX up vector X
+	 * @param upY up vector Y
+	 * @param upZ up vector Z
+	 *
+	 */
 	public static void setLookAtM(float[] rm, int rmOffset, float eyeX, float eyeY, float eyeZ, float centerX,
 								  float centerY, float centerZ, float upX, float upY, float upZ) {
 

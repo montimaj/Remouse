@@ -14,6 +14,12 @@ package project.android.sensor.representation;
  *     numbers.
  * </p>
  * <p>
+ * 		Quaternions allow for elegant descriptions of 3D rotations, interpolations as well as extrapolations and
+ * 		compared to Euler angles, they don't suffer from gimbal lock. Interpolations between two Quaternions are called
+ * 		SLERP (Spherical Linear Interpolation).
+ * </p>
+ *
+ * <p>
  *     If <i>a + bi + cj + dk</i> is any quaternion, then <i>a</i>
  *     is called its scalar part and <i>bi + cj + dk</i> is called
  *     its vector part. The scalar part of a quaternion is always
@@ -71,12 +77,9 @@ package project.android.sensor.representation;
  *     &radic;(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>+d<sup>2</sup>)</i>.
  * </p>
  * <p>
- *     The sensor data for 3-D mouse movement sent to the PC is represented
- *     in the form of a <code>Quaternion</code>.
- * </p>
- * <p>
- *     <i>Note:</i> For better performance, it is updated only when it is
- *     accessed, not on every change.
+ *     The sensor data for 3-D mouse movement is sent from the
+ *     mobile device is represented in the form of a
+ *     <code>Quaternion</code>.
  * </p>
  *
  * @see project.android.sensor.representation.Vector4f
@@ -84,16 +87,17 @@ package project.android.sensor.representation;
 
 public class Quaternion extends Vector4f {
 
+	//For better performance update it only when it is accessed, not on every change
+
 	private MatrixF4x4 mMatrix;
+	private boolean mDirty = false;
 	private Vector4f mTmpVector = new Vector4f();
 	private Quaternion mTmpQuaternion;
 
-    private boolean mDirty = false;
-
-    /**
-     * Constructor. <br/>
-     * Initializes this <code>Quaternion</code>.
-     */
+	/**
+	 * Constructor. <br/>
+	 * Initializes this <code>Quaternion</code>.
+	 */
 	public Quaternion() {
 		super();
 		mMatrix = new MatrixF4x4();
@@ -105,30 +109,31 @@ public class Quaternion extends Vector4f {
 	 */
 	public void normalize() {
 		this.mDirty = true;
-		float mag = (float) Math.sqrt(mPoints[3] * mPoints[3] + mPoints[0] * mPoints[0] + mPoints[1] * mPoints[1] + mPoints[2] * mPoints[2]);
+		float mag = (float) Math.sqrt(mPoints[3] * mPoints[3] + mPoints[0] * mPoints[0] + mPoints[1] * mPoints[1] +
+				mPoints[2] * mPoints[2]);
 		mPoints[3] = mPoints[3] / mag;
 		mPoints[0] = mPoints[0] / mag;
 		mPoints[1] = mPoints[1] / mag;
 		mPoints[2] = mPoints[2] / mag;
 	}
 
-    /**
-     * Sets the value of this <code>Quaternion</code>. <br/>
-     *
-     * @param quat the value of the <code>Quaternion</code> to be set.
-     */
+	/**
+	 * Copies the values from the given quaternion to this one
+	 *
+	 * @param quat The quaternion to copy from
+	 */
 	public void set(Quaternion quat) {
 		this.mDirty = true;
 		copyVec4(quat);
 	}
 
-    /**
-     * Multiplies this <code>Quaternion</code> with another.
-     *
-     * @param input <code>Quaternion</code> with which
-     *              <code>this</code> is multiplied.
-     * @param output result of <code>(this * input)</code>.
-     */
+	/**
+	 * Multiplies this <code>Quaternion</code> with another.
+	 *
+	 * @param input <code>Quaternion</code> with which
+	 *              <code>this</code> is multiplied.
+	 * @param output result of <code>(this * input)</code>.
+	 */
 	public void multiplyByQuat(Quaternion input, Quaternion output) {
 
 		if (input != output) {
@@ -149,6 +154,11 @@ public class Quaternion extends Vector4f {
 		}
 	}
 
+	/**
+	 * Multiply this quaternion by the input quaternion
+	 *
+	 * @param input
+	 */
 	public void multiplyByQuat(Quaternion input) {
 		this.mDirty = true;
 		if(mTmpQuaternion == null) mTmpQuaternion = new Quaternion();
@@ -157,24 +167,34 @@ public class Quaternion extends Vector4f {
 		this.copyVec4(mTmpQuaternion);
 	}
 
-    /**
-     * Multiples this <code>Quaternion</code> with a scalar.
-     * This overrides the {@link Vector4f#multiplyByScalar(float)}
-     * method.
-     *
-     * @param scalar the scalar.
-     * @see project.android.sensor.representation.Vector4f#multiplyByScalar(float)
-     */
+	/**
+	 * Multiples this <code>Quaternion</code> with a scalar.
+	 * This overrides the {@link Vector4f#multiplyByScalar(float)}
+	 * method.
+	 *
+	 * @param scalar the scalar.
+	 * @see project.android.sensor.representation.Vector4f#multiplyByScalar(float)
+	 */
 	public void multiplyByScalar(float scalar) {
 		this.mDirty = true;
 		super.multiplyByScalar(scalar);
 	}
 
+	/**
+	 * Add a quaternion to this quaternion
+	 *
+	 * @param input The quaternion that you want to add to this one
+	 */
 	public void addQuat(Quaternion input) {
 		this.mDirty = true;
 		addQuat(input, this);
 	}
 
+	/**
+	 * Add a quaternion to this quaternion and stores it into output.
+	 *
+	 * @param input The quaternion that you want to add to this one
+	 */
 	private void addQuat(Quaternion input, Quaternion output) {
 		output.setX(getX() + input.getX());
 		output.setY(getY() + input.getY());
@@ -182,11 +202,22 @@ public class Quaternion extends Vector4f {
 		output.setW(getW() + input.getW());
 	}
 
+	/**
+	 * Subtract a quaternion to this quaternion
+	 *
+	 * @param input The quaternion to be subtracted from this one
+	 */
 	public void subQuat(Quaternion input) {
 		this.mDirty = true;
 		subQuat(input, this);
 	}
 
+	/**
+	 * Subtract another quaternion from this quaternion and store the result in the output quaternion
+	 *
+	 * @param input The quaternion to be subtracted from this quaternion
+	 * @param output The quaternion where the output will be stored.
+	 */
 	private void subQuat(Quaternion input, Quaternion output) {
 		output.setX(getX() - input.getX());
 		output.setY(getY() - input.getY());
@@ -194,6 +225,10 @@ public class Quaternion extends Vector4f {
 		output.setW(getW() - input.getW());
 	}
 
+	/**
+	 * Converts this Quaternion into the Rotation-Matrix representation which can be accessed by
+	 * {@link Quaternion#getMatrix4x4 getMatrix4x4}
+	 */
 	private void convertQuatToMatrix() {
 		float x = mPoints[0];
 		float y = mPoints[1];
@@ -218,6 +253,11 @@ public class Quaternion extends Vector4f {
 		mMatrix.setW3(1);
 	}
 
+	/**
+	 * Get an axis angle representation of this quaternion.
+	 *
+	 * @param output Vector4f axis angle.
+	 */
 	public void toAxisAngle(Vector4f output) {
 		if (getW() > 1) {
 			normalize();
@@ -245,6 +285,11 @@ public class Quaternion extends Vector4f {
 		output.mPoints[3] = angle;
 	}
 
+	/**
+	 * Returns the heading, attitude and bank of this quaternion as euler angles in the double array respectively
+	 *
+	 * @return An array of size 3 containing the euler angles for this quaternion
+	 */
 	public double[] toEulerAngles() {
 		double[] ret = new double[3];
 
@@ -254,6 +299,9 @@ public class Quaternion extends Vector4f {
 		return ret;
 	}
 
+	/**
+	 * Sets the quaternion to an identity quaternion of 0,0,0,1.
+	 */
 	private void loadIdentityQuat() {
 		this.mDirty = true;
 		setX(0);
@@ -262,19 +310,24 @@ public class Quaternion extends Vector4f {
 		setW(1);
 	}
 
-    /**
-     * Returns a <code>String</code> representing this
-     * <code>Quaternion</code>. This overrides the
-     * {@link Vector4f#toString()} method.
-     *
-     * @return <code>String</code> representing this
-     *         <code>Quaternion</code>.
-     */
+	/**
+	 * Returns a <code>String</code> representing this
+	 * <code>Quaternion</code>. This overrides the
+	 * {@link Vector4f#toString()} method.
+	 *
+	 * @return <code>String</code> representing this
+	 *         <code>Quaternion</code>.
+	 */
 	@Override
 	public String toString() {
 		return "{X: " + getX() + ", Y:" + getY() + ", Z:" + getZ() + ", W:" + getW() + "}";
 	}
 
+	/**
+	 * This is an internal method used to build a quaternion from a rotation matrix and then sets the current quaternion
+	 * from that matrix.
+	 *
+	 */
 	private void generateQuaternionFromMatrix() {
 
 		float qx;
@@ -344,6 +397,13 @@ public class Quaternion extends Vector4f {
 		setW(qw);
 	}
 
+
+	/**
+	 * The values of this quaternion can be set based on a rotation matrix. If the supplied matrix is not a rotation
+	 * matrix this will fail. A 4x4 matrix must be provided.
+	 *
+	 * @param mMatrix A column major rotation matrix
+	 */
 	public void setColumnMajor(float[] mMatrix) {
 
 		this.mMatrix.setMatrix(mMatrix);
@@ -352,6 +412,12 @@ public class Quaternion extends Vector4f {
 		generateQuaternionFromMatrix();
 	}
 
+	/**
+	 * The values for this quaternion can be set based on a rotation matrix. If the matrix you supply is not a
+	 * rotation matrix this will fail.
+	 *
+	 * @param mMatrix A column major rotation matrix
+	 */
 	public void setRowMajor(float[] mMatrix) {
 
 		this.mMatrix.setMatrix(mMatrix);
@@ -382,6 +448,12 @@ public class Quaternion extends Vector4f {
 		mDirty = true;
 	}
 
+	/**
+	 * Rotation is in degrees. Set this quaternion from the supplied axis angle.
+	 *
+	 * @param vec The vector of rotation
+	 * @param rot The angle of rotation around that vector in degrees.
+	 */
 	public void setAxisAngle(Vector3f vec, float rot) {
 		double s = Math.sin(Math.toRadians(rot / 2));
 		setX(vec.getX() * (float) s);
@@ -392,6 +464,13 @@ public class Quaternion extends Vector4f {
 		mDirty = true;
 	}
 
+	/**
+	 * Same as <code>setAxisAngle</code>
+	 * Takes the angles in Radian.
+	 *
+	 * @param vec The vector of rotation.
+	 * @param rot The angle of rotation around that vector in degrees.
+	 */
 	public void setAxisAngleRad(Vector3f vec, double rot) {
 		double s = rot / 2;
 		setX(vec.getX() * (float) s);
@@ -402,6 +481,9 @@ public class Quaternion extends Vector4f {
 		mDirty = true;
 	}
 
+	/**
+	 * @return Returns this Quaternion in the Rotation Matrix representation
+	 */
 	public MatrixF4x4 getMatrix4x4() {
 		if (mDirty) {
 			convertQuatToMatrix();
@@ -414,6 +496,15 @@ public class Quaternion extends Vector4f {
 		copyFromV3f(vec, w);
 	}
 
+	/**
+	 * Get a linear interpolation between this quaternion and the input quaternion, storing the result in the output
+	 * quaternion.
+	 *
+	 * @param input The quaternion to be slerped with this quaternion.
+	 * @param output The quaternion to store the result in.
+	 * @param t The ratio between the two quaternions where 0 <= t <= 1.0 . Increase value of t will bring rotation
+	 *            closer to the input quaternion.
+	 */
 	public void slerp(Quaternion input, Quaternion output, float t) {
 		// Calculate angle between them
 		Quaternion bufferQuat;
@@ -451,7 +542,14 @@ public class Quaternion extends Vector4f {
 		}
 	}
 
-	//Rotate a Vector by Quaternion
+	//
+
+	/**
+	 *Rotate a 3-D vector by this <code>Quaternion</code>.
+	 *
+	 * @param v the {@link Vector3f} to be rotated.
+	 * @return the rotated {@link Vector3f}.
+	 */
 	public Vector3f rotateVector(Vector3f v) {
 		float q0 = this.mPoints[3];
 		float q1 = this.mPoints[0];

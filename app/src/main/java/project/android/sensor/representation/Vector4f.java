@@ -33,7 +33,6 @@ package project.android.sensor.representation;
  * @see project.android.sensor.representation.Vector3f
  * @see project.android.sensor.representation.Quaternion
  */
-
 public class Vector4f {
 
 	float mPoints[] = { 0, 0, 0, 0 };
@@ -74,9 +73,9 @@ public class Vector4f {
 	 * @param w the w-dimension.
 	 */
 	public Vector4f(Vector3f vector3f, float w) {
-		this.mPoints[0] = vector3f.x();
-		this.mPoints[1] = vector3f.y();
-		this.mPoints[2] = vector3f.z();
+		this.mPoints[0] = vector3f.getX();
+		this.mPoints[1] = vector3f.getY();
+		this.mPoints[2] = vector3f.getZ();
 		this.mPoints[3] = w;
 	}
 
@@ -101,16 +100,6 @@ public class Vector4f {
 		this.mPoints[3] = vec.mPoints[3];
 	}
 
-    /**
-     * Performs addition of this <code>Vector4f</code> with
-     * another.<br/>
-     *
-     * It is equivalent to : <br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;
-     * <code>this = this + vector</code>.
-     *
-     * @param vector the <code>Vector4f</code> to be added.
-     */
 	public void add(Vector4f vector) {
 		this.mPoints[0] += vector.mPoints[0];
 		this.mPoints[1] += vector.mPoints[1];
@@ -118,31 +107,10 @@ public class Vector4f {
 		this.mPoints[3] += vector.mPoints[3];
 	}
 
-    /**
-     * Performs addition of this <code>Vector4f</code> with
-     * another.<br/>
-     *
-     * <p>
-     *     The <i>X, Y & Z</i> dimensions of the vector to be
-     *     added is obtained from the <code>Vector3f</code> -
-     *     <code>vector</code> - and the W-dimension is
-     *     obtained from <code>w</code>.
-     * </p>
-     * <p>
-     *     It is equivalent to : <br/>
-     *     &nbsp;&nbsp;&nbsp;&nbsp;
-     *     <code>
-     *         this = this + [vector.x, vector.y, vector.z, w]
-     *     </code>.
-     * </p>
-     *
-     * @param vector the <code>Vector3f</code>.
-     * @param w the W-dimension value.
-     */
 	public void add(Vector3f vector, float w) {
-		this.mPoints[0] += vector.x();
-		this.mPoints[1] += vector.y();
-		this.mPoints[2] += vector.z();
+		this.mPoints[0] += vector.getX();
+		this.mPoints[1] += vector.getY();
+		this.mPoints[2] += vector.getZ();
 		this.mPoints[3] += w;
 	}
 
@@ -232,11 +200,11 @@ public class Vector4f {
 		return this.mPoints[1];
 	}
 
-    /**
-     * Returns the Z-dimension of this <code>Vector4f</code>.
-     *
-     * @return the Z-dimension.
-     */
+	/**
+	 * Returns the Z-dimension of this <code>Vector4f</code>.
+	 *
+	 * @return the Z-dimension.
+	 */
 	public float getZ() {
 		return this.mPoints[2];
 	}
@@ -250,114 +218,45 @@ public class Vector4f {
 		return this.mPoints[3];
 	}
 
-    /**
-     * Sets the X-dimension of this <code>Vector4f</code>.
-     *
-     * @param x the X-dimension
-     */
+	/**
+	 * Sets the X-dimension of this <code>Vector4f</code>.
+	 *
+	 * @param x the X-dimension
+	 */
 	public void setX(float x) {
 		this.mPoints[0] = x;
 	}
 
-    /**
-     * Sets the Y-dimension of this <code>Vector4f</code>.
-     *
-     * @param y the Y-dimension
-     */
+	/**
+	 * Sets the Y-dimension of this <code>Vector4f</code>.
+	 *
+	 * @param y the Y-dimension
+	 */
 	public void setY(float y) {
 		this.mPoints[1] = y;
 	}
 
-    /**
-     * Sets the Z-dimension of this <code>Vector4f</code>.
-     *
-     * @param z the Z-dimension
-     */
+	/**
+	 * Sets the Z-dimension of this <code>Vector4f</code>.
+	 *
+	 * @param z the Z-dimension
+	 */
 	public void setZ(float z) {
 		this.mPoints[2] = z;
 	}
 
-    /**
-     * Sets the W-dimension of this <code>Vector4f</code>.
-     *
-     * @param w the X-dimension
-     */
+	/**
+	 * Sets the W-dimension of this <code>Vector4f</code>.
+	 *
+	 * @param w the X-dimension
+	 */
 	public void setW(float w) {
 		this.mPoints[3] = w;
 	}
 
 	/**
-	 * Returns the X-dimension of this <code>Vector4f</code>.
-	 *
-	 * @return the X-dimension.
+	 * Sets all four dimensions of this <code>Vector4f</code>.
 	 */
-	float x() {
-		return this.mPoints[0];
-	}
-
-	/**
-	 * Returns the Y-dimension of this <code>Vector4f</code>.
-	 *
-	 * @return the Y-dimension.
-	 */
-	float y() {
-		return this.mPoints[1];
-	}
-
-    /**
-     * Returns the Z-dimension of this <code>Vector4f</code>.
-     *
-     * @return the Z-dimension.
-     */
-	float z() {
-		return this.mPoints[2];
-	}
-
-	/**
-	 * Returns the W-dimension of this <code>Vector4f</code>.
-	 *
-	 * @return the W-dimension.
-	 */
-	public float w() {
-		return this.mPoints[3];
-	}
-
-    /**
-     * Sets the X-dimension of this <code>Vector4f</code>.
-     *
-     * @param x the X-dimension
-     */
-	public void x(float x) {
-		this.mPoints[0] = x;
-	}
-
-    /**
-     * Sets the Y-dimension of this <code>Vector4f</code>.
-     *
-     * @param y the Y-dimension
-     */
-	public void y(float y) {
-		this.mPoints[1] = y;
-	}
-
-    /**
-     * Sets the Z-dimension of this <code>Vector4f</code>.
-     *
-     * @param z the Z-dimension
-     */
-	public void z(float z) {
-		this.mPoints[2] = z;
-	}
-
-    /**
-     * Sets the W-dimension of this <code>Vector4f</code>.
-     *
-     * @param w the X-dimension
-     */
-	public void w(float w) {
-		this.mPoints[3] = w;
-	}
-
 	private void setXYZW(float x, float y, float z, float w) {
 		this.mPoints[0] = x;
 		this.mPoints[1] = y;
@@ -373,28 +272,29 @@ public class Vector4f {
 		return ret;
 	}
 
-    /**
-     * Copies a {@link Vector3f} to this <code>Vector4f</code> using
-     * a separate value for W-dimension.
-     *
-     * @param input the {@link Vector3f}.
-     * @param w <code>float</code> representing the W-dimension.
-     */
+
+	/**
+	 * Copies a {@link Vector3f} to this <code>Vector4f</code> using
+	 * a separate value for W-dimension.
+	 *
+	 * @param input the {@link Vector3f}.
+	 * @param w <code>float</code> representing the W-dimension.
+	 */
 	void copyFromV3f(Vector3f input, float w) {
-		mPoints[0] = (input.x());
-		mPoints[1] = (input.y());
-		mPoints[2] = (input.z());
+		mPoints[0] = (input.getX());
+		mPoints[1] = (input.getY());
+		mPoints[2] = (input.getZ());
 		mPoints[3] = (w);
 	}
 
-    /**
-     * Returns the <code>String</code> representation of this <code>
-     * Vector4f</code>. <br/>
-     * It overrides the {@link java.lang.Object#toString()} method.
-     *
-     * @return <code>String</code> representing this
-     *         <code>Vector4f</code>.
-     */
+	/**
+	 * Returns the <code>String</code> representation of this <code>
+	 * Vector4f</code>. <br/>
+	 * It overrides the {@link java.lang.Object#toString()} method.
+	 *
+	 * @return <code>String</code> representing this
+	 *         <code>Vector4f</code>.
+	 */
 	@Override
 	public String toString() {
 		return "X:" + mPoints[0] + " Y:" + mPoints[1] + " Z:" + mPoints[2] + " W:" + mPoints[3];
