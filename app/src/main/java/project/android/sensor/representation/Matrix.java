@@ -317,13 +317,13 @@ class Matrix {
 	 * Computes an orthographic projection matrix.
 	 *
 	 * @param m returns the result
-	 * @param mOffset
-	 * @param left
-	 * @param right
-	 * @param bottom
-	 * @param top
-	 * @param near
-	 * @param far
+	 * @param mOffset offset value
+	 * @param left left clipping value
+	 * @param right right clipping value
+	 * @param bottom bottom clipping value
+	 * @param top top clipping value
+	 * @param near nearer depth clipping value
+	 * @param far farther depth clipping value
 	 */
 	public static void orthoM(float[] m, int mOffset, float left, float right, float bottom, float top, float near, float far) {
 		if (left == right) {
@@ -369,12 +369,12 @@ class Matrix {
 	 * @param m the float array that holds the perspective matrix
 	 * @param offset the offset into float array m where the perspective
 	 *            matrix data is written
-	 * @param left
-	 * @param right
-	 * @param bottom
-	 * @param top
-	 * @param near
-	 * @param far
+	 * @param left left clipping value
+	 * @param right right clipping value
+	 * @param bottom bottom clipping value
+	 * @param top top clipping value
+	 * @param near nearer depth clipping value
+	 * @param far farther depth clipping value
 	 *
 	 */
 	public static void frustumM(float[] m, int offset, float left, float right, float bottom, float top, float near,
@@ -426,12 +426,11 @@ class Matrix {
 	 * aspect ratio, and z clip planes
 	 *
 	 * @param m the float array that holds the perspective matrix
-	 * @param offset the offset into float array m where the perspective
-	 *            matrix data is written
+	 * @param offset the offset into float array m where the perspective matrix data is written
 	 * @param fovy field of view in y direction, in degrees
 	 * @param aspect width to height aspect ratio of the viewport
-	 * @param zNear
-	 * @param zFar
+	 * @param zNear nearer depth clipping value on Z-plane
+	 * @param zFar farther  depth clipping value on Z-plane
 	 *
 	 */
 	public static void perspectiveM(float[] m, int offset, float fovy, float aspect, float zNear, float zFar) {

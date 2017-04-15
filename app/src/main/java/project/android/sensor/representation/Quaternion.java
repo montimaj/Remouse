@@ -157,7 +157,7 @@ public class Quaternion extends Vector4f {
 	/**
 	 * Multiply this quaternion by the input quaternion
 	 *
-	 * @param input
+	 * @param input Quaternion to be multiplied with
 	 */
 	public void multiplyByQuat(Quaternion input) {
 		this.mDirty = true;
@@ -497,13 +497,13 @@ public class Quaternion extends Vector4f {
 	}
 
 	/**
-	 * Get a linear interpolation between this quaternion and the input quaternion, storing the result in the output
-	 * quaternion.
+	 * Get a linear interpolation between this quaternion and the input quaternion, storing the
+     * result in the output quaternion.
 	 *
 	 * @param input The quaternion to be slerped with this quaternion.
 	 * @param output The quaternion to store the result in.
-	 * @param t The ratio between the two quaternions where 0 <= t <= 1.0 . Increase value of t will bring rotation
-	 *            closer to the input quaternion.
+	 * @param t The ratio between the two quaternions where 0 <= t <= 1.0 . Increase value of t will
+     * bring rotation closer to the input quaternion.
 	 */
 	public void slerp(Quaternion input, Quaternion output, float t) {
 		// Calculate angle between them
