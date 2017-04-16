@@ -57,7 +57,7 @@ public class Vector4f {
 	 * Constructor. <br/>
 	 * Default constructor. Creates the <code>Vector4f (0,0,0,0)</code>.
 	 */
-	Vector4f() {
+	public Vector4f() {
 		this.mPoints[0] = 0;
 		this.mPoints[1] = 0;
 		this.mPoints[2] = 0;
