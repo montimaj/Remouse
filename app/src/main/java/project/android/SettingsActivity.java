@@ -80,9 +80,9 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
      * </code>
      * method of the Android API.
      *
-     * @param sharedPreferences The <code>SharedPreferences</code>
+     * @param sharedPreferences the <code>SharedPreferences</code>
      *                          that received the change.
-     * @param key The key of the preference that was changed, added,
+     * @param key the key of the preference that was changed, added,
      *            or removed.
      */
     @Override

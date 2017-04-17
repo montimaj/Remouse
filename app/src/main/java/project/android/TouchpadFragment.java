@@ -14,19 +14,26 @@ import static project.android.ConnectionFragment.sConnectionAlive;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * Class representing the <code>Fragment</code> for providing the GUI frontend for the 2D mouse module.<br/>
+ * Class representing the <code>Fragment</code> for providing the GUI
+ * frontend for the 2D mouse module.
  *
- * The following features have been provided:
- * <ul>
- *     <li>
- *         2D mouse movement by implementing <code>View.OnTouchListener</code> interface.
- *     </li>
- *     <li>
- *         Single left click and double left click.
- *     </li>
- *     <li>Right click</li>
- *     <li>Middle click.</li>
- * </ul>
+ * <p>
+ *     The following features have been provided:
+ *     <ul>
+ *         <li>
+ *             2D mouse movement.
+ *         </li>
+ *         <li>
+ *             Single left click and double left click.
+ *         </li>
+ *         <li>Right click</li>
+ *         <li>Middle click.</li>
+ *         <li>Scrolling</li>
+ *     </ul>
+ * <p>
+ *     The 2D mouse movement feature is provided  by implementing
+ *     the <code>View.OnTouchListener</code> interface.
+ * </p>
  */
 public class TouchpadFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
@@ -36,16 +43,21 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     private float mLastMoveY = Float.MAX_VALUE;
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>.<br/>
+     * Overrides the
+     * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
+     * method of the Android API. <br/>
      *
      * Called to have the fragment instantiate its user interface view.
-     * @param inflater The <code>LayoutInflater</code> object that can be used to inflate any views in the fragment.
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
-     *                  The fragment should not add the view itself, but this can be used to generate
-     *                  the <code>LayoutParams</code> of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
-     * @return the <code>View</code> for the fragment's UI, or null.
+     *
+     * @param inflater The <code>LayoutInflater</code> object that can be used
+     *                 to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's
+     *                  UI should be attached to. The fragment should not add
+     *                  the view itself, but this can be used to generate the
+     *                  <code>LayoutParams</code> of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
+     * @return the <code>View</code> for the fragment's UI, or <code>null</code>.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +82,8 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onResume()</code>.<br/>
+     * Overrides the <code>Fragment.onResume()</code>
+     * method of the Android API. <br/>
      *
      * Called when the activity will start interacting with the user.
      */
@@ -81,7 +94,8 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     }
 
     /**
-     * Overrides the <code>android.support.v4.app.Fragment.onPause()</code>.<br/>
+     * Overrides the <code>Fragment.onPause()</code>
+     * method of the Android API. <br/>
      *
      * Called when the system is about to start resuming a previous activity.
      */
@@ -92,14 +106,19 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     }
 
     /**
-     * Overrides the <code>android.view.View.onTouchListener.onTouch(View, MotionEvent)</code>.<br/>
+     * Overrides the
+     * <code>View.onTouchListener.onTouch(View, MotionEvent)</code>
+     * method of the Android API. <br/>
      *
-     * Called when a touch event is dispatched to a <code>View</code>. This allows listeners to get
-     * a chance to respond before the target <code>View</code>.
-     * @param view The view the touch event has been dispatched to.
-     * @param motionEvent The MotionEvent object containing full information about the event.
-     * @return <code>true</code> if the listener has consumed the event,<br/>
-     *         <code>false</code> otherwise.
+     * Called when a touch event is dispatched to a <code>View</code>.
+     * This allows listeners to get a chance to respond before the
+     * target <code>View</code>.
+     *
+     * @param view the view the touch event has been dispatched to.
+     * @param motionEvent the <code>MotionEvent</code> object containing
+     *                    full information about the event.
+     * @return <code>true</code>, if the listener has consumed the event,<br/>
+     *         <code>false</code>, otherwise.
      */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -122,10 +141,13 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
     }
 
     /**
-     * Overrides the <code>android.view.View.onClickListener.onClick(View)</code>.<br/>
+     * Overrides the
+     * <code>View.onClickListener.onClick(View)</code>.
+     * method of the Android API. <br/>
      *
      * Called when a view has been clicked.
-     * @param view The view that was clicked.
+     *
+     * @param view the view that was clicked.
      */
     @Override
     public void onClick(View view) {
