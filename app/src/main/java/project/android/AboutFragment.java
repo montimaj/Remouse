@@ -39,7 +39,7 @@ public class AboutFragment extends Fragment {
         WebView mWebView = (WebView) view.findViewById(R.id.webView);
         mWebView.loadUrl("file:///android_asset/about.html");
         WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptEnabled(false);
         return view;
     }
 

@@ -1,6 +1,5 @@
 package project.android.net;
 
-
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static project.android.ConnectionFragment.sSecuredClient;
