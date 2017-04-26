@@ -45,23 +45,20 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
 /**
- * Class representing the end-to-end security module.<br/>
+ * Utility for end-to-end security module.
  *
- * This class provides the following features:
- * <ul>
- *     <li>
- *         256-bit Elliptic Curve private and public key generation.
- *     </li>
- *     <li>
- *         AES 256-bit plaintext encryption.
- *     </li>
- *     <li>
- *         AES 256-bit ciphertext decryption.
- *     </li>
- *     <li>
- *         Self-signed certificate generation.
- *     </li>
- * </ul>
+ * <p>
+ *     This class provides the following features:
+ *     <ul>
+ *         <li>
+ *             <i>256-bit Elliptic Curve</i> private and public key generation.
+ *         </li>
+ *         <li><i>AES 256-bit</i> plaintext encryption.</li>
+ *         <li><i>AES 256-bit</i> ciphertext decryption.</li>
+ *         <li>Self-signed certificate generation.</li>
+ *     </ul>
+ * </p>
+ *
  */
 public class EKEProvider {
 
@@ -87,9 +84,11 @@ public class EKEProvider {
 
     /**
      * Constructor.
-     * Initializes this <code>EKEProvider</code>.
-     * If keystore exists, private and public <code>KeyPair</code> is loaded, otherwise <code>KeyPair</code>
-     * is generated.
+     *
+     * Initializes this <code>EKEProvider</code>. If keystore exists, private and
+     * public <code>java.security.KeyPair</code> is loaded, otherwise the
+     * <code>KeyPair</code> is generated.
+     *
      * @see project.android.security.KeyStoreManager
      */
     public EKEProvider() {
@@ -116,13 +115,14 @@ public class EKEProvider {
 
     /**
      * Constructor.
-     * Initializes this <code>EKEProvider</code>.
+     *
      * <p>
-     *     Generates a secret key using the SHA-256 message digest of the pairing key used for
-     *     client-server authentication and the server <code>PublicKey</code>.
+     *     Initializes this <code>EKEProvider</code>. Generates a secret key using
+     *     the <i>SHA-256 message digest</i> of the pairing key used for client-server
+     *     authentication and the server <code>PublicKey</code>.
      * </p>
-     * @param pairingKey Pairing key used for client-server authentication.
-     * @param serverPublicKey Public key of the server.
+     * @param pairingKey the pairing key.
+     * @param serverPublicKey public key of the server.
      */
     public EKEProvider(byte[] pairingKey, byte[] serverPublicKey) {
         MessageDigest msgDigest;
@@ -144,7 +144,10 @@ public class EKEProvider {
 
     /**
      * Returns the <code>Base64</code> encoded client <code>PublicKey</code>.
-     * @return the <code>Base64</code> encoded client <code>PublicKey</code>.
+     * @return the <code>Base64</code> encoded server public key. <br/>
+     *         <b><i>Note:</i></b> Returns <code>null</code>
+     *         if no public has been generated during
+     *         instantiation.
      */
     public byte[] getBase64EncodedPubKey() {
         if (mPublicKey != null) {
@@ -178,9 +181,9 @@ public class EKEProvider {
     }
 
     /**
-     * Encrypt plaintext using AES 256-bit encryption algorithm.
-     * @param plainText plaintext to be encrypted.
-     * @return ciphertext.
+     * Encrypts plaintext using <i>AES 256-bit</i> encryption algorithm.
+     * @param plainText the plaintext to be encrypted.
+     * @return the ciphertext.
      */
     public String encryptString(String plainText) {
         try {
@@ -198,9 +201,9 @@ public class EKEProvider {
     }
 
     /**
-     * Decrypt ciphertext using AES-256 bit algorithm.
-     * @param cipherText ciphertext to be decrypted.
-     * @return plaintext.
+     * Decrypts ciphertext using <i>AES 256-bit</i> bit decryption algorithm.
+     * @param cipherText the ciphertext to be decrypted.
+     * @return the plaintext.
      */
     public String decryptString(String cipherText) {
         try {
