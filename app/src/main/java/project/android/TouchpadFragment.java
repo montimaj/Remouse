@@ -142,7 +142,7 @@ public class TouchpadFragment extends Fragment implements View.OnClickListener, 
 
     /**
      * Overrides the
-     * <code>View.onClickListener.onClick(View)</code>.
+     * <code>View.onClickListener.onClick(View)</code>
      * method of the Android API. <br/>
      *
      * Called when a view has been clicked.

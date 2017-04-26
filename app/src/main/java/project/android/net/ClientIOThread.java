@@ -16,10 +16,14 @@ import static project.android.ConnectionFragment.sSelectedServer;
 import static project.android.ConnectionFragment.sSecuredClient;
 
 /**
- * Class representing the client-server interaction module.<br/>
+ * Implementation of the <code>java.lang.Runnable</code> for the thread
+ * responsible for client-server interaction.
  *
- * {@link ConnectionTask} starts this thread by invoking {@link ConnectionTask#onPostExecute(EKEProvider)}.
- * This class is responsible for enabling/disabling client-server connection.
+ * <p>
+ *     This thread is started by the {@link ConnectionTask#onPostExecute(EKEProvider)}
+ *     method.
+ * </p>
+ *
  * @see project.android.net.ConnectionTask
  * @see project.android.net.Client
  * @see project.android.net.NetworkService
@@ -33,9 +37,10 @@ class ClientIOThread implements Runnable {
     private boolean mStopFlag;
 
     /**
-     * Constructor.<br/>
+     * Constructor.
      * Initializes this <code>ClientIOThread</code>.
-     * @param activity The current <code>android.app.Activity</code> object.
+     *
+     * @param activity the current <code>Activity</code>.
      * @param serverInfo {@link ServerInfo} object.
      * @param ekeProvider {@link project.android.security.EKEProvider} object.
      * @throws IOException
@@ -57,8 +62,11 @@ class ClientIOThread implements Runnable {
     /**
      * Performs operations for reading data from a server.
      * <ul>
-     *     <li>Reads stop signal sent from server and disables the respective server</li>
-     *     <li>Starts {@link NetworkService} upon successful server connection</li>
+     *     <li>
+     *         If it reads the stop signal sent from server, it disables the
+     *         respective server
+     *     </li>
+     *     <li>Starts a {@link NetworkService} upon successful server connection</li>
      * </ul>
      * @see project.android.ConnectionFragment
      */

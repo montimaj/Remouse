@@ -3,7 +3,7 @@ package project.android.net;
 import java.net.Socket;
 
 /**
- * Encapsulation of the data received from the client at the time of
+ * Encapsulation of the data sent to the server at the time of
  * establishing TCP connection.
  *
  * <p>

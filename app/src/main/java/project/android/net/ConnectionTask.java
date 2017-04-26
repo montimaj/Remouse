@@ -10,24 +10,30 @@ import project.android.MainActivity;
 import project.android.security.EKEProvider;
 
 /**
- * Class representing the <code>android.os.AsyncTask</code> used for the following operations:<br/>
+ * Extends the <code>AsyncTask</code> class of the Android API.
  *
  * <p>
+ *     It performs the following operations :
  *     <ul>
  *         <li>
- *             Displaying a <code>android.app.ProgressDialog</code> in {@link ConnectionTask#onPreExecute()}.
+ *             Displaying a <code>ProgressDialog</code>.
  *         </li>
  *         <li>
- *             Constructing {@link project.android.security.EKEProvider#EKEProvider(byte[], byte[])} object
- *             in {@link ConnectionTask#doInBackground(ServerInfo...)} that will be used for
- *             encryption and decryption of TCP packets.
+ *             Constructing a {@link project.android.security.EKEProvider} object
+ *             that will be used for encryption and decryption of TCP packets.
  *         </li>
  *         <li>
- *             Running {@link ClientIOThread} in {@link ConnectionTask#onPostExecute(EKEProvider)}
- *             after {@link ConnectionTask#doInBackground(ServerInfo...)} has been completed.
+ *             Starting a {@link ClientIOThread}.
  *         </li>
  *     </ul>
+ *     <code>AsyncTask</code> enables these operations to performed asynchronously
+ *     by defining them in the {@link #onPreExecute()},
+ *     {@link #doInBackground(ServerInfo...)} and {@link #onPostExecute(EKEProvider)}
+ *     methods respectively. The starting of {@link ClientIOThread} waits for the
+ *     construction of the {@link project.android.security.EKEProvider} object.
+ *     A <code>ProgressDialog</code> is displayed for this duration.
  * </p>
+ *
  * @see project.android.ConnectionFragment
  * @see project.android.net.ClientIOThread
  * @see project.android.net.ServerInfo
@@ -40,9 +46,11 @@ public class ConnectionTask extends AsyncTask<ServerInfo, Void, EKEProvider> {
     private ConnectionFragment mConnectionFragment;
 
     /**
-     * Overrides the <code>android.os.AsyncTask.onPreExecute()</code> method of the Android API.
+     * Overrides the <code>AsyncTask.onPreExecute()</code> method of the Android API.
      *
-     * Runs on the UI thread before {@link ConnectionTask#doInBackground(ServerInfo...)}.
+     * Runs on the UI thread before the
+     * {@link ConnectionTask#doInBackground(ServerInfo...)} method.
+     *
      * @see project.android.net.ConnectionTask#doInBackground(ServerInfo...)
      * @see project.android.net.ConnectionTask#onPostExecute(EKEProvider)
      */
@@ -53,11 +61,13 @@ public class ConnectionTask extends AsyncTask<ServerInfo, Void, EKEProvider> {
     }
 
     /**
-     * Overrides the <code>android.os.AsyncTask.doInBackground(Params...) method of the Android API.
+     * Overrides the <code>AsyncTask.doInBackground(Params...)</code> method of the
+     * Android API.
      *
-     * Performs a computation on a background thread
-     * @param serverInfos {@link ServerInfo} object(s)
-     * @return {@link project.android.security.EKEProvider#EKEProvider(byte[], byte[])} object
+     * Performs a computation on a background thread.
+     *
+     * @param serverInfos {@link ServerInfo} object(s).
+     * @return {@link project.android.security.EKEProvider} object.
      * @see project.android.net.ConnectionTask#onPreExecute()
      * @see project.android.net.ConnectionTask#onPostExecute(EKEProvider)
      * @see project.android.net.ServerInfo
@@ -68,10 +78,12 @@ public class ConnectionTask extends AsyncTask<ServerInfo, Void, EKEProvider> {
     }
 
     /**
-     * Overrides the <code>android.os.AsyncTask.onPostExecute(Result)</code> of the Android API.
+     * Overrides the <code>AsyncTask.onPostExecute(Result)</code> method of the Android API.
      *
      * This method won't be invoked if the task was cancelled.
-     * @param ekeProvider {@link project.android.security.EKEProvider} object returned by {@link ConnectionTask#doInBackground(ServerInfo...)}.
+     *
+     * @param ekeProvider {@link project.android.security.EKEProvider} object returned by
+     *                    the {@link ConnectionTask#doInBackground(ServerInfo...)} method.
      * @see project.android.net.ConnectionTask#doInBackground(ServerInfo...)
      * @see project.android.net.ConnectionTask#onPreExecute()
      * @see project.android.net.ClientIOThread

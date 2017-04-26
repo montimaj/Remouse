@@ -117,7 +117,7 @@ public class ConnectionFragment extends Fragment {
     }
 
     /**
-     * Overrides the <code>Fragment.onViewCreated(View, Bundle)</code>.
+     * Overrides the <code>Fragment.onViewCreated(View, Bundle)</code>
      * method of the Android API. <br/>
      *
      * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
@@ -190,10 +190,10 @@ public class ConnectionFragment extends Fragment {
      * method of the Android API.
      *
      * @param requestCode the request code.
-     * @param permissions the requested permissions. Never null.
+     * @param permissions the requested permissions. Never <code>null</code>.
      * @param grantResults the grant results for the corresponding permissions
      *                     which is either <code>PERMISSION_GRANTED</code> or
-     *                     <code>PERMISSION_DENIED</code>. Never null.
+     *                     <code>PERMISSION_DENIED</code>. Never <code>null</code>.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

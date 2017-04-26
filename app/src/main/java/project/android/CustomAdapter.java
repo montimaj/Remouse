@@ -43,6 +43,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
      *                           <code>TextView</code> to use when instantiating views.
      * @param arrayList the {@link project.android.net.ServerInfo} objects to be
      *                  displayed in the <code>ListView</code>.
+     * @see project.android.net.ServerInfo
      */
     CustomAdapter(Activity activity, int textViewResourceId, ArrayList<ServerInfo> arrayList) {
         super(activity, textViewResourceId, arrayList);
@@ -59,7 +60,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
      * Overrides the <code>ArrayAdapter.getCount()</code>
      * method. <br/>
      *
-     * Number of items in the data set represented by this adapter.
+     * Returns the number of items in the data set represented by this adapter.
      *
      * @return the count of items.
      */
@@ -73,7 +74,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
      * Overrides <code>ArrayAdapter.getView(int, View, ViewGroup)</code>
      * method. <br/>
      *
-     * Gets a <code>View</code that displays the data at the specified
+     * Gets a <code>View</code> that displays the data at the specified
      * position in the data set.
      *
      * @param position the position of the item within the adapter's data

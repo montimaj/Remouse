@@ -139,8 +139,8 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
      * Overrides the <code>Fragment.onDestroyView()</code> method
      * of the Android API. <br/>
      *
-     * Called when the view previously created by {
-     * @link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * Called when the view previously created by
+     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * has been detached from the fragment.
      */
     @Override

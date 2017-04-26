@@ -17,16 +17,19 @@ import static project.android.SettingsActivity.sMouseSensitivity2d;
 import static project.android.SettingsActivity.sMouseSensitivity3d;
 
 /**
- * Class representing the client module.<br/>
+ * Class representing the client.
  *
  * <p>
- *     The constructor {@link Client#Client(String)} is used to set up a TCP connection with the respective
- *     server. The data obtained from the {@link project.android.KeyboardFragment}, {@link project.android.MouseFragment}
- *     and {@link project.android.TouchpadFragment} are wrapped using {@link DataWrapper} which
- *     internally uses the <code>com.google.Gson</code> API. The wrapped <code>JSON</code> string is
- *     encrypted using {@link project.android.security.EKEProvider#encryptString(String)} and
+ *     The constructor {@link #Client(String)} is used to set up a TCP connection
+ *     with the respective server. The sensor data obtained through
+ *     {@link project.android.KeyboardFragment}, {@link project.android.MouseFragment}
+ *     and {@link project.android.TouchpadFragment} are wrapped using {@link DataWrapper}
+ *     which internally uses the <code>com.google.Gson</code> API. The wrapped <i>JSON
+ *     string</i> is encrypted using the
+ *     {@link project.android.security.EKEProvider#encryptString(String)} method and
  *     transmitted over the network.
  * </p>
+ *
  * @see project.android.net.DataWrapper
  * @see project.android.security.EKEProvider
  */
@@ -42,7 +45,9 @@ public class Client {
 
     /**
      * Constructor.
+     *
      * Initializes this <code>Client</code>.
+     *
      * @param address IPv4 address of the server.
      * @throws IOException
      */
@@ -54,20 +59,24 @@ public class Client {
     }
 
     /**
-     * Sets {@link project.android.security.EKEProvider} object.
-     * @param ekeProvider {@link project.android.security.EKEProvider} object.
+     * Sets the <code>EKEProvider</code> object.
+     *
+     * @param ekeProvider the {@link project.android.security.EKEProvider} object.
+     * @see project.android.security.EKEProvider
      */
     void setEKEProvider(EKEProvider ekeProvider) { mEKEProvider = ekeProvider; }
 
     /**
-     * Send the pairing key provided by the app user to the server.
-     * @param pairingKey pairing key provided by the app user.
+     * Sends the pairing key provided by the app user to the server.
+     *
+     * @param pairingKey the pairing key provided by the app user.
      */
     void sendPairingKey(String pairingKey) { sOut.println(pairingKey); }
 
     /**
-     * Get <code>BufferedReader</code> object.
-     * @return <code>BufferedReader</code> object.
+     * Returns <code>BufferedReader</code> of the client <code>Socket</code>.
+     *
+     * @return the <code>BufferedReader</code> object.
      * @throws IOException
      */
     BufferedReader getSocketReader() throws IOException {
@@ -75,7 +84,8 @@ public class Client {
     }
 
     /**
-     * Send mouse button or keyboard data.
+     * Sends mouse button or keyboard data.
+     *
      * @param operationType type of the operation.
      * @param data data to be sent.
      * @see project.android.net.DataWrapper#DataWrapper(String, String)
@@ -88,7 +98,8 @@ public class Client {
     }
 
     /**
-     * Send special key data
+     * Sends special key data.
+     *
      * @param data special key data
      * @see project.android.net.DataWrapper#DataWrapper(String)
      */
@@ -100,7 +111,8 @@ public class Client {
     }
 
     /**
-     * Send 2D mouse movement data.
+     * Sends 2D mouse movement data.
+     *
      * @param x relative x coordinate.
      * @param y relative y coordinate.
      * @see project.android.net.DataWrapper#DataWrapper(int, int, float)
@@ -112,10 +124,13 @@ public class Client {
     }
 
     /**
-     * Send 3D mouse movement data.
-     * @param quaternion {@link project.android.sensor.representation.Quaternion} object.
-     * @param isInitQuat <code>true</code> if inital {@link project.android.sensor.representation.Quaternion} object,<br/>
-     *                   <code>false</code> otherwise.
+     * Sends 3D mouse movement data.
+     *
+     * @param quaternion a {@link project.android.sensor.representation.Quaternion}
+     *                   object.
+     * @param isInitQuat <code>true</code>, if initial <code>Quaternion</code>,<br/>
+     *                   <code>false</code>, otherwise.
+     * @see project.android.sensor.representation.Quaternion
      * @see project.android.net.DataWrapper#DataWrapper(Quaternion, boolean, float)
      */
     public void sendData(Quaternion quaternion, boolean isInitQuat) {
@@ -125,10 +140,9 @@ public class Client {
     }
 
     /**
-     * Send a stop signal if the user disconnects the server from the app.
-     * @param makeSecured <code>true</code> for valid pairing key, <br/>
-     *                    <code>false</code> if pairing key alert dialog was cancelled.
-     * @see project.android.security.EKEProvider
+     * Sends a stop signal if the user disconnects the server.
+     * @param makeSecured <code>true</code>, for valid pairing key, <br/>
+     *                    <code>false</code>, if pairing key alert dialog was cancelled.
      */
     public void sendStopSignal(boolean makeSecured) {
         if(makeSecured && mEKEProvider != null) {
@@ -137,7 +151,7 @@ public class Client {
     }
 
     /**
-     * Close client socket.
+     * Closes the  client socket.
      * @throws IOException
      */
     public void close() throws IOException {

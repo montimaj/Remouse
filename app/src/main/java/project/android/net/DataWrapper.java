@@ -5,17 +5,16 @@ import com.google.gson.Gson;
 import project.android.sensor.representation.Quaternion;
 
 /**
- * Encapsulates the data received from client during TCP communication.
+ * Encapsulates the data sent to the server during TCP communication.
  *
  * <p>
- *     This data contains all the information required by the
+ *     This data contains all the information acquired from the
  *     {@link project.android.MouseFragment}, the
  *     {@link project.android.TouchpadFragment} and the
- *     {@link project.android.KeyboardFragment}for doing the different input
- *     operations. It contains a <i>type of operation</i> field which
- *     helps to determine the operation requested by the client and
- *     a <i>data</i> field which acts as the operand for the input
- *     operations.
+ *     {@link project.android.KeyboardFragment}. It contains a
+ *     <i>type of operation</i> field which helps the server determine
+ *     the operation requested by the client and a <i>data</i> field
+ *     which acts as the operand for the input operations.
  * </p>
  * <p>
  *     For keyboard input, the <i>type of operation</i> field contains
@@ -26,7 +25,8 @@ import project.android.sensor.representation.Quaternion;
  * <p>
  *     For 3-D mouse movement operation, the <i>type of operation</i>
  *     field contains <code>Mouse_Move</code> and the <i>data</i> field
- *     contains a {@link project.android.sensor.representation.Quaternion} object.
+ *     contains a {@link project.android.sensor.representation.Quaternion}
+ *     object.
  * </p>
  * <p>
  *     For 2-D mouse movement operation, the <i>type of operation</i>
@@ -64,11 +64,12 @@ class DataWrapper {
     private float mSensitivity;
 
     /**
-     * Constructor. <br/>
+     * Constructor.
+     *
      * Used to create a <code>DataWrapper</code> for keyboard and mouse
      * button click operations.
      *
-     * @param operationType the <i>type of operation field</i>.
+     * @param operationType the <i>type of operation</i> field.
      * @param data the <i>data</i> field.
      */
     DataWrapper(String operationType, String data) {
@@ -77,8 +78,11 @@ class DataWrapper {
     }
 
     /**
-     * Constructor. <br/>
-     * Used to create a <code>DataWrapper</code> for special keys like Ctrl, Alt etc.
+     * Constructor.
+     *
+     * Used to create a <code>DataWrapper</code> for special keys like Ctrl,
+     * Alt etc.
+     *
      * @param data the <i>data</i> field.
      */
     DataWrapper(String data) {
@@ -87,7 +91,8 @@ class DataWrapper {
     }
 
     /**
-     * Constructor. <br/>
+     * Constructor.
+     *
      * Used to create a <code>DataWrapper</code> for 2-D mouse movement
      * operation. The <i>type of operation</i> field is implicit.
      *
@@ -103,7 +108,8 @@ class DataWrapper {
     }
 
     /**
-     * Constructor. <br/>
+     * Constructor.
+     *
      * Used to create a <code>DataWrapper</code> for 3-D mouse movement
      * operation. The <i>type of operation</i> field is implicit.
      *
@@ -184,8 +190,9 @@ class DataWrapper {
 
     /**
      * Returns the mouse movement sensitivity value stored in this
-     * <code>DataWrapper</code>
-     * @return the mouse movement sensitivity
+     * <code>DataWrapper</code>.
+     *
+     * @return the mouse movement sensitivity.
      */
     float getSensitivity() { return mSensitivity; }
 }

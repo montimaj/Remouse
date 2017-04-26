@@ -19,15 +19,20 @@ import project.android.MainActivity;
 import static project.android.ConnectionFragment.sConnectionAlive;
 
 /**
- * Class representing the server broadcast receiver module.<br/>
+ * Implementation of the <code>java.lang.Runnable</code> for the thread
+ * responsible for receiving broadcast from the server.
  *
  * <p>
- *     This class receives the UDP packets broadcasted by the server and updates the <code>ListView</code>
- *     in the {@link project.android.ConnectionFragment} accordingly. This thread is first run when {@link ConnectionFragment#onViewCreated(View, Bundle)}
- *     is invoked and runs until the app is closed.
+ *     This class receives the UDP packets broadcasted by the server and updates
+ *     the <code>ListView</code> in the {@link project.android.ConnectionFragment}
+ *     accordingly. This thread is started by the
+ *     {@link ConnectionFragment#onViewCreated(View, Bundle)} method and it runs
+ *     until the app is closed.
  * </p>
+ *
  * @see project.android.ConnectionFragment
  * @see project.android.net.ServerInfo
+ * @see project.android.ConnectionFragment#onViewCreated(View, Bundle)
  */
 public class BroadcastReceiverThread implements Runnable {
 
@@ -41,9 +46,12 @@ public class BroadcastReceiverThread implements Runnable {
 
     /**
      * Constructor.<br/>
+     *
      * Initializes this <code>BroadcastReceiverThread</code>.
+     *
      * @param activity The current <code>android.app.Activity</code> object.
-     * @param lock <code>android.net.wifi.WifiManager.MulticastLock</code> object.
+     * @param lock an object of <code>WifiManager.MulticastLock</code> class
+     *             of the Android API.
      */
     public BroadcastReceiverThread(Activity activity, WifiManager.MulticastLock lock) {
         mActivity = activity;
@@ -55,18 +63,22 @@ public class BroadcastReceiverThread implements Runnable {
 
     /**
      * Performs the broadcast receiving operation.
+     *
      * <ul>
      *     <li>
-     *         Checks whether a stop signal has been broadcasted by the server. If so, removes the
-     *         {@link ServerInfo} object from the <code>ListView</code> in the
-     *         {@link project.android.ConnectionFragment}.
+     *         Checks whether a stop signal has been broadcast by the server. If so,
+     *         removes the {@link ServerInfo} object from the <code>ListView</code> in
+     *         the {@link project.android.ConnectionFragment}.
      *     </li>
      *     <li>
-     *         Constructs a {@link ServerInfo} object from the data obtained from
-     *         the <code>DatagramPacket</code> using <code>com.google.Gson</code> API and updates the
-     *         <code>ListView</code> in the {@link project.android.ConnectionFragment} accordingly.
+     *         Constructs a {@link ServerInfo} object from the data obtained from the
+     *         <code>DatagramPacket</code> using <code>com.google.Gson</code> API and
+     *         updates the <code>ListView</code> in the
+     *         {@link project.android.ConnectionFragment} accordingly.
      *     </li>
      * </ul>
+     *
+     * @see project.android.ConnectionFragment
      */
     @Override
     public void run() {
