@@ -3,23 +3,21 @@ package project.android.sensor.representation;
 import java.security.spec.InvalidParameterSpecException;
 
 /**
- * @author Abhisek Maiti
- * @author Sayantan Majumdar
+ * Class to represent a 4x4 matrix (float).
  *
- * The Class MatrixF4x4.
+ * <p>
+ *    Internal the matrix is structured as : <br/>
+ *    &nbsp;&nbsp;&nbsp;&nbsp;
+ *    <pre>
+ *        [ x0 , y0 , z0 , w0 ]
+ *        [ x1 , y1 , z1 , w1 ]
+ *        [ x2 , y2 , z2 , w2 ]
+ *        [ x3 , y3 , z3 , w3 ]
+ *    </pre>
+ * </p>
  *
- * Internal the matrix is structured as
- *
- * [ x0 , y0 , z0 , w0 ] [ x1 , y1 , z1 , w1 ] [ x2 , y2 , z2 , w2 ] [ x3 , y3 , z3 , w3 ]
- *
- * it is recommend to use the set{x,#} methods when setting the matrix values individually that you , where 'x' is
- * either x, y, z or w and # is either 0, 1, 2 or 3, <code>setY1</code> for example. These functions will map directly to the
- * specified part of the matrix regardless of whether or not the internal matrix is column major or not. If the matrix
- * is either or length 9 or 16 it will be able to determine if it can set the value or not.
- * Out of bound values will not be set and the set method will return without any error.
- *
+ * @see project.android.sensor.representation.Matrix
  */
-
 public class MatrixF4x4 {
 
 	static final int[] MAT_IND_COL9_3X3 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -35,8 +33,9 @@ public class MatrixF4x4 {
 	public float[] matrix;
 
 	/**
-	 * Instantiates a new matrixf4x4. The Matrix is assumed to be Column major, however you can change this by using the
-	 * setColumnMajor function to false and it will operate like a row major matrix.
+	 * Constructor.
+	 *
+	 * Initializes this <code>MatrixF4x4</code>.
 	 */
 	public MatrixF4x4() {
 		this.matrix = new float[16];
@@ -44,19 +43,20 @@ public class MatrixF4x4 {
 	}
 
 	/**
-	 * Gets the matrix.
+	 * Returns the matrix.
 	 *
-	 * @return the matrix, can be null if the matrix is invalid
+	 * @return the matrix, <br/>
+	 *         <code>null</code>, if the matrix is invalid.
 	 */
 	float[] getMatrix() {
 		return this.matrix;
 	}
 
-	/**
-	 * Gets size of the Matrix.
-	 *
-	 * @return the length of the matrix
-	 */
+    /**
+     * Returns size of the matrix.
+     *
+     * @return the size of the matrix.
+     */
 	int size() {
 		return matrix.length;
 	}
@@ -69,40 +69,32 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the matrix from a float[16] array. If the matrix isn't 16 long then the matrix will be invalid.
-	 *
-	 * @param source the source matrixF4x4
-	 */
+    /**
+     * Sets the matrix from a float[16] array.
+     *
+     * If the matrix isn't 16 long then the matrix will be invalid.
+     *
+     * @param source the source matrixF4x4.
+     */
 	public void set(MatrixF4x4 source) {
 		System.arraycopy(source.matrix, 0, matrix, 0, matrix.length);
 	}
 
-	/**
-	 * Set whether the internal data is col major by passing true, or false for a row major matrix. The matrix is column
-	 * major by default.
-	 *
-	 * @param mColMajor
-	 */
 	void setColumnMajor(boolean mColMajor) {
 		this.mColMaj = mColMajor;
 	}
 
-	/**
-	 * Find out if the stored matrix is column major
-	 *
-	 * @return
-	 */
 	boolean isColumnMajor() {
 		return mColMaj;
 	}
 
-	/**
-	 * Multiply the given vector by this matrix. This should only be used if the matrix is of size 16 (use the
-	 * <code>matrix.size()</code> method).
-	 *
-	 * @param vector A vector of length 4.
-	 */
+    /**
+     * Multiplies the given vector by this <code>MatrixF4x4</code>. <br/>
+     * This should only be used if the matrix is of size 16.
+     *
+     * @param vector a {@link Vector4f}.
+     * @throws InvalidParameterSpecException
+     */
 	public void multiplyVector4fByMatrix(Vector4f vector) throws InvalidParameterSpecException {
 
 		if (matrix.length == 16) {
@@ -142,12 +134,13 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Multiply the given vector by this matrix. This should only be used if the matrix is of size 9 (use the
-	 * <code>matrix.size()</code> method).
-	 *
-	 * @param vector A vector of length 3.
-	 */
+    /**
+     * Multiplies the given vector by this <code>MatrixF4x4</code>. <br/>
+     * This should only be used if the matrix is of size 9.
+     *
+     * @param vector a {@link Vector3f}.
+     * @throws InvalidParameterSpecException
+     */
 	public void multiplyVector3fByMatrix(Vector3f vector) throws InvalidParameterSpecException {
 
 		if (matrix.length == 9) {
@@ -183,11 +176,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Multiply matrix4x4 by matrix.
-	 *
-	 * @param matrixf the matrixf
-	 */
+    /**
+     * Multiples a <code>MatrixF4x4</code> with this.
+     *
+     * @param matrixf a <code>MatrixF4x4</code>.
+     */
 	public void multiplyMatrix4x4ByMatrix(MatrixF4x4 matrixf) {
 
 		float[] bufferMatrix = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -209,9 +202,6 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * This will rearrange the internal structure of the matrix. Note: this is an expensive operation.
-	 */
 	public void transpose() {
 		if (this.matrix.length == 16) {
 			float[] newMatrix = new float[16];
@@ -237,10 +227,11 @@ public class MatrixF4x4 {
 
 	}
 
-	/**
-	 * Sets the value of X0
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of X0.
+     *
+     * @param value value to set.
+     */
 	void setX0(float value) {
 
 		if (matrix.length == 16) {
@@ -258,10 +249,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of X1
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of X1.
+     *
+     * @param value value to set.
+     */
 	void setX1(float value) {
 
 		if (matrix.length == 16) {
@@ -279,10 +271,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of X2
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of X2.
+     *
+     * @param value value to set.
+     */
 	void setX2(float value) {
 
 		if (matrix.length == 16) {
@@ -300,10 +293,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Y0
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of Y0.
+     *
+     * @param value value to set.
+     */
 	void setY0(float value) {
 
 		if (matrix.length == 16) {
@@ -321,10 +315,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Y1
-	 * @param value  value to set
-	 */
+    /**
+     * Sets the value of Y1.
+     *
+     * @param value  value to set.
+     */
 	void setY1(float value) {
 
 		if (matrix.length == 16) {
@@ -342,10 +337,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Y2
-	 * @param value  value to set
-	 */
+    /**
+     * Sets the value of Y2.
+     *
+     * @param value  value to set.
+     */
 	void setY2(float value) {
 
 		if (matrix.length == 16) {
@@ -363,10 +359,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Z0
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of Z0.
+     *
+     * @param value value to set.
+     */
 	void setZ0(float value) {
 
 		if (matrix.length == 16) {
@@ -384,10 +381,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Z1
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of Z1.
+     *
+     * @param value value to set.
+     */
 	void setZ1(float value) {
 
 		if (matrix.length == 16) {
@@ -405,10 +403,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Z2
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of Z2.
+     *
+     * @param value value to set.
+     */
 	void setZ2(float value) {
 
 		if (matrix.length == 16) {
@@ -426,10 +425,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of X3
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of X3.
+     *
+     * @param value value to set.
+     */
 	void setX3(float value) {
 
 		if (matrix.length == 16) {
@@ -443,10 +443,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Y3
-	 * @param value  value to set
-	 */
+    /**
+     * Sets the value of Y3.
+     *
+     * @param value  value to set.
+     */
 	void setY3(float value) {
 
 		if (matrix.length == 16) {
@@ -460,10 +461,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of Z3
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of Z3.
+     *
+     * @param value value to set.
+     */
 	void setZ3(float value) {
 
 		if (matrix.length == 16) {
@@ -477,10 +479,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of W0
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of W0.
+     *
+     * @param value value to set.
+     */
 	void setW0(float value) {
 
 		if (matrix.length == 16) {
@@ -494,10 +497,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of W1
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of W1.
+     *
+     * @param value value to set.
+     */
 	void setW1(float value) {
 
 		if (matrix.length == 16) {
@@ -511,10 +515,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of W2
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of W2.
+     *
+     * @param value value to set.
+     */
 	void setW2(float value) {
 
 		if (matrix.length == 16) {
@@ -528,10 +533,11 @@ public class MatrixF4x4 {
 		}
 	}
 
-	/**
-	 * Sets the value of W3
-	 * @param value value to set
-	 */
+    /**
+     * Sets the value of W3.
+     *
+     * @param value value to set.
+     */
 	void setW3(float value) {
 
 		if (matrix.length == 16) {
