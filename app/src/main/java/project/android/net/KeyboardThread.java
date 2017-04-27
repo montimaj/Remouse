@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static project.android.ConnectionFragment.sSecuredClient;
 
@@ -51,6 +52,9 @@ public class KeyboardThread implements Runnable {
 
     private boolean mStopFlag;
     private LinkedBlockingQueue<Pair<String, Boolean>> mBuffer;
+
+    private final long POLL_TIMEOUT = 100;
+    private final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
 
     /**
      * Constructor.
@@ -100,11 +104,13 @@ public class KeyboardThread implements Runnable {
     public void run() {
         while(!mStopFlag) {
             try {
-                Pair<String, Boolean> data = mBuffer.take();
-                if(data.second) {
-                    sSecuredClient.sendData(data.first);
-                } else sSecuredClient.sendData("Key", data.first);
+                Pair<String, Boolean> data = mBuffer.poll(POLL_TIMEOUT, TIME_UNIT);
+                if(data != null) {
+                    if (data.second) {
+                        sSecuredClient.sendData(data.first);
+                    } else sSecuredClient.sendData("Key", data.first);
 //                Log.d("Keyboard sent", data.first + "__>" + data.first.length());
+                }
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
