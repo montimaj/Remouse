@@ -1,5 +1,7 @@
 package project.android.net;
 
+import android.util.Pair;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static project.android.ConnectionFragment.sSecuredClient;
@@ -11,17 +13,16 @@ import static project.android.ConnectionFragment.sSecuredClient;
 public class KeyboardThread implements Runnable {
 
     private boolean mStopFlag;
-    private LinkedBlockingQueue<String> mBuffer;
-    private boolean isSpecialKey;
+    private LinkedBlockingQueue<Pair<String, Boolean>> mBuffer;
 
     public KeyboardThread() {
         mStopFlag = false;
         mBuffer = new LinkedBlockingQueue<>();
     }
 
-    public void addToBuffer(String data) {
+    public void addToBuffer(String data, boolean isSpecialKey) {
         try {
-            mBuffer.put(data);
+            mBuffer.put(Pair.create(data, isSpecialKey));
         } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
@@ -31,14 +32,12 @@ public class KeyboardThread implements Runnable {
     public void run() {
         while(!mStopFlag) {
             try {
-                String data = mBuffer.take();
-                if(isSpecialKey) {
-                    sSecuredClient.sendData(data);
-                } else sSecuredClient.sendData("Key", data);
-//                Log.d("Keyboard sent", data + "__>" + data.length());
+                Pair<String, Boolean> data = mBuffer.take();
+                if(data.second) {
+                    sSecuredClient.sendData(data.first);
+                } else sSecuredClient.sendData("Key", data.first);
+//                Log.d("Keyboard sent", data.first + "__>" + data.first.length());
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
-
-    public void setSpecialKey(boolean value) { isSpecialKey = value; }
 }

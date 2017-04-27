@@ -184,15 +184,16 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
      */
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 //        Log.d("Keyboard before", s.length()+" "+start+" "+count+" "+after);
+
         mLastWord = s.subSequence(start, start+count).toString();
         if(count>after) {     //backspace ... less chars in future
-            String data = "";
 //            Log.d ("Keyboard before", count-after+" backspaces : "+s.subSequence(start+after,start+count));
+            String data = "";
             for (int i = 0; i < count - after; ++i) // send (count-after) backspaces.
                  data = data + "\b";
-            mKeyboardThread.setSpecialKey(false);
-            mKeyboardThread.addToBuffer(data);
+            mKeyboardThread.addToBuffer(data, false);
         }
     }
 
@@ -215,8 +216,9 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
      */
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        mKeyboardThread.setSpecialKey(false);
+
 //        Log.d("Keyboard on", s.length()+" "+start+" "+before+" "+count);
+
         int diff = count - before;
         if(diff>0) {          //'s' contains more chars after text change
             String currWord = s.subSequence(start, start+count).toString();
@@ -225,7 +227,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             if(mLastWord.equals(s.subSequence(start, start+before).toString())) {
                 String input = s.subSequence(start + before, start + count).toString();
 //                Log.d("Keyboard on", input);
-                mKeyboardThread.addToBuffer(input);
+                mKeyboardThread.addToBuffer(input, false);
             }
             // replace old with new text
             else {
@@ -233,7 +235,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
                 for(int i=0;i<before;++i)
                     data = data + "\b";
 //                Log.d("Keyboard on", data+currWord);
-                mKeyboardThread.addToBuffer(data + currWord);
+                mKeyboardThread.addToBuffer((data + currWord), false);
             }
         }
         mLastInput = (s.length() == 0) ? null : s.toString();
@@ -261,8 +263,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_DEL && mLastInput == null && event.getAction() == KeyEvent.ACTION_DOWN) {
-            mKeyboardThread.setSpecialKey(false);
-            mKeyboardThread.addToBuffer("\b");
+            mKeyboardThread.addToBuffer("\b", false);
             return true;
         }
         return false;
@@ -305,8 +306,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
                 mKeyboardInput.setSelection(mKeyboardInput.getText().length());
                 return;
         }
-        mKeyboardThread.setSpecialKey(true);
-        mKeyboardThread.addToBuffer(data);
+        mKeyboardThread.addToBuffer(data, true);
     }
 
     /**
@@ -401,8 +401,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
                 mKeyboardInput.setSelection(mKeyboardInput.getText().length());
                 return;
         }
-        mKeyboardThread.setSpecialKey(true);
-        mKeyboardThread.addToBuffer(data);
+        mKeyboardThread.addToBuffer(data, true);
     }
 
     private void setListeners(View view) {
