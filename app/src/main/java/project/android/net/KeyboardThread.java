@@ -53,8 +53,8 @@ public class KeyboardThread implements Runnable {
     private boolean mStopFlag;
     private LinkedBlockingQueue<Pair<String, Boolean>> mBuffer;
 
-    private final long POLL_TIMEOUT = 100;
-    private final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
+    private static final long POLL_TIMEOUT = 100;
+    private static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
 
     /**
      * Constructor.
