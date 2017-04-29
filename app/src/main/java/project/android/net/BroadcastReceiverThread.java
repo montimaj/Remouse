@@ -45,7 +45,7 @@ public class BroadcastReceiverThread implements Runnable {
     private static final int UDP_PORT = 1235;
 
     /**
-     * Constructor.<br/>
+     * Constructor.
      *
      * Initializes this <code>BroadcastReceiverThread</code>.
      *

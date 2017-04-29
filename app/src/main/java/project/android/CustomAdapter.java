@@ -35,7 +35,8 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
     private ConnectionFragment mConnectionFragment;
 
     /**
-     * Constructor.<br/>
+     * Constructor.
+     *
      * Initializes this <code>CustomAdapter</code>.
      *
      * @param activity the current <code>android.app.Activity</code> object.
@@ -58,7 +59,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
 
     /**
      * Overrides the <code>ArrayAdapter.getCount()</code>
-     * method. <br/>
+     * method.
      *
      * Returns the number of items in the data set represented by this adapter.
      *
@@ -72,7 +73,7 @@ class CustomAdapter extends ArrayAdapter<ServerInfo> {
 
     /**
      * Overrides <code>ArrayAdapter.getView(int, View, ViewGroup)</code>
-     * method. <br/>
+     * method.
      *
      * Gets a <code>View</code> that displays the data at the specified
      * position in the data set.

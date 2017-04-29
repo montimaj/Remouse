@@ -39,7 +39,8 @@ public class Vector3f {
 	private float[] mPoints = new float[3];
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+	 *
 	 * Creates the <code>Vector3f (x,y,z)</code>.
 	 *
 	 * @param x the X-dimension.
@@ -59,14 +60,16 @@ public class Vector3f {
 	}
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+     *
 	 * Default constructor.
 	 */
 	public Vector3f() {
 	}
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+     *
 	 * Copy constructor. Copies another <code>Vector3f</code> to
 	 * this one.
 	 *
@@ -170,7 +173,7 @@ public class Vector3f {
 	/**
 	 * Sets the X-dimension of this <code>Vector3f</code>.
 	 *
-	 * @param x the X-dimension
+	 * @param x the X-dimension.
 	 */
 	void setX(float x) {
 		this.mPoints[0] = x;
@@ -179,7 +182,7 @@ public class Vector3f {
 	/**
 	 * Sets the Y-dimension of this <code>Vector3f</code>.
 	 *
-	 * @param y the Y-dimension
+	 * @param y the Y-dimension.
 	 */
 	void setY(float y) {
 		this.mPoints[1] = y;
@@ -188,7 +191,7 @@ public class Vector3f {
 	/**
 	 * Sets the Z-dimension of this <code>Vector3f</code>.
 	 *
-	 * @param z the Z-dimension
+	 * @param z the Z-dimension.
 	 */
 	void setZ(float z) {
 		this.mPoints[2] = z;
@@ -230,7 +233,8 @@ public class Vector3f {
 
 	/**
 	 * Returns the <code>String</code> representation of this <code>
-	 * Vector3f</code>. <br/>
+	 * Vector3f</code>.
+     *
 	 * It overrides the {@link java.lang.Object#toString()} method.
 	 *
 	 * @return <code>String</code> representing this

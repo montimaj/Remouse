@@ -126,7 +126,7 @@ class Matrix {
 	/**
 	 * Transposes a 4 x 4 matrix.
 	 *
-	 * @param mTrans the array that holds the output inverted matrix
+	 * @param mTrans the array that holds the output inverted matrix.
 	 * @param mTransOffset an offset where the inverted matrix is stored.
 	 * @param m the input array.
 	 * @param mOffset an offset into <code>m</code> where the matrix is stored.
@@ -377,14 +377,14 @@ class Matrix {
 
 	/**
 	 * Defines a projection matrix in terms of a field of view angle, an
-	 * aspect ratio, and z clip planes
+	 * aspect ratio, and z clip planes.
 	 *
-	 * @param m the float array that holds the perspective matrix
-	 * @param offset the offset into float array m where the perspective matrix data is written
-	 * @param fovy field of view in y direction, in degrees
-	 * @param aspect width to height aspect ratio of the viewport
-	 * @param zNear nearer depth clipping value on Z-plane
-	 * @param zFar farther  depth clipping value on Z-plane
+	 * @param m the float array that holds the perspective matrix.
+	 * @param offset the offset into float array m where the perspective matrix data is written.
+	 * @param fovy field of view in y direction, in degrees.
+	 * @param aspect width to height aspect ratio of the viewport.
+	 * @param zNear nearer depth clipping value on Z-plane.
+	 * @param zFar farther depth clipping value on Z-plane.
 	 *
 	 */
 	public static void perspectiveM(float[] m, int offset, float fovy, float aspect, float zNear, float zFar) {
@@ -436,7 +436,7 @@ class Matrix {
 	 *
 	 * @param sm the result.
 	 * @param smOffset index into <code>sm</code> where the result matrix starts.
-	 * @param m source matrix
+	 * @param m source matrix.
 	 * @param mOffset index into <code>m</code> where the source matrix starts.
 	 * @param x scale factor x.
 	 * @param y scale factor y.
@@ -492,14 +492,14 @@ class Matrix {
 
 	/**
 	 * Rotates matrix m in place by angle a (in degrees)
-	 * around the axis (x, y, z)
+	 * around the axis (x, y, z).
 	 *
-	 * @param m source matrix
-	 * @param mOffset index into m where the matrix starts
-	 * @param a angle to rotate in degrees
-	 * @param x scale factor x
-	 * @param y scale factor y
-	 * @param z scale factor z
+	 * @param m source matrix.
+	 * @param mOffset index into m where the matrix starts.
+	 * @param a angle to rotate in degrees.
+	 * @param x scale factor x.
+	 * @param y scale factor y.
+	 * @param z scale factor z.
 	 */
 	public static void rotateM(float[] rm, int rmOffset, float[] m, int mOffset, float a, float x, float y, float z) {
 		synchronized (TEMP_MATRIX_ARRAY) {

@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     /**
      * Overrides the <code>AppCompatActivity.onCreate(Bundle)</code>
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when the activity is first created.
      *
@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     /**
      * Overrides the <code>FragmentActivity.onResume()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the activity will start interacting with
      * the user.
@@ -114,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     /**
      * Overrides the <code>FragmentActivity.onPause()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the system is about to start resuming a
      * previous activity.

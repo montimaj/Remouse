@@ -68,7 +68,7 @@ public abstract class OrientationProvider implements SensorEventListener {
     }
 
     /**
-     * Starts the sensor fusion (e.g., when resuming the activity)
+     * Starts the sensor fusion (e.g., when resuming the activity).
      */
 	void sensorStart() {
 		for (Sensor sensor : mSensorList) {
@@ -78,7 +78,7 @@ public abstract class OrientationProvider implements SensorEventListener {
 	}
 
     /**
-     * Stops the sensor fusion (e.g., when pausing/suspending the activity)
+     * Stops the sensor fusion (e.g., when pausing/suspending the activity).
      */
 	public void sensorStop() {
 		for (Sensor sensor : mSensorList) {

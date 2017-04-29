@@ -38,7 +38,8 @@ public class Vector4f {
 	float mPoints[] = { 0, 0, 0, 0 };
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+	 *
 	 * Creates the <code>Vector4f (x,y,z,w)</code>.
 	 *
 	 * @param x the X-dimension.
@@ -54,7 +55,8 @@ public class Vector4f {
 	}
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+     *
 	 * Default constructor. Creates the <code>Vector4f (0,0,0,0)</code>.
 	 */
 	public Vector4f() {
@@ -65,7 +67,8 @@ public class Vector4f {
 	}
 
 	/**
-	 * Constructor. <br/>
+	 * Constructor.
+     *
 	 * Creates the <code>Vector4f (vector3f.getX(), vector3f.getY(),
 	 * vector3f.getZ(), w)</code>.
 	 *
@@ -135,7 +138,7 @@ public class Vector4f {
 
 	/**
 	 * Multiples this <code>Vector4f</code> with a scalar.
-	 * .
+	 *
 	 * @param scalar the scalar.
 	 */
 	public void multiplyByScalar(float scalar) {
@@ -221,7 +224,7 @@ public class Vector4f {
 	/**
 	 * Sets the X-dimension of this <code>Vector4f</code>.
 	 *
-	 * @param x the X-dimension
+	 * @param x the X-dimension.
 	 */
 	public void setX(float x) {
 		this.mPoints[0] = x;
@@ -230,7 +233,7 @@ public class Vector4f {
 	/**
 	 * Sets the Y-dimension of this <code>Vector4f</code>.
 	 *
-	 * @param y the Y-dimension
+	 * @param y the Y-dimension.
 	 */
 	public void setY(float y) {
 		this.mPoints[1] = y;
@@ -239,7 +242,7 @@ public class Vector4f {
 	/**
 	 * Sets the Z-dimension of this <code>Vector4f</code>.
 	 *
-	 * @param z the Z-dimension
+	 * @param z the Z-dimension.
 	 */
 	public void setZ(float z) {
 		this.mPoints[2] = z;
@@ -248,7 +251,7 @@ public class Vector4f {
 	/**
 	 * Sets the W-dimension of this <code>Vector4f</code>.
 	 *
-	 * @param w the X-dimension
+	 * @param w the X-dimension.
 	 */
 	public void setW(float w) {
 		this.mPoints[3] = w;
@@ -289,7 +292,8 @@ public class Vector4f {
 
 	/**
 	 * Returns the <code>String</code> representation of this <code>
-	 * Vector4f</code>. <br/>
+	 * Vector4f</code>.
+     *
 	 * It overrides the {@link java.lang.Object#toString()} method.
 	 *
 	 * @return <code>String</code> representing this

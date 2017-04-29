@@ -98,7 +98,7 @@ class DataWrapper {
      *
      * @param x displacement data along x-axis.
      * @param y displacement data along y-axis.
-     * @param sensitivity mouse movement sensitivity
+     * @param sensitivity mouse movement sensitivity.
      */
     DataWrapper(int x, int y, float sensitivity) {
         mMoveX = x;
@@ -118,7 +118,7 @@ class DataWrapper {
      * @param isInitQuat <code>true</code>, if <code>quaternionObject</code>
      *                   is the initial, <br/>
      *                   <code>false</code>, otherwise.
-     * @param sensitivity mouse movement sensitivity
+     * @param sensitivity mouse movement sensitivity.
      * @see project.android.sensor.representation.Quaternion
      */
     DataWrapper(Quaternion quaternionObject, boolean isInitQuat, float sensitivity) {
@@ -132,7 +132,7 @@ class DataWrapper {
      * Returns a JSon-string of an object.
      *
      * @param object the input {@link java.lang.Object}.
-     * @return a JSon-string
+     * @return a JSon-string.
      * @see com.google.gson.Gson
      */
     static String getGsonString(Object object) {

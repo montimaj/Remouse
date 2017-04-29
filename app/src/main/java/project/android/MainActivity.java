@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>AppCompatActivity.onCreate(Bundle)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the activity is first created.
      *
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>FragmentActivity.onResume()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the activity will start interacting with
      * the user.
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>FragmentActivity.onPause()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the system is about to start resuming a
      * previous activity.
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>FragmentActivity.onBackPressed()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when the activity has detected the user's press of
      * the back key.
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>AppCompatActivity.onDestroy()</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * The final call received before an activity is destroyed.
      */
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Overrides the <code>Activity.onCreateOptionsMenu(Menu)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Initializes the contents of the Activity's standard options
      * menu.
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Overrides the
      * <code>Activity.onOptionsItemSelected(MenuItem)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Handles action bar item clicks. The action bar will
      * automatically handle clicks on the Home/Up button, so
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity
      * <code>
      *     NavigationView.OnNavigationItemSelectedListener.onNavigationItemSelected(MenuItem)
      * </code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when an item in the navigation menu is selected.
      *

@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 
 /**
  * Class representing the <code>Fragment</code> for changing app
- * settings. <br/>
+ * settings.
  *
  * This <code>SettingsFragment</code> is created by the
  * {@link SettingsActivity#onCreate(Bundle)} method.
@@ -18,7 +18,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     /**
      * Overrides the <code>PreferenceFragment.onCreate(Bundle)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when this fragment is created.
      *
@@ -34,7 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     /**
      * Overrides the <code>PreferenceFragment.onResume()</code> method
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when this fragment will start interacting with the user.
      */
@@ -46,7 +46,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     /**
      * Overrides the <code>PreferenceFragment.onPause()</code> method
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when the system is about to start resuming a previous activity.
      */

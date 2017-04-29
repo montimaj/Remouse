@@ -65,7 +65,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
     /**
      * Overrides the
      * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called to have the fragment instantiate its user interface view.
      *
@@ -112,7 +112,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
 
     /**
      * Overrides the <code>Fragment.onResume()</code> method of
-     * the Android API. <br/>
+     * the Android API.
      *
      * Called when the activity will start interacting with the user.
      */
@@ -124,7 +124,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
 
     /**
      * Overrides the <code>Fragment.onPause()</code> method of
-     * the Android API. <br/>
+     * the Android API.
      *
      * Called when the system is about to start resuming a previous
      * activity.
@@ -137,7 +137,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
 
     /**
      * Overrides the <code>Fragment.onDestroyView()</code> method
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when the view previously created by
      * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
@@ -153,7 +153,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
     /**
      * Overrides the
      * <code>View.onTouchListener.onTouch(View, MotionEvent)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when a touch event is dispatched to a <code>View</code>.
      * This allows listeners to get a chance to respond before the
@@ -191,7 +191,7 @@ public class MouseFragment extends Fragment implements View.OnClickListener, Vie
 
     /**
      * Overrides the <code>View.onClickListener.onClick(View)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called when a view has been clicked.
      *

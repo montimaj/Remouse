@@ -87,7 +87,7 @@ public class ConnectionFragment extends Fragment {
     /**
      * Overrides the
      * <code>Fragment.onCreateView(LayoutInflater, ViewGroup, Bundle)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called to have the fragment instantiate its user interface view.
      *
@@ -118,7 +118,7 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Overrides the <code>Fragment.onViewCreated(View, Bundle)</code>
-     * method of the Android API. <br/>
+     * method of the Android API.
      *
      * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * has returned, but before any saved state has been restored in to the view.
@@ -160,7 +160,7 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Overrides the <code>Fragment.onResume()</code> method
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when the activity will start interacting with
      * the user.
@@ -173,7 +173,7 @@ public class ConnectionFragment extends Fragment {
 
     /**
      * Overrides the <code>Fragment.onPause()</code> method
-     * of the Android API. <br/>
+     * of the Android API.
      *
      * Called when the system is about to start resuming a
      * previous activity.

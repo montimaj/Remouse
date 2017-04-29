@@ -100,7 +100,7 @@ public class Client {
     /**
      * Sends special key data.
      *
-     * @param data special key data
+     * @param data special key data.
      * @see project.android.net.DataWrapper#DataWrapper(String)
      */
     public void sendData(String data) {

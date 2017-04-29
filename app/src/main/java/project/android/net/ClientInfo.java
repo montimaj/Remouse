@@ -62,7 +62,7 @@ public class ClientInfo {
     /**
      * Returns the canonical hostname of the client.
      *
-     * @return canonical hostname of the client
+     * @return canonical hostname of the client.
      */
     public String getClientInfo() { return mClientInfo; }
 

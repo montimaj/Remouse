@@ -89,7 +89,8 @@ public class MatrixF4x4 {
 	}
 
     /**
-     * Multiplies the given vector by this <code>MatrixF4x4</code>. <br/>
+     * Multiplies the given vector by this <code>MatrixF4x4</code>.
+	 *
      * This should only be used if the matrix is of size 16.
      *
      * @param vector a {@link Vector4f}.
@@ -135,7 +136,8 @@ public class MatrixF4x4 {
 	}
 
     /**
-     * Multiplies the given vector by this <code>MatrixF4x4</code>. <br/>
+     * Multiplies the given vector by this <code>MatrixF4x4</code>.
+     *
      * This should only be used if the matrix is of size 9.
      *
      * @param vector a {@link Vector3f}.
