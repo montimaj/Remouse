@@ -53,25 +53,30 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             R.id.Alt,    //1
             R.id.Shift,  //2
             R.id.Show_Hide, //3
-            R.id.Del,    //4
-            R.id.Esc,    //5
-            R.id.Tab,    //6
-            R.id.f1,     //7
-            R.id.f2,     //8
-            R.id.f3,     //9
-            R.id.f4,     //10
-            R.id.f5,     //11
-            R.id.f6,     //12
-            R.id.f7,     //13
-            R.id.f8,     //14
-            R.id.f9,     //15
-            R.id.f10,    //16
-            R.id.f11,    //17
-            R.id.f12,    //18
-            R.id.upArrow,     //19
-            R.id.downArrow,  //20
-            R.id.leftArrow,  //21
-            R.id.rightArrow  //22
+            R.id.Home,      //4
+            R.id.End,       //5
+            R.id.Page_Up,   //6
+            R.id.Page_Down,  //7
+            R.id.Del,    //8
+            R.id.Esc,    //9
+            R.id.Tab,    //10
+            R.id.f1,     //11
+            R.id.f2,     //12
+            R.id.f3,     //13
+            R.id.f4,     //14
+            R.id.f5,     //15
+            R.id.f6,     //16
+            R.id.f7,     //17
+            R.id.f8,     //18
+            R.id.f9,     //19
+            R.id.f10,    //20
+            R.id.f11,    //21
+            R.id.f12,    //22
+            R.id.Insert, //23
+            R.id.upArrow,     //24
+            R.id.downArrow,  //25
+            R.id.leftArrow,  //26
+            R.id.rightArrow  //27
     };
 
     /**
@@ -98,9 +103,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
         View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
         mInput = null;
         mLastInput = null;
-        ImageView imageView = (ImageView) view.findViewById(R.id.keyboard_img);
         if(sConnectionAlive.containsValue(true)) {
-            imageView.setVisibility(View.GONE);
             mInput = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             mInput.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             mKeyboardInput = (EditText) view.findViewById(R.id.keyboard);
@@ -115,8 +118,6 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             new Thread(mKeyboardThread).start();
             mLastWord = "";
             setListeners(view);
-        } else {
-            imageView.setImageResource(R.mipmap.keyboard);
         }
         return view;
     }
@@ -321,6 +322,22 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
     public void onClick(View v) {
         String data = "";
         switch(v.getId()) {
+            case R.id.Home:
+                data = "Home";
+                break;
+
+            case R.id.End:
+                data = "End";
+                break;
+
+            case R.id.Page_Up:
+                data = "Page_Up";
+                break;
+
+            case R.id.Page_Down:
+                data = "Page_Down";
+                break;
+
             case R.id.Del:
                 data = "Del";
                 break;
@@ -381,6 +398,10 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
                 data = "F12";
                 break;
 
+            case R.id.Insert:
+                data = "Insert";
+                break;
+
             case R.id.upArrow:
                 data = "Up";
                 break;
@@ -409,7 +430,7 @@ public class KeyboardFragment extends Fragment implements View.OnKeyListener, Vi
             if(numSpecialButtons >=0 && numSpecialButtons <=3) {
                 CheckBox checkBox = (CheckBox) view.findViewById(SPECIAL_KEY_ID[numSpecialButtons]);
                 checkBox.setOnCheckedChangeListener(this);
-            } else if(numSpecialButtons >=4 && numSpecialButtons <=18) {
+            } else if(numSpecialButtons >=4 && numSpecialButtons <=23) {
                 Button button = (Button) view.findViewById(SPECIAL_KEY_ID[numSpecialButtons]);
                 button.setOnClickListener(this);
             } else {

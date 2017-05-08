@@ -49,4 +49,9 @@
     <string name="tab">Tab</string>
     <string name="show_hide_text">Hide Text</string>
     <string name="type_here">Type here</string>
+    <string name="home">Home</string>
+    <string name="end">End</string>
+    <string name="page_up">Page Up</string>
+    <string name="page_down">Page Down</string>
+    <string name="insert">Insert</string>
 </resources>
