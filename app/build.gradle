@@ -20,10 +20,6 @@ android {
     }
 }
 
-
-
-
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/spongycastle/core-1.54.0.0.jar')
