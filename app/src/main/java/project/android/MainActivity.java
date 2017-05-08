@@ -32,10 +32,6 @@ import project.android.sensor.orientation.OrientationProvider;
  * at app startup.
  *
  * <p>
- *     Screenshot: <br /> <br />
- *     <img src= "../../../../../../scr/remouse.png" width="180" height="320" />
- * </p>
- * <p>
  *      It provides an interface for navigation bar which contains
  *      the following navigation items:
  *      <ul>
