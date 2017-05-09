@@ -73,7 +73,7 @@ public abstract class OrientationProvider implements SensorEventListener {
 	void sensorStart() {
 		for (Sensor sensor : mSensorList) {
 			sensorManager.registerListener(this, sensor,
-					SensorManager.SENSOR_DELAY_GAME);
+					SensorManager.SENSOR_DELAY_UI);
 		}
 	}
 
