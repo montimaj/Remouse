@@ -1,5 +1,0 @@
-<map id="project.android.net.Client.sendStopSignal" name="project.android.net.Client.sendStopSignal">
-<area shape="rect" id="node2" href="$a00194.html#a3d6c629d64e1911979c9f483c8785b5f" title="Sends mouse button or keyboard data. " alt="" coords="220,42,411,66"/>
-<area shape="rect" id="node3" href="$a00210.html#af8add0417bec5bd0d019410c91f69e38" title="Returns a JSon&#45;string of an object. " alt="" coords="465,5,602,41"/>
-<area shape="rect" id="node4" href="$a00226.html#a73624750dc6ff111d72bcb4b54c4995c" title="Encrypts plaintext using AES 256&#45;bit encryption algorithm. " alt="" coords="459,65,608,101"/>
-</map>

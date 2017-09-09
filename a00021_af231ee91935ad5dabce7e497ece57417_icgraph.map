@@ -1,4 +1,0 @@
-<map id="project.android.sensor.representation.Quaternion.multiplyByQuat" name="project.android.sensor.representation.Quaternion.multiplyByQuat">
-<area shape="rect" id="node2" href="$a00011.html#ab9a9911056de6fc82ef1859c2eb42bad" title="project.android.sensor.orientation.\lKalmanFilterProvider.onSensorChanged" alt="" coords="256,5,471,41"/>
-<area shape="rect" id="node3" href="$a00021.html#ad65bf4d90dd8d310b37e9318eae5546f" title="Multiply this quaternion by the input quaternion. " alt="" coords="262,65,465,101"/>
-</map>

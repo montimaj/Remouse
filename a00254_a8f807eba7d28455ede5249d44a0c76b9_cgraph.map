@@ -1,5 +1,0 @@
-<map id="project.android.sensor.representation.Vector3f.dotProduct" name="project.android.sensor.representation.Vector3f.dotProduct">
-<area shape="rect" id="node2" href="$a00254.html#a8678a8ac724b95ee017d09efa6adbaa3" title="Sets the X&#45;dimension of this Vector3f. " alt="" coords="256,5,459,41"/>
-<area shape="rect" id="node3" href="$a00254.html#a634549e0b985cbfae9f27f7025d8ef22" title="Sets the Y&#45;dimension of this Vector3f. " alt="" coords="256,65,459,101"/>
-<area shape="rect" id="node4" href="$a00254.html#ad5e73cd0fa112b21cbfbe8f448c58c89" title="Sets the Z&#45;dimension of this Vector3f. " alt="" coords="256,125,459,161"/>
-</map>

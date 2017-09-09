@@ -1,4 +1,0 @@
-<map id="project.android.sensor.representation.Quaternion.Quaternion" name="project.android.sensor.representation.Quaternion.Quaternion">
-<area shape="rect" id="node2" href="$a00021.html#ad65bf4d90dd8d310b37e9318eae5546f" title="Multiply this quaternion by the input quaternion. " alt="" coords="256,5,459,41"/>
-<area shape="rect" id="node3" href="$a00021.html#a1dd87c16d6dd4034641cfdfba53d4d21" title="Get a linear interpolation between this quaternion and the input quaternion, storing the result in th..." alt="" coords="256,65,459,101"/>
-</map>

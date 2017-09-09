@@ -1,6 +1,0 @@
-<map id="project.android.security.EKEProvider.encryptString" name="project.android.security.EKEProvider.encryptString">
-<area shape="rect" id="node2" href="$a00003.html#a3d6c629d64e1911979c9f483c8785b5f" title="Send mouse button or keyboard data. " alt="" coords="203,11,393,35"/>
-<area shape="rect" id="node5" href="$a00005.html#aa57b04eb44ae7982a7a79cdb7c484144" title="Constructor. " alt="" coords="226,60,370,96"/>
-<area shape="rect" id="node3" href="$a00003.html#aa23e2b087d09db0524a34b73cd5e07d3" title="Send a stop signal if the user disconnects the server from the app. " alt="" coords="441,5,608,41"/>
-<area shape="rect" id="node4" href="$a00006.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="656,5,807,41"/>
-</map>

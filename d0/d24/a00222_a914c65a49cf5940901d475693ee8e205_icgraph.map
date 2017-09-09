@@ -1,0 +1,13 @@
+<map id="project.android.net.ServerInfo.getAddress" name="project.android.net.ServerInfo.getAddress">
+<area shape="rect" id="node2" href="$d9/d38/a00166.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="200,99,351,135"/>
+<area shape="rect" id="node4" href="$d5/dcb/a00170.html#aeff09458fb87bd73b69188560508baf5" title="Overrides ArrayAdapter.getView(int, View, ViewGroup) method. " alt="" coords="399,160,611,184"/>
+<area shape="rect" id="node8" href="$db/d53/a00202.html#aa57b04eb44ae7982a7a79cdb7c484144" title="Constructor. " alt="" coords="1267,30,1411,66"/>
+<area shape="rect" id="node9" href="$d9/d38/a00166.html#af0e6f7c8aa02553792fd18fbb5e98a2e" title="Sets an icon for an active server. " alt="" coords="865,183,1016,219"/>
+<area shape="rect" id="node11" href="$d9/d38/a00166.html#aa3204a474571d554c95ddb6bdd2ca012" title="Removes the ServerInfo object of an inactive server from the list of servers. " alt="" coords="200,266,351,302"/>
+<area shape="rect" id="node12" href="$d7/d6e/a00190.html#a03c170017a27365b50ab860fa21e3d46" title="Performs the broadcast receiving operation. " alt="" coords="423,294,586,330"/>
+<area shape="rect" id="node3" href="$d5/dcb/a00170.html#a9b4dd18431aa7ebd37321a0d2b1d2539" title="Overrides the ArrayAdapter.getCount() method. " alt="" coords="410,43,599,79"/>
+<area shape="rect" id="node5" href="$d9/d38/a00166.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="659,154,817,190"/>
+<area shape="rect" id="node6" href="$d9/d38/a00166.html#a5ae4f9d7872792288afb3de65ab4c2b0" title="Sets an icon for an inactive server. " alt="" coords="865,98,1016,134"/>
+<area shape="rect" id="node7" href="$db/d53/a00202.html#a9f6765867ad54f586cc7b329213a2ac3" title="Performs operations for reading data from a server. " alt="" coords="1071,71,1212,107"/>
+<area shape="rect" id="node10" href="$dc/d9a/a00218.html#a6b623423ab726a2d5008717960032b6d" title="Overrides the Service.onStartCommand(Intent, int, int) method of the Android API. ..." alt="" coords="1064,183,1219,219"/>
+</map>

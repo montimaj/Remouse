@@ -1,0 +1,6 @@
+<map id="project.android.sensor.representation.Vector4f.copyVec4" name="project.android.sensor.representation.Vector4f.copyVec4">
+<area shape="rect" id="node2" href="$d0/da7/a00250.html#a63276a34f5007701782c0d5c1aeb467c" title="Copies the values from the given Quaternion to this one. " alt="" coords="256,35,459,71"/>
+<area shape="rect" id="node5" href="$d0/da7/a00250.html#ad65bf4d90dd8d310b37e9318eae5546f" title="Multiplies this Quaternion by the input one. " alt="" coords="256,95,459,131"/>
+<area shape="rect" id="node3" href="$da/d31/a00234.html#ab9a9911056de6fc82ef1859c2eb42bad" title="Overrides the SensorEventListener.onSensorChanged() method of the Android API. " alt="" coords="507,5,721,41"/>
+<area shape="rect" id="node4" href="$da/d2e/a00238.html#a467add7b43d10e83cd33ef234664f077" title="Gets the current rotation of the device. " alt="" coords="521,65,707,101"/>
+</map>

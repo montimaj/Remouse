@@ -3,42 +3,42 @@ var annotated_dup =
     [ "project", null, [
       [ "android", null, [
         [ "net", null, [
-          [ "BroadcastReceiverThread", "a00190.html", "a00190" ],
-          [ "Client", "a00194.html", "a00194" ],
-          [ "ClientInfo", "a00198.html", "a00198" ],
-          [ "ClientIOThread", "a00202.html", "a00202" ],
-          [ "ConnectionTask", "a00206.html", "a00206" ],
-          [ "DataWrapper", "a00210.html", "a00210" ],
-          [ "KeyboardThread", "a00214.html", "a00214" ],
-          [ "NetworkService", "a00218.html", "a00218" ],
-          [ "ServerInfo", "a00222.html", "a00222" ]
+          [ "BroadcastReceiverThread", "d7/d6e/a00190.html", "d7/d6e/a00190" ],
+          [ "Client", "dc/d57/a00194.html", "dc/d57/a00194" ],
+          [ "ClientInfo", "d7/da0/a00198.html", "d7/da0/a00198" ],
+          [ "ClientIOThread", "db/d53/a00202.html", "db/d53/a00202" ],
+          [ "ConnectionTask", "d5/df1/a00206.html", "d5/df1/a00206" ],
+          [ "DataWrapper", "da/de7/a00210.html", "da/de7/a00210" ],
+          [ "KeyboardThread", "d3/dd1/a00214.html", "d3/dd1/a00214" ],
+          [ "NetworkService", "dc/d9a/a00218.html", "dc/d9a/a00218" ],
+          [ "ServerInfo", "d0/d24/a00222.html", "d0/d24/a00222" ]
         ] ],
         [ "security", null, [
-          [ "EKEProvider", "a00226.html", "a00226" ],
-          [ "KeyStoreManager", "a00230.html", "a00230" ]
+          [ "EKEProvider", "dc/d55/a00226.html", "dc/d55/a00226" ],
+          [ "KeyStoreManager", "d1/da8/a00230.html", "d1/da8/a00230" ]
         ] ],
         [ "sensor", null, [
           [ "orientation", null, [
-            [ "KalmanFilterProvider", "a00234.html", "a00234" ],
-            [ "OrientationProvider", "a00238.html", "a00238" ]
+            [ "KalmanFilterProvider", "da/d31/a00234.html", "da/d31/a00234" ],
+            [ "OrientationProvider", "da/d2e/a00238.html", "da/d2e/a00238" ]
           ] ],
           [ "representation", null, [
-            [ "Matrix", "a00242.html", null ],
-            [ "MatrixF4x4", "a00246.html", "a00246" ],
-            [ "Quaternion", "a00250.html", "a00250" ],
-            [ "Vector3f", "a00254.html", "a00254" ],
-            [ "Vector4f", "a00258.html", "a00258" ]
+            [ "Matrix", "d2/dc8/a00242.html", null ],
+            [ "MatrixF4x4", "d4/d9a/a00246.html", "d4/d9a/a00246" ],
+            [ "Quaternion", "d0/da7/a00250.html", "d0/da7/a00250" ],
+            [ "Vector3f", "d7/d03/a00254.html", "d7/d03/a00254" ],
+            [ "Vector4f", "d7/d2f/a00258.html", "d7/d2f/a00258" ]
           ] ]
         ] ],
-        [ "AboutFragment", "a00162.html", "a00162" ],
-        [ "ConnectionFragment", "a00166.html", "a00166" ],
-        [ "CustomAdapter", "a00170.html", "a00170" ],
-        [ "KeyboardFragment", "a00178.html", "a00178" ],
-        [ "MainActivity", "a00182.html", "a00182" ],
-        [ "MouseFragment", "a00186.html", "a00186" ],
-        [ "SettingsActivity", "a00262.html", "a00262" ],
-        [ "SettingsFragment", "a00266.html", "a00266" ],
-        [ "TouchpadFragment", "a00270.html", "a00270" ]
+        [ "AboutFragment", "db/d44/a00162.html", "db/d44/a00162" ],
+        [ "ConnectionFragment", "d9/d38/a00166.html", "d9/d38/a00166" ],
+        [ "CustomAdapter", "d5/dcb/a00170.html", "d5/dcb/a00170" ],
+        [ "KeyboardFragment", "d9/d90/a00178.html", "d9/d90/a00178" ],
+        [ "MainActivity", "d7/d25/a00182.html", "d7/d25/a00182" ],
+        [ "MouseFragment", "d8/d00/a00186.html", "d8/d00/a00186" ],
+        [ "SettingsActivity", "d9/d8d/a00262.html", "d9/d8d/a00262" ],
+        [ "SettingsFragment", "d5/d35/a00266.html", "d5/d35/a00266" ],
+        [ "TouchpadFragment", "d9/d2a/a00270.html", "d9/d2a/a00270" ]
       ] ]
     ] ]
 ];

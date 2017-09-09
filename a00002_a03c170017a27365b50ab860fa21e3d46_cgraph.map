@@ -1,8 +1,0 @@
-<map id="project.android.net.BroadcastReceiverThread.run" name="project.android.net.BroadcastReceiverThread.run">
-<area shape="rect" id="node2" href="$a00022.html#a914c65a49cf5940901d475693ee8e205" title="Returns the IPv4 address of the server. " alt="" coords="423,67,569,103"/>
-<area shape="rect" id="node3" href="$a00022.html#a5edc2db7c6ec4fffda531750db1d1232" title="Sets the IPv4 server address. " alt="" coords="222,35,369,71"/>
-<area shape="rect" id="node4" href="$a00022.html#a634b659a2b29b7f535176089efa7b7f6" title="Returns the status of the server. " alt="" coords="222,95,369,131"/>
-<area shape="rect" id="node5" href="$a00006.html#aa3204a474571d554c95ddb6bdd2ca012" title="Removes the ServerInfo object of an inactive server from the list of servers. " alt="" coords="220,155,371,191"/>
-<area shape="rect" id="node6" href="$a00006.html#a81fb8a4eaf36bfa8403d89c809e1a885" title="Method to dismiss the alert dialog prompting the pairing key input. " alt="" coords="216,215,375,251"/>
-<area shape="rect" id="node7" href="$a00006.html#ae377ff5842d0ff978ce109e1f51c1917" title="Adds the ServerInfo object of an active server to the list of servers. " alt="" coords="220,275,371,311"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="project.android.net.ClientIOThread.ClientIOThread" name="project.android.net.ClientIOThread.ClientIOThread">
-<area shape="rect" id="node2" href="$a00022.html#a914c65a49cf5940901d475693ee8e205" title="Returns the IPv4 address of the server. " alt="" coords="199,5,345,41"/>
-<area shape="rect" id="node3" href="$a00005.html#a9f6765867ad54f586cc7b329213a2ac3" title="Performs operations for reading data from a server. " alt="" coords="201,65,343,101"/>
-<area shape="rect" id="node8" href="$a00010.html#a73624750dc6ff111d72bcb4b54c4995c" title="Encrypt plaintext using AES 256&#45;bit encryption algorithm. " alt="" coords="197,125,347,161"/>
-<area shape="rect" id="node4" href="$a00015.html#a2025eaa4f93363e6f4a03b26d7c4f8f6" title="Returns the project.android.ConnectionFragment object. " alt="" coords="395,5,564,41"/>
-<area shape="rect" id="node5" href="$a00006.html#a5ae4f9d7872792288afb3de65ab4c2b0" title="Sets an icon for an inactive server. " alt="" coords="404,65,555,101"/>
-<area shape="rect" id="node7" href="$a00010.html#a1843f8e6646edd0fbea0ae49e620aa92" title="Decrypt ciphertext using AES&#45;256 bit algorithm. " alt="" coords="405,125,554,161"/>
-<area shape="rect" id="node6" href="$a00006.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="612,65,771,101"/>
-</map>

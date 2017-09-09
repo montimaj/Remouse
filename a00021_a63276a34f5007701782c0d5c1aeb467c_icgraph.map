@@ -1,4 +1,0 @@
-<map id="project.android.sensor.representation.Quaternion.set" name="project.android.sensor.representation.Quaternion.set">
-<area shape="rect" id="node2" href="$a00011.html#ab9a9911056de6fc82ef1859c2eb42bad" title="project.android.sensor.orientation.\lKalmanFilterProvider.onSensorChanged" alt="" coords="256,5,471,41"/>
-<area shape="rect" id="node3" href="$a00020.html#a467add7b43d10e83cd33ef234664f077" title="Get the current rotation of the device in the quaternion format (vector4f) " alt="" coords="271,65,456,101"/>
-</map>

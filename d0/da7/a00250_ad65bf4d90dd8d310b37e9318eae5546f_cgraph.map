@@ -1,0 +1,8 @@
+<map id="project.android.sensor.representation.Quaternion.multiplyByQuat" name="project.android.sensor.representation.Quaternion.multiplyByQuat">
+<area shape="rect" id="node2" href="$d0/da7/a00250.html#ae1525db68042617d145ba7466a5b59b7" title="Constructor. " alt="" coords="256,5,459,41"/>
+<area shape="rect" id="node3" href="$d7/d2f/a00258.html#ad64f74d289c05e667cd27cf017ab8b95" title="Copies another Vector4f to this one. " alt="" coords="256,65,459,101"/>
+<area shape="rect" id="node7" href="$d0/da7/a00250.html#af231ee91935ad5dabce7e497ece57417" title="Multiplies this Quaternion with another. " alt="" coords="256,125,459,161"/>
+<area shape="rect" id="node4" href="$d7/d03/a00254.html#aba432e0cfec33788bed219adf0bf0c5e" title="Returns the X&#45;dimension of this Vector3f. " alt="" coords="507,5,709,41"/>
+<area shape="rect" id="node5" href="$d7/d03/a00254.html#aefe347d692330f7dfec6b146302809e3" title="Returns the Y&#45;dimension of this Vector3f. " alt="" coords="507,65,709,101"/>
+<area shape="rect" id="node6" href="$d7/d03/a00254.html#a6e8d105f170e17b3d1bb706ea75fb3ea" title="Returns the Z&#45;dimension of this Vector3f. " alt="" coords="507,125,709,161"/>
+</map>

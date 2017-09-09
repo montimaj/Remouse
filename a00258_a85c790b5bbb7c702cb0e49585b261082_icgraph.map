@@ -1,6 +1,0 @@
-<map id="project.android.sensor.representation.Vector4f.setY" name="project.android.sensor.representation.Vector4f.setY">
-<area shape="rect" id="node2" href="$a00234.html#ab9a9911056de6fc82ef1859c2eb42bad" title="Overrides the SensorEventListener.onSensorChanged() method of the Android API. " alt="" coords="256,5,471,41"/>
-<area shape="rect" id="node3" href="$a00250.html#aebabee6a927fe71e587aef336a787709" title="Multiples this Quaternion with a scalar. " alt="" coords="262,65,465,101"/>
-<area shape="rect" id="node4" href="$a00250.html#ad65d775928e1fddeb2f15e772fec5caf" title="Returns the heading, attitude and bank of this Quaternion as euler angles in the double array respect..." alt="" coords="262,125,465,161"/>
-<area shape="rect" id="node5" href="$a00250.html#ad97bd17455f6ca6ef3f38190789fc956" title="Returns a String representing this Quaternion. " alt="" coords="262,185,465,221"/>
-</map>

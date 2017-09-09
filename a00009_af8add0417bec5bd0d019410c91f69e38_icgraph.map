@@ -1,5 +1,0 @@
-<map id="project.android.net.DataWrapper.getGsonString" name="project.android.net.DataWrapper.getGsonString">
-<area shape="rect" id="node2" href="$a00003.html#a3d6c629d64e1911979c9f483c8785b5f" title="Send mouse button or keyboard data. " alt="" coords="191,11,381,35"/>
-<area shape="rect" id="node3" href="$a00003.html#aa23e2b087d09db0524a34b73cd5e07d3" title="Send a stop signal if the user disconnects the server from the app. " alt="" coords="429,5,596,41"/>
-<area shape="rect" id="node4" href="$a00006.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="644,5,795,41"/>
-</map>
