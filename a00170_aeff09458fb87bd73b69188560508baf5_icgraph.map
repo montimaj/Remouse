@@ -1,0 +1,10 @@
+<map id="project.android.CustomAdapter.getView" name="project.android.CustomAdapter.getView">
+<area shape="rect" id="node2" href="$a00166.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="265,68,424,104"/>
+<area shape="rect" id="node3" href="$a00166.html#a5ae4f9d7872792288afb3de65ab4c2b0" title="Sets an icon for an inactive server. " alt="" coords="472,68,623,104"/>
+<area shape="rect" id="node8" href="$a00166.html#af0e6f7c8aa02553792fd18fbb5e98a2e" title="Sets an icon for an active server. " alt="" coords="472,7,623,43"/>
+<area shape="rect" id="node4" href="$a00166.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="673,125,823,161"/>
+<area shape="rect" id="node6" href="$a00202.html#a9f6765867ad54f586cc7b329213a2ac3" title="Performs operations for reading data from a server. " alt="" coords="677,65,819,101"/>
+<area shape="rect" id="node5" href="$a00170.html#a9b4dd18431aa7ebd37321a0d2b1d2539" title="Overrides the ArrayAdapter.getCount() method. " alt="" coords="873,125,1063,161"/>
+<area shape="rect" id="node7" href="$a00202.html#aa57b04eb44ae7982a7a79cdb7c484144" title="Constructor. " alt="" coords="896,65,1040,101"/>
+<area shape="rect" id="node9" href="$a00218.html#a6b623423ab726a2d5008717960032b6d" title="Overrides the Service.onStartCommand(Intent, int, int) method of the Android API. ..." alt="" coords="671,5,825,41"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="project.android.net.Client.sendStopSignal" name="project.android.net.Client.sendStopSignal">
+<area shape="rect" id="node2" href="$a00006.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="220,33,371,69"/>
+<area shape="rect" id="node3" href="$a00008.html#a9b4dd18431aa7ebd37321a0d2b1d2539" title="Overrides the ArrayAdapter.getCount() method. " alt="" coords="430,5,619,41"/>
+<area shape="rect" id="node4" href="$a00008.html#a6b2523e50305753cb8c2893dc659a1ae" title="Overrides ArrayAdapter.getView(int, View, ViewGroup) method. " alt="" coords="419,66,631,90"/>
+<area shape="rect" id="node5" href="$a00006.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="679,60,837,96"/>
+</map>

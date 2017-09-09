@@ -1,0 +1,7 @@
+<map id="project.android.sensor.representation.Vector3f.Vector3f" name="project.android.sensor.representation.Vector3f.Vector3f">
+<area shape="rect" id="node2" href="$a00026.html#a081b042bf33edc3c76afe3702a1c5d79" title="Constructor. " alt="" coords="256,5,459,41"/>
+<area shape="rect" id="node3" href="$a00027.html#ac1059d3ba0cf2ae04a9fb47c8f1edb3c" title="Returns the W&#45;dimension of this Vector4f. " alt="" coords="256,65,459,101"/>
+<area shape="rect" id="node4" href="$a00027.html#af69dc14afa12c757152f93bd643e791f" title="Returns the X&#45;dimension of this Vector4f. " alt="" coords="256,125,459,161"/>
+<area shape="rect" id="node5" href="$a00027.html#ae3ecced2eebe634a5d3842d7c9f6659c" title="Returns the Y&#45;dimension of this Vector4f. " alt="" coords="256,185,459,221"/>
+<area shape="rect" id="node6" href="$a00027.html#a6dc64afde1e04300a5175f67865c45ac" title="Returns the Z&#45;dimension of this Vector4f. " alt="" coords="256,245,459,281"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$a00001.html" title="Class representing the Fragment for displaying app information. " alt="" coords="210,168,381,192"/>
+<area shape="rect" id="node3" href="$a00006.html" title="Class representing the Fragment that provides GUI frontend for the network module. " alt="" coords="220,107,371,143"/>
+<area shape="rect" id="node4" href="$a00012.html" title="Class representing the Fragment for providing the GUI frontend for the keyboard module. " alt="" coords="224,47,367,83"/>
+<area shape="rect" id="node5" href="$a00018.html" title="Class representing the Fragment for providing the GUI frontend for the 3D mouse module. " alt="" coords="208,216,383,240"/>
+<area shape="rect" id="node6" href="$a00025.html" title="Class representing the Fragment for providing the GUI frontend for the 2D mouse module. " alt="" coords="223,265,367,301"/>
+</map>

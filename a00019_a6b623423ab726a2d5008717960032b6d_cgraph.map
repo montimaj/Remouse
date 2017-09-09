@@ -1,0 +1,8 @@
+<map id="project.android.net.NetworkService.onStartCommand" name="project.android.net.NetworkService.onStartCommand">
+<area shape="rect" id="node2" href="$a00015.html#a2025eaa4f93363e6f4a03b26d7c4f8f6" title="Returns the project.android.ConnectionFragment object. " alt="" coords="208,5,377,41"/>
+<area shape="rect" id="node3" href="$a00006.html#af0e6f7c8aa02553792fd18fbb5e98a2e" title="Sets an icon for an active server. " alt="" coords="217,65,368,101"/>
+<area shape="rect" id="node4" href="$a00006.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="425,65,584,101"/>
+<area shape="rect" id="node6" href="$a00022.html#adc1c8edd1eafda5cad71f9babd18dfd4" title="Returns the canonical host name of the server. " alt="" coords="892,23,1039,59"/>
+<area shape="rect" id="node7" href="$a00022.html#a914c65a49cf5940901d475693ee8e205" title="Returns the IPv4 address of the server. " alt="" coords="892,96,1039,132"/>
+<area shape="rect" id="node5" href="$a00008.html#a6b2523e50305753cb8c2893dc659a1ae" title="Overrides ArrayAdapter.getView(int, View, ViewGroup) method. " alt="" coords="632,71,844,95"/>
+</map>

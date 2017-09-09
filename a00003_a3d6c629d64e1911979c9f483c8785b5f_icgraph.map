@@ -1,0 +1,6 @@
+<map id="project.android.net.Client.sendData" name="project.android.net.Client.sendData">
+<area shape="rect" id="node2" href="$a00003.html#aa23e2b087d09db0524a34b73cd5e07d3" title="Send a stop signal if the user disconnects the server from the app. " alt="" coords="244,33,411,69"/>
+<area shape="rect" id="node3" href="$a00006.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="459,33,609,69"/>
+<area shape="rect" id="node4" href="$a00008.html#a9b4dd18431aa7ebd37321a0d2b1d2539" title="Overrides the ArrayAdapter.getCount() method. " alt="" coords="669,5,858,41"/>
+<area shape="rect" id="node5" href="$a00008.html#a6b2523e50305753cb8c2893dc659a1ae" title="Overrides ArrayAdapter.getView(int, View, ViewGroup) method. " alt="" coords="657,66,869,90"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="project.android.sensor.representation.Quaternion.toAxisAngle" name="project.android.sensor.representation.Quaternion.toAxisAngle">
+<area shape="rect" id="node2" href="$a00027.html#ac1059d3ba0cf2ae04a9fb47c8f1edb3c" title="Returns the W&#45;dimension of this Vector4f. " alt="" coords="256,5,459,41"/>
+<area shape="rect" id="node3" href="$a00021.html#a6a9bc1e2c5ba665cfb62da4e16128adb" title="Normalizes this Quaternion. " alt="" coords="256,65,459,101"/>
+</map>

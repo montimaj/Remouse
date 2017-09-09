@@ -1,0 +1,7 @@
+<map id="project.android.ConnectionFragment.setIcon" name="project.android.ConnectionFragment.setIcon">
+<area shape="rect" id="node2" href="$a00006.html#a863b30e1ce16c16e6dba6bebe8d8c45e" title="Returns the View of the clicked list item. " alt="" coords="204,79,363,115"/>
+<area shape="rect" id="node5" href="$a00022.html#a914c65a49cf5940901d475693ee8e205" title="Returns the IPv4 address of the server. " alt="" coords="869,23,1016,59"/>
+<area shape="rect" id="node6" href="$a00022.html#adc1c8edd1eafda5cad71f9babd18dfd4" title="Returns the canonical host name of the server. " alt="" coords="673,135,819,171"/>
+<area shape="rect" id="node3" href="$a00008.html#a6b2523e50305753cb8c2893dc659a1ae" title="Overrides ArrayAdapter.getView(int, View, ViewGroup) method. " alt="" coords="411,85,623,109"/>
+<area shape="rect" id="node4" href="$a00006.html#aee2a392b8b0500023dba15b60d3315d2" title="Returns a list of ServerInfo objects. " alt="" coords="671,23,821,59"/>
+</map>

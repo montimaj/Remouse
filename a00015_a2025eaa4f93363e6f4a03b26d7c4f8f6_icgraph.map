@@ -1,0 +1,8 @@
+<map id="project.android.MainActivity.getConnectionFragment" name="project.android.MainActivity.getConnectionFragment">
+<area shape="rect" id="node2" href="$a00002.html#a6a138aa4f09588a79c664ee9055f7c38" title="Constructor. " alt="" coords="223,5,415,53"/>
+<area shape="rect" id="node3" href="$a00005.html#a9f6765867ad54f586cc7b329213a2ac3" title="Performs operations for reading data from a server. " alt="" coords="248,78,389,114"/>
+<area shape="rect" id="node5" href="$a00007.html#a556383b01c61db89d1256691b1470657" title="Overrides the android.os.AsyncTask.onPreExecute() method of the Android API. " alt="" coords="235,138,403,174"/>
+<area shape="rect" id="node6" href="$a00008.html#ade9b132efdf8d16ea5c9ab6f7340e581" title="Constructor. " alt="" coords="231,198,406,234"/>
+<area shape="rect" id="node7" href="$a00019.html#a6b623423ab726a2d5008717960032b6d" title="Overrides the android.app.Service.onStartCommand(Intent, int, int). " alt="" coords="241,258,396,294"/>
+<area shape="rect" id="node4" href="$a00005.html#aa57b04eb44ae7982a7a79cdb7c484144" title="Constructor. " alt="" coords="463,78,607,114"/>
+</map>

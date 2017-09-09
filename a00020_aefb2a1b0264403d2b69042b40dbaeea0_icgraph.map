@@ -1,0 +1,6 @@
+<map id="project.android.sensor.orientation.OrientationProvider.sensorStop" name="project.android.sensor.orientation.OrientationProvider.sensorStop">
+<area shape="rect" id="node2" href="$a00011.html#ab9a9911056de6fc82ef1859c2eb42bad" title="project.android.sensor.orientation.\lKalmanFilterProvider.onSensorChanged" alt="" coords="237,5,452,41"/>
+<area shape="rect" id="node3" href="$a00018.html#a64ea9266b82c3fc2d94c2ad23d37795e" title="Overrides the Fragment.onDestroyView() method of the Android API. " alt="" coords="249,65,440,101"/>
+<area shape="rect" id="node4" href="$a00018.html#a68e80442d6235af1dcbdda8c193d9061" title="Overrides the View.onTouchListener.onTouch(View, MotionEvent) method of the Android API..." alt="" coords="249,125,440,161"/>
+<area shape="rect" id="node5" href="$a00018.html#ad7acbd4610541a7769c197f1e3f326bb" title="Overrides the View.onClickListener.onClick(View) method of the Android API. " alt="" coords="249,185,440,221"/>
+</map>
