@@ -20,6 +20,10 @@
             android:id="@+id/nav_connect"
             android:icon="@drawable/ic_wifi_tethering_black_24dp"
             android:title="@string/connect" />
+        <item
+            android:id="@+id/nav_connect_bluetooth"
+            android:icon="@drawable/ic_wifi_tethering_black_24dp"
+            android:title="@string/connect_bluetooth" />
         </group>
 
     <item android:title="@string/app_info">

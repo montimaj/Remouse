@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import project.android.bluetooth.BtNetworkState;
 import project.android.net.NetworkService;
 import project.android.security.EKEProvider;
 import project.android.sensor.orientation.OrientationProvider;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     private static ArrayList<Fragment> sFragmentList = new ArrayList<>();
 
+    public static BtNetworkState sState;
     public static File sRemouseDir = null;
     public static byte[] sPublicKey;
     public static SharedPreferences sSharedPrefs;
@@ -99,6 +101,9 @@ public class MainActivity extends AppCompatActivity
 
         sFragmentList.add(new ConnectionFragment());
         sFragmentList.add(new AboutFragment());
+        sFragmentList.add(new BluetoothConnectionFragment());
+
+        sState = new BtNetworkState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -248,6 +253,11 @@ public class MainActivity extends AppCompatActivity
             fragment = sFragmentList.get(0);
             title="Connect to PC";
 
+        } else if (id == R.id.nav_connect_bluetooth) {
+            // connect via bluetooth
+            fragment = sFragmentList.get(2);
+            title = "Connect via Bluetooth";
+
         } else if (id == R.id.nav_about) {
             // App info
             fragment = sFragmentList.get(1);
@@ -261,12 +271,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Returns the {@link project.android.ConnectionFragment} object.
+     * Returns the {@link ConnectionFragment} object.
      *
-     * @return the {@link project.android.ConnectionFragment} object.
-     * @see project.android.ConnectionFragment
+     * @return the {@link ConnectionFragment} object.
+     * @see ConnectionFragment
      */
     public static Fragment getConnectionFragment() { return sFragmentList.get(0); }
+
+    public static Fragment getBluetoothConnectionFragment() { return sFragmentList.get(2); }
 
     private void displayFragment(Fragment fragment, String title) {
         if (fragment != null) {

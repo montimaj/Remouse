@@ -15,6 +15,7 @@
     <string name="smart_i_o">Smart I/O</string>
     <string name="keyboard">Keyboard</string>
     <string name="connect">Connect</string>
+    <string name="connect_bluetooth">Connect via Bluetooth</string>
     <string name="app_info">App info</string>
     <string name="about">About</string>
     <string name="_3d_mouse">3D mouse</string>
